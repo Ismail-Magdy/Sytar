@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "565768713387",
+    "project_id": "sytar-c298f",
+    "storage_bucket": "sytar-c298f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565768713387:android:5db157bb02dbf69c2a33ee",
+        "android_client_info": {
+          "package_name": "com.example.sytar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuq2KlzGTd5Ynml47T6GLnKbYlhGOwNao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

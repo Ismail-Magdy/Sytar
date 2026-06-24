@@ -10,13 +10,13 @@ abstract class Failure extends Equatable {
 }
 
 class ServerFailure extends Failure {
-  const ServerFailure([super.message = "An error occurred with the server"]);
+  const ServerFailure([super.message = "حدث خطأ في الاتصال بالخادم"]);
 }
 
 class CacheFailure extends Failure {
-  const CacheFailure([super.message = "An error occurred with local storage"]);
+  const CacheFailure([super.message = "حدث خطأ في التخزين المحلي"]);
 }
 
 class InvalidDataFailure extends Failure {
-  const InvalidDataFailure([super.message = "Invalid data provided"]);
+  const InvalidDataFailure([super.message = "البيانات المدخلة غير صحيحة"]);
 }
