@@ -1,0 +1,3 @@
+class AppConstants {
+  // SharedPreferences Keys
+}
