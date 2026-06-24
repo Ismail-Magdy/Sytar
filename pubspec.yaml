@@ -40,6 +40,11 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   flutter_dotenv: ^6.0.1
 
+  # FireBase
+  firebase_core: ^4.11.0
+  firebase_auth: ^6.5.4
+  cloud_firestore: ^6.6.0
+
   # Splash Screen & App Icon
   flutter_native_splash: ^2.4.7
   flutter_launcher_icons: ^0.14.4
@@ -65,6 +70,7 @@ flutter_launcher_icons:
     - assets/images/
     - assets/svgs/
     - assets/icons/
+    - assets/lottie/
 
   # Custom Fonts
   fonts:

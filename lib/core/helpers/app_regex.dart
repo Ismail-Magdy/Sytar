@@ -1,13 +1,15 @@
 class AppRegex {
   static bool isEmailValid(String email) {
+    // تعديل لدعم الإيميلات الجامعية المعقدة والأرقام
     return RegExp(
-      r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$',
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     ).hasMatch(email);
   }
 
   static bool isPasswordValid(String password) {
+    // تم توحيد الرموز الخاصة لتتطابق مع دالة hasSpecialCharacter
     return RegExp(
-      r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$",
+      r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#?!@$%^&*-])[A-Za-z\d#?!@$%^&*-]{8,}$",
     ).hasMatch(password);
   }
 

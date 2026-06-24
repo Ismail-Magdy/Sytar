@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sytar/core/widgets/unknown_route_screen.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -9,21 +10,9 @@ class AppRouter {
       //     builder: (_) => const OnBoardingScreen(),
       //   );
 
-      // /// Auth Screen
-      // case Routes.authScreen:
-      //   return MaterialPageRoute(
-      //     builder: (_) => const AuthScreen(),
-      //   );
-
-      /// Default Case
+      /// Default Case (Unknown Route)
       default:
-        return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(
-              child: Text("No Page Found For This ${settings.name}"),
-            ),
-          ),
-        );
+        return MaterialPageRoute(builder: (_) => const UnknownRouteScreen());
     }
   }
 }

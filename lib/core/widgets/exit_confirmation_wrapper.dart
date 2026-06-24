@@ -1,14 +1,9 @@
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sytar/core/themes/app_colors.dart';
+import "dart:io";
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:flutter_screenutil/flutter_screenutil.dart";
+import "package:sytar/core/themes/app_colors.dart";
 
-/// Wraps a screen to intercept the Android back button and show
-/// an exit confirmation dialog instead of navigating back.
-///
-/// Use this on any root-level screen (UserRootScreen, UserInfoScreen,
-/// CompanyHomeScreen) to prevent accidental back-navigation.
 class ExitConfirmationWrapper extends StatelessWidget {
   final Widget child;
 
@@ -21,23 +16,26 @@ class ExitConfirmationWrapper extends StatelessWidget {
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: .circular(16.r)),
+        //
         title: Text(
-          "Exit App",
+          "الخروج من التطبيق",
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: .bold,
             color: Colors.black87,
           ),
         ),
+        //
         content: Text(
-          "Are you sure you want to exit the application?",
+          "هل أنت متأكد أنك تريد الخروج من سيطر؟",
           style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade700),
         ),
+        //
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(
-              "Cancel",
+              "إلغاء",
               style: TextStyle(
                 fontSize: 14.sp,
                 color: Colors.grey.shade600,
@@ -48,7 +46,7 @@ class ExitConfirmationWrapper extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             child: Text(
-              "Exit",
+              "خروج",
               style: TextStyle(
                 fontSize: 14.sp,
                 color: AppColors.primaryColor,
@@ -57,6 +55,7 @@ class ExitConfirmationWrapper extends StatelessWidget {
             ),
           ),
         ],
+        //
       ),
     );
 

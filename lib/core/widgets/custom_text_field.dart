@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sytar/core/helpers/app_regex.dart';
-import 'package:sytar/core/themes/app_colors.dart';
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:flutter_screenutil/flutter_screenutil.dart";
+import "package:sytar/core/helpers/app_regex.dart";
+import "package:sytar/core/themes/app_colors.dart";
 
 /// Defines the type of the input field.
 /// This controls validation, keyboard type, and password behavior.
@@ -51,7 +51,7 @@ class CustomTextFormField extends StatefulWidget {
     super.key,
     required this.controller,
     required this.hintText,
-    this.fieldType = .normal,
+    this.fieldType = FieldType.normal,
     this.prefixIcon,
     this.validator,
     this.onChanged,
@@ -75,7 +75,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
     if (oldWidget.fieldType != widget.fieldType) {
       setState(() {
-        obscureText = widget.fieldType == .password;
+        obscureText = widget.fieldType == FieldType.password;
       });
     }
   }
@@ -85,7 +85,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     super.initState();
 
     /// Initialize password visibility only if the field is a password.
-    obscureText = widget.fieldType == .password;
+    obscureText = widget.fieldType == FieldType.password;
   }
 
   /// Default validation logic based on field type.
@@ -95,44 +95,44 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     switch (widget.fieldType) {
       case .firstName:
         if (trimmedValue.isEmpty) {
-          return "Please enter your first name.";
+          return "برجاء إدخال الاسم الأول";
         }
         break;
 
       case .lastName:
         if (trimmedValue.isEmpty) {
-          return "Please enter your last name.";
+          return "برجاء إدخال اسم العائلة";
         }
         break;
 
       case .phoneNumber:
         if (trimmedValue.isEmpty ||
             !AppRegex.isPhoneNumberValid(trimmedValue)) {
-          return "Please enter a valid phone number.";
+          return "برجاء إدخال رقم هاتف صحيح";
         }
         break;
 
       case .userName:
         if (trimmedValue.isEmpty) {
-          return "Please enter a username.";
+          return "برجاء إدخال اسم المستخدم";
         }
         if (trimmedValue.contains(" ")) {
-          return "Username should not contain spaces.";
+          return "اسم المستخدم يجب ألا يحتوي على مسافات";
         }
         break;
 
       case .email:
         if (trimmedValue.isEmpty || !AppRegex.isEmailValid(trimmedValue)) {
-          return "Please enter a valid email.";
+          return "برجاء إدخال بريد إلكتروني صحيح";
         }
         break;
 
       case .password:
         if (trimmedValue.isEmpty) {
-          return "Please enter a password.";
+          return "برجاء إدخال كلمة المرور";
         }
-        if (trimmedValue.length < 6) {
-          return "Password must be at least 6 characters.";
+        if (!AppRegex.isPasswordValid(trimmedValue)) {
+          return "يجب أن تحتوي على 8 أحرف، وحرف كبير وصغير ورقم ورمز";
         }
         break;
 
