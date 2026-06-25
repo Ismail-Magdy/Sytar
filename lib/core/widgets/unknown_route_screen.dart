@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sytar/core/helpers/extensions.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
+import 'package:sytar/core/widgets/custom_button.dart';
 
 class UnknownRouteScreen extends StatelessWidget {
   const UnknownRouteScreen({super.key});
@@ -24,7 +25,7 @@ class UnknownRouteScreen extends StatelessWidget {
                 height: 250.h,
               ),
               //
-              verticalSpace(30),
+              verticalSpace(0),
               //
               Text(
                 "المكان ده مش على الخريطة",
@@ -41,26 +42,17 @@ class UnknownRouteScreen extends StatelessWidget {
               Text(
                 "يبدو أن الصفحة التي تبحث عنها غير موجودة أو تم نقلها",
                 textAlign: .center,
-                style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade600),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: AppColors.secondaryColor,
+                ),
               ),
               //
               verticalSpace(40),
               //
-              SizedBox(
-                width: .infinity,
-                height: 50.h,
-                child: ElevatedButton(
-                  onPressed: () => context.pop(),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: .circular(12.r),
-                    ),
-                  ),
-                  child: Text(
-                    "الرجوع للسابق",
-                    style: TextStyle(fontSize: 16.sp),
-                  ),
-                ),
+              CustomButton(
+                text: "الرجوع للسابق",
+                onPressed: () => context.pop(),
               ),
             ],
           ),
