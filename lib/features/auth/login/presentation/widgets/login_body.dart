@@ -7,6 +7,8 @@ import "package:sytar/core/routes/routes.dart";
 import "package:sytar/core/themes/app_colors.dart";
 import "package:sytar/core/widgets/custom_button.dart";
 import "package:sytar/core/widgets/custom_text_field.dart";
+import "package:sytar/features/auth/welcome/widgets/custom_divider.dart";
+import "package:sytar/features/auth/welcome/widgets/social_login_button.dart";
 
 class LoginBody extends StatefulWidget {
   const LoginBody({super.key});
@@ -36,9 +38,9 @@ class _LoginBodyState extends State<LoginBody> {
           hasScrollBody: false,
           child: Column(
             children: [
-              // Logo
+              // Top Part
               Container(
-                height: 220.h,
+                height: 150.h,
                 width: .infinity,
                 alignment: .center,
                 child: Column(
@@ -47,7 +49,7 @@ class _LoginBodyState extends State<LoginBody> {
                     //
                     SvgPicture.asset(
                       "assets/svgs/logo.svg",
-                      height: 100.h,
+                      height: 80.h,
                       colorFilter: const .mode(Colors.white, .srcIn),
                     ),
                     //
@@ -70,8 +72,10 @@ class _LoginBodyState extends State<LoginBody> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: .only(
-                      topLeft: .circular(40.r),
-                      topRight: .circular(40.r),
+                      topLeft: .circular(20.r),
+                      topRight: .circular(20.r),
+                      bottomLeft: .circular(5.r),
+                      bottomRight: .circular(5.r),
                     ),
                   ),
                   child: Form(
@@ -101,27 +105,27 @@ class _LoginBodyState extends State<LoginBody> {
                         //
                         verticalSpace(32),
                         //
-                        // حقل الإيميل
+                        // Email
                         CustomTextFormField(
                           controller: _emailController,
                           hintText: "البريد الإلكتروني",
-                          fieldType: FieldType.email,
+                          fieldType: .email,
                           prefixIcon: Icons.alternate_email_rounded,
                         ),
+                        //
                         verticalSpace(16),
-
-                        // حقل الباسورد
+                        //
+                        // Password
                         CustomTextFormField(
                           controller: _passwordController,
                           hintText: "كلمة المرور",
-                          fieldType: FieldType.password,
+                          fieldType: .password,
                           prefixIcon: Icons.lock_outline_rounded,
                         ),
-
-                        // زرار نسيت كلمة المرور
+                        //
+                        // Forgot Password
                         Align(
-                          alignment:
-                              Alignment.centerLeft, // على الشمال زي الصورة
+                          alignment: .centerLeft,
                           child: TextButton(
                             onPressed: () {},
                             child: Text(
@@ -129,97 +133,85 @@ class _LoginBodyState extends State<LoginBody> {
                               style: TextStyle(
                                 fontSize: 13.sp,
                                 color: AppColors.primaryColor,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: .w600,
                               ),
                             ),
                           ),
                         ),
+                        //
                         verticalSpace(16),
-
-                        // زرار تسجيل الدخول
+                        //
+                        // Login Button
                         CustomButton(
                           text: "تسجيل الدخول",
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              // هنهندل اللوجيك هنا بعدين
+                              // TODO: هنهندل اللوجيك هنا بعدين
                             }
                           },
                         ),
-                        verticalSpace(24),
-
-                        // أزرار السوشيال ميديا
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _buildSocialButton(
-                              Icons.g_mobiledata_rounded,
-                              Colors.red,
-                            ),
-                            horizontalSpace(16),
-                            _buildSocialButton(
-                              Icons.apple_rounded,
-                              Colors.black,
-                            ),
-                            horizontalSpace(16),
-                            _buildSocialButton(
-                              Icons.facebook_rounded,
-                              Colors.blue,
-                            ),
-                          ],
+                        //
+                        verticalSpace(32),
+                        // Or
+                        CustomDivider(),
+                        //
+                        verticalSpace(32),
+                        //
+                        // Social Buttons
+                        SocialLoginButton(
+                          text: "تسجيل الدخول بإستخدام جوجل",
+                          iconPath: "assets/svgs/google.svg",
+                          onPressed: () {},
                         ),
-
-                        const Spacer(), // بيزق الرو اللي تحت لآخر الشاشة
+                        //
+                        verticalSpace(20),
+                        //
+                        SocialLoginButton(
+                          text: "تسجيل الدخول بإستخدام فيسبوك",
+                          iconPath: "assets/svgs/facebook.svg",
+                          onPressed: () {},
+                        ),
+                        //
+                        verticalSpace(30),
+                        //
+                        const Spacer(),
                         // زرار إنشاء حساب جديد
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "مستخدم جديد؟",
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: Colors.grey.shade600,
+                        GestureDetector(
+                          onTap: () => context.pushNamed(Routes.signupScreen),
+                          child: Row(
+                            mainAxisAlignment: .center,
+                            children: [
+                              //
+                              Text(
+                                "مستخدم جديد؟",
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: Colors.grey.shade600,
+                                ),
                               ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                context.pushNamed(Routes.signupScreen);
-                              },
-                              child: Text(
-                                "إنشاء حساب",
+                              //
+                              Text(
+                                " إنشاء حساب",
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   color: AppColors.primaryColor,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
+                        //
                       ],
                     ),
                   ),
                 ),
               ),
+              //
             ],
           ),
         ),
       ],
-    );
-  }
-
-  // ويدجت صغيرة لأزرار السوشيال ميديا زي الصورة
-  Widget _buildSocialButton(IconData icon, Color color) {
-    return Container(
-      height: 50.h,
-      width: 50.w,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: IconButton(
-        icon: Icon(icon, color: color, size: 28.sp),
-        onPressed: () {},
-      ),
     );
   }
 }

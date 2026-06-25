@@ -71,13 +71,6 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
               child: Row(
                 children: [
                   //
-                  CustomVerticalIndicator(
-                    currentIndex: _currentIndex,
-                    onBoardingDataLength: onBoardingData.length,
-                  ),
-                  //
-                  horizontalSpace(20),
-                  //
                   Expanded(
                     child: Column(
                       mainAxisAlignment: .center,
@@ -150,7 +143,7 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
                             return Transform.scale(scale: value, child: child);
                           },
                           child: Align(
-                            alignment: .centerLeft,
+                            alignment: .centerRight,
                             child: SizedBox(
                               width: 130.w,
                               child: CustomButton(
@@ -169,6 +162,12 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
                       ],
                     ),
                   ),
+                  //
+                  CustomVerticalIndicator(
+                    currentIndex: _currentIndex,
+                    onBoardingDataLength: onBoardingData.length,
+                  ),
+                  //
                 ],
               ),
             ),
