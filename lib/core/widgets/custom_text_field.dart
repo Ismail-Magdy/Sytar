@@ -51,7 +51,7 @@ class CustomTextFormField extends StatefulWidget {
     super.key,
     required this.controller,
     required this.hintText,
-    this.fieldType = FieldType.normal,
+    this.fieldType = .normal,
     this.prefixIcon,
     this.validator,
     this.onChanged,
@@ -75,7 +75,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
     if (oldWidget.fieldType != widget.fieldType) {
       setState(() {
-        obscureText = widget.fieldType == FieldType.password;
+        obscureText = widget.fieldType == .password;
       });
     }
   }
@@ -85,7 +85,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     super.initState();
 
     /// Initialize password visibility only if the field is a password.
-    obscureText = widget.fieldType == FieldType.password;
+    obscureText = widget.fieldType == .password;
   }
 
   /// Default validation logic based on field type.
@@ -190,6 +190,10 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       /// Text style inside the field.
       style: TextStyle(color: AppColors.primaryColor, fontSize: 14.sp),
 
+      textAlign: .right,
+      textDirection: .rtl,
+
+      /// --------------------------------------------------
       decoration: InputDecoration(
         hintText: widget.hintText,
 
@@ -201,11 +205,11 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             : null,
 
         filled: true,
-        fillColor: Colors.grey.withValues(alpha: 0.04),
+        fillColor: Colors.grey.withValues(alpha: 0.08),
         //
         border: OutlineInputBorder(
-          borderRadius: .circular(14),
-          borderSide: .none,
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide.none,
         ),
         //
         errorBorder: OutlineInputBorder(

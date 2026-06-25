@@ -6,6 +6,8 @@ import "package:sytar/core/helpers/spacing.dart";
 import "package:sytar/core/themes/app_colors.dart";
 import "package:sytar/core/widgets/custom_button.dart";
 import "package:sytar/core/widgets/custom_text_field.dart";
+import "package:sytar/features/auth/welcome/widgets/custom_divider.dart";
+import "package:sytar/features/auth/welcome/widgets/social_login_button.dart";
 
 class SignupBody extends StatefulWidget {
   const SignupBody({super.key});
@@ -39,148 +41,168 @@ class _SignupBodyState extends State<SignupBody> {
           hasScrollBody: false,
           child: Column(
             children: [
-              // الجزء العلوي (أصغر شوية من الـ Login عشان الفورم أطول)
+              // Top Part
               Container(
-                height: 180.h,
-                width: double.infinity,
-                alignment: Alignment.center,
+                height: 150.h,
+                width: .infinity,
+                alignment: .center,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: .center,
                   children: [
+                    //
                     SvgPicture.asset(
                       "assets/svgs/logo.svg",
-                      height: 60.h,
-                      colorFilter: const ColorFilter.mode(
-                        Colors.white,
-                        BlendMode.srcIn,
-                      ),
+                      height: 80.h,
+                      colorFilter: const .mode(Colors.white, .srcIn),
                     ),
+                    //
                     verticalSpace(12),
+                    //
                     Text(
                       "انضم لـ سيطر",
                       style: TextStyle(
-                        fontSize: 26.sp,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 20.sp,
+                        fontWeight: .bold,
                         color: Colors.white,
                       ),
                     ),
+                    //
                   ],
                 ),
               ),
-
-              // الجزء السفلي (الكونتينر الأبيض اللي فيه الفورم)
+              //
+              // Bottom Part
               Expanded(
                 child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 24.w,
-                    vertical: 32.h,
-                  ),
+                  width: .infinity,
+                  padding: .symmetric(horizontal: 24.w, vertical: 32.h),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40.r),
-                      topRight: Radius.circular(40.r),
+                    borderRadius: .only(
+                      topLeft: .circular(20.r),
+                      topRight: .circular(20.r),
+                      bottomLeft: .circular(5.r),
+                      bottomRight: .circular(5.r),
                     ),
                   ),
                   child: Form(
                     key: _formKey,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: .center,
                       children: [
+                        //
                         Text(
                           "إنشاء حساب جديد",
                           style: TextStyle(
                             fontSize: 24.sp,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: .bold,
                             color: AppColors.primaryColor,
                           ),
                         ),
+                        //
                         verticalSpace(8),
+                        //
                         Text(
-                          "خطوة واحدة تفصلك عن تنظيم دراستك بذكاء.",
+                          "خطوة واحدة تفصلك عن تنظيم دراستك بذكاء",
                           style: TextStyle(
                             fontSize: 14.sp,
-                            color: Colors.grey.shade600,
+                            color: Colors.grey.shade700,
                           ),
                         ),
+                        //
                         verticalSpace(32),
-
+                        //
                         // حقل اسم المستخدم
                         CustomTextFormField(
                           controller: _userNameController,
                           hintText: "اسم المستخدم",
-                          fieldType: FieldType.userName,
+                          fieldType: .userName,
                           prefixIcon: Icons.person_outline_rounded,
                         ),
+                        //
                         verticalSpace(16),
-
+                        //
                         // حقل الإيميل
                         CustomTextFormField(
                           controller: _emailController,
                           hintText: "البريد الإلكتروني",
-                          fieldType: FieldType.email,
+                          fieldType: .email,
                           prefixIcon: Icons.alternate_email_rounded,
                         ),
+                        //
                         verticalSpace(16),
-
-                        // حقل رقم الهاتف
-                        CustomTextFormField(
-                          controller: _phoneController,
-                          hintText: "رقم الهاتف",
-                          fieldType: FieldType.phoneNumber,
-                          prefixIcon: Icons.phone_outlined,
-                        ),
-                        verticalSpace(16),
-
+                        //
                         // حقل الباسورد
                         CustomTextFormField(
                           controller: _passwordController,
                           hintText: "كلمة المرور",
-                          fieldType: FieldType.password,
+                          fieldType: .password,
                           prefixIcon: Icons.lock_outline_rounded,
                         ),
+                        //
                         verticalSpace(32),
-
+                        //
                         // زرار إنشاء حساب
                         CustomButton(
                           text: "إنشاء حساب",
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              // هنهندل اللوجيك هنا في مرحلة الـ Bloc/Cubit
+                              //TODO:  هنهندل اللوجيك هنا في مرحلة الـ Bloc/Cubit
                             }
                           },
                         ),
-                        verticalSpace(24),
-
-                        const Spacer(), // بيزق الرو اللي تحت لآخر الشاشة
+                        //
+                        verticalSpace(32),
+                        // Or
+                        CustomDivider(),
+                        //
+                        verticalSpace(32),
+                        //
+                        //
+                        // Social Buttons
+                        SocialLoginButton(
+                          text: "تسجيل الدخول بإستخدام جوجل",
+                          iconPath: "assets/svgs/google.svg",
+                          onPressed: () {},
+                        ),
+                        //
+                        verticalSpace(20),
+                        //
+                        SocialLoginButton(
+                          text: "تسجيل الدخول بإستخدام فيسبوك",
+                          iconPath: "assets/svgs/facebook.svg",
+                          onPressed: () {},
+                        ),
+                        //
+                        verticalSpace(30),
+                        //
+                        const Spacer(),
+                        //
                         // زرار العودة لتسجيل الدخول
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "لديك حساب بالفعل؟",
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: Colors.grey.shade600,
+                        GestureDetector(
+                          onTap: () => context.pop(),
+                          child: Row(
+                            mainAxisAlignment: .center,
+                            children: [
+                              Text(
+                                "لديك حساب بالفعل؟",
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: Colors.grey.shade600,
+                                ),
                               ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                // بنعمل Pop عشان نرجع لـ Login بدل ما نفتح شاشة جديدة فوق القديمة
-                                context.pop();
-                              },
-                              child: Text(
-                                "تسجيل الدخول",
+                              Text(
+                                " تسجيل الدخول",
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   color: AppColors.primaryColor,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
+                        //
                       ],
                     ),
                   ),
