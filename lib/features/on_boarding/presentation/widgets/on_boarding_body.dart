@@ -6,6 +6,8 @@ import "package:sytar/core/routes/routes.dart";
 import "package:sytar/core/themes/app_colors.dart";
 import "package:sytar/core/widgets/custom_button.dart";
 import "package:sytar/features/on_boarding/data/models/on_boarding_model.dart";
+import "package:sytar/features/on_boarding/presentation/widgets/custom_vertical_indicator.dart";
+import "package:sytar/features/on_boarding/presentation/widgets/diagonal_clipper.dart";
 
 class OnBoardingBody extends StatefulWidget {
   const OnBoardingBody({super.key});
@@ -29,8 +31,7 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
       _pageController.animateToPage(
         _currentIndex + 1,
         duration: const Duration(milliseconds: 1500),
-        curve:
-            Curves.fastLinearToSlowEaseIn, // حركة انتقال ناعمة جداً بين الصفحات
+        curve: Curves.fastLinearToSlowEaseIn,
       );
     } else {
       context.pushReplacementNamed(Routes.authScreen);
@@ -39,9 +40,10 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
 
   @override
   Widget build(BuildContext context) {
+    //
     return PageView.builder(
       controller: _pageController,
-      scrollDirection: Axis.vertical,
+      scrollDirection: .vertical,
       onPageChanged: (index) {
         setState(() {
           _currentIndex = index;
@@ -55,28 +57,33 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
   }
 
   Widget _buildPageItem(OnBoardingModel model, int index) {
-    // هنتأكد إن الصفحة دي هي اللي ظاهرة قدام اليوزر عشان نشغل الأنيميشن بتاعها
     bool isActive = _currentIndex == index;
 
     return Column(
       children: [
-        // النصف العلوي (أبيض - النصوص والزرار والمؤشر)
+        // Top Half => Texts ,Indicator, Button
         Expanded(
           flex: 5,
           child: SafeArea(
             bottom: false,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+              padding: .symmetric(horizontal: 24.w, vertical: 20.h),
               child: Row(
                 children: [
-                  _buildVerticalIndicator(),
+                  //
+                  CustomVerticalIndicator(
+                    currentIndex: _currentIndex,
+                    onBoardingDataLength: onBoardingData.length,
+                  ),
+                  //
                   horizontalSpace(20),
+                  //
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: .center,
+                      crossAxisAlignment: .start,
                       children: [
-                        // أنيميشن العنوان (Slide from right + Fade)
+                        // Title Animation (Slide from right + Fade)
                         TweenAnimationBuilder<double>(
                           key: ValueKey("title_$index$_currentIndex"),
                           duration: const Duration(milliseconds: 600),
@@ -95,14 +102,15 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
                             model.title,
                             style: TextStyle(
                               fontSize: 26.sp,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: .bold,
                               color: AppColors.primaryColor,
                             ),
                           ),
                         ),
+                        //
                         verticalSpace(12),
-
-                        // أنيميشن الوصف (Slide from bottom + Fade)
+                        //
+                        // Description Animation (Slide from bottom + Fade)
                         TweenAnimationBuilder<double>(
                           key: ValueKey("desc_$index$_currentIndex"),
                           duration: const Duration(milliseconds: 800),
@@ -121,14 +129,15 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
                             model.description,
                             style: TextStyle(
                               fontSize: 14.sp,
-                              color: Colors.grey.shade600,
+                              color: Colors.grey.shade700,
                               height: 1.6,
                             ),
                           ),
                         ),
+                        //
                         verticalSpace(30),
-
-                        // أنيميشن الزرار (Elastic Pop)
+                        //
+                        // Button Animation (Elastic Pop)
                         TweenAnimationBuilder<double>(
                           key: ValueKey("btn_$index$_currentIndex"),
                           duration: const Duration(milliseconds: 1000),
@@ -141,7 +150,7 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
                             return Transform.scale(scale: value, child: child);
                           },
                           child: Align(
-                            alignment: Alignment.centerLeft,
+                            alignment: .centerLeft,
                             child: SizedBox(
                               width: 130.w,
                               child: CustomButton(
@@ -149,13 +158,14 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
                                     ? "ابدأ الآن"
                                     : "التالي",
                                 onPressed: _nextPage,
-                                borderRadius: 20,
+                                borderRadius: 15,
                                 height: 45.h,
                                 elevation: 3,
                               ),
                             ),
                           ),
                         ),
+                        //
                       ],
                     ),
                   ),
@@ -164,18 +174,17 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
             ),
           ),
         ),
-
-        // النصف السفلي (أزرق مقطوع بزاوية - الصورة)
+        //
+        // Bottom Half
         Expanded(
           flex: 6,
           child: ClipPath(
             clipper: DiagonalClipper(),
             child: Container(
-              width: double.infinity,
+              width: .infinity,
               color: AppColors.primaryColor,
-              padding: EdgeInsets.only(top: 60.h, bottom: 20.h),
-
-              // أنيميشن الصورة (Elastic Zoom In)
+              padding: .only(top: 60.h, bottom: 20.h),
+              // Image Animation
               child: TweenAnimationBuilder<double>(
                 key: ValueKey("img_$index$_currentIndex"),
                 duration: const Duration(milliseconds: 1200),
@@ -184,50 +193,14 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
                 builder: (context, value, child) {
                   return Transform.scale(scale: value, child: child);
                 },
-                child: Image.asset(model.imagePath, fit: BoxFit.contain),
+                child: Image.asset(model.imagePath, fit: .contain),
               ),
             ),
           ),
         ),
+        //
       ],
     );
   }
-
-  Widget _buildVerticalIndicator() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        onBoardingData.length,
-        (index) => AnimatedContainer(
-          duration: const Duration(milliseconds: 400),
-          curve: Curves.easeOutBack, // المؤشر بيكبر بحركة ارتدادية
-          margin: EdgeInsets.symmetric(vertical: 4.h),
-          height: _currentIndex == index ? 35.h : 12.h,
-          width: 6.w,
-          decoration: BoxDecoration(
-            color: _currentIndex == index
-                ? AppColors.primaryColor
-                : Colors.grey.shade300,
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-        ),
-      ),
-    );
-  }
 }
-
-class DiagonalClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.moveTo(0, size.height * 0.15);
-    path.lineTo(size.width, 0);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
+// 235
