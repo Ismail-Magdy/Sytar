@@ -48,13 +48,13 @@ class _LoginBodyState extends State<LoginBody> {
                   children: [
                     //
                     Align(
-                      alignment: .centerLeft,
+                      alignment: .centerRight,
                       child: Padding(
-                        padding: .only(left: 16.w),
+                        padding: .only(right: 16.w),
                         child: GestureDetector(
                           onTap: () => context.pop(),
                           child: const Icon(
-                            Icons.arrow_forward_ios_rounded,
+                            Icons.arrow_back_ios_new_rounded,
                             color: Colors.white,
                           ),
                         ),
@@ -137,11 +137,14 @@ class _LoginBodyState extends State<LoginBody> {
                           prefixIcon: Icons.lock_outline_rounded,
                         ),
                         //
+                        verticalSpace(10),
+                        //
                         // Forgot Password
                         Align(
                           alignment: .centerLeft,
-                          child: TextButton(
-                            onPressed: () {},
+                          child: GestureDetector(
+                            onTap: () =>
+                                context.pushNamed(Routes.forgotPasswordScreen),
                             child: Text(
                               "نسيت كلمة المرور؟",
                               style: TextStyle(

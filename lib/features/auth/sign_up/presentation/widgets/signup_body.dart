@@ -51,13 +51,13 @@ class _SignupBodyState extends State<SignupBody> {
                   children: [
                     //
                     Align(
-                      alignment: .centerLeft,
+                      alignment: .centerRight,
                       child: Padding(
-                        padding: .only(left: 16.w),
+                        padding: .only(right: 16.w),
                         child: GestureDetector(
                           onTap: () => context.pop(),
                           child: const Icon(
-                            Icons.arrow_forward_ios_rounded,
+                            Icons.arrow_back_ios_new_rounded,
                             color: Colors.white,
                           ),
                         ),
