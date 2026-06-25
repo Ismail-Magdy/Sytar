@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sytar/core/routes/routes.dart';
 import 'package:sytar/core/widgets/unknown_route_screen.dart';
+import 'package:sytar/features/auth/forgot_password/presentation/screens/forgot_password_screen.dart';
 import 'package:sytar/features/auth/login/presentation/screens/login_screen.dart';
 import 'package:sytar/features/auth/sign_up/presentation/screens/signup_screen.dart';
 import 'package:sytar/features/auth/welcome/presentation/welcome_auth_screen.dart';
@@ -22,13 +23,17 @@ class AppRouter {
       case Routes.welcomeAuthScreen:
         return MaterialPageRoute(builder: (_) => const WelcomeAuthScreen());
 
-      /// login Screen
+      /// Login Screen
       case Routes.loginScreen:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
 
-      /// signup Screen
+      /// Signup Screen
       case Routes.signupScreen:
         return MaterialPageRoute(builder: (_) => const SignupScreen());
+
+      /// Forgot Password Screen
+      case Routes.forgotPasswordScreen:
+        return MaterialPageRoute(builder: (_) => const ForgotPasswordScreen());
 
       /// Default Case (Unknown Route)
       default:
