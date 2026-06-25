@@ -16,6 +16,6 @@ void main() async {
 
   await ScreenUtil.ensureScreenSize();
 
-  String initialRoute = Routes.onBoardingScreen;
+  String initialRoute = Routes.splashScreen;
   runApp(SytarApp(appRouter: AppRouter(), initialRoute: initialRoute));
 }
