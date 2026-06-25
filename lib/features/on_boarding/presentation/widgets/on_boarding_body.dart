@@ -34,7 +34,7 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
         curve: Curves.fastLinearToSlowEaseIn,
       );
     } else {
-      context.pushReplacementNamed(Routes.authScreen);
+      context.pushReplacementNamed(Routes.welcomeAuthScreen);
     }
   }
 
