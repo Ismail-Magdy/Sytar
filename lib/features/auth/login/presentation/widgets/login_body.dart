@@ -47,6 +47,20 @@ class _LoginBodyState extends State<LoginBody> {
                   mainAxisAlignment: .center,
                   children: [
                     //
+                    Align(
+                      alignment: .centerLeft,
+                      child: Padding(
+                        padding: .only(left: 16.w),
+                        child: GestureDetector(
+                          onTap: () => context.pop(),
+                          child: const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    //
                     SvgPicture.asset(
                       "assets/svgs/logo.svg",
                       height: 80.h,
