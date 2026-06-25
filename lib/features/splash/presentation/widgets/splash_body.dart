@@ -2,7 +2,7 @@ import "dart:async";
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:flutter_svg/flutter_svg.dart";
-import "package:sytar/core/helpers/extensions.dart"; // عشان الـ pushReplacementNamed
+import "package:sytar/core/helpers/extensions.dart";
 import "package:sytar/core/routes/routes.dart";
 
 class SplashBody extends StatefulWidget {
@@ -27,14 +27,13 @@ class _SplashBodyState extends State<SplashBody>
     _navigateToNextScreen();
   }
 
+  ///
   void _initAnimations() {
-    // المتحكم الرئيسي في الوقت (2.5 ثانية للأنيميشن كله)
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2500),
     );
 
-    // 1. حركة الخطوط: بتكبر من 0 لـ 1 في أول 60% من الوقت
     _linesScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _animationController,
@@ -42,7 +41,6 @@ class _SplashBodyState extends State<SplashBody>
       ),
     );
 
-    // 2. دوران الخطوط: بتلف لفة كاملة وتكمل بنعومة
     _linesRotationAnimation = Tween<double>(begin: 0.0, end: 2.0).animate(
       CurvedAnimation(
         parent: _animationController,
@@ -50,7 +48,6 @@ class _SplashBodyState extends State<SplashBody>
       ),
     );
 
-    // 3. ظهور اللوجو: بيبدأ يظهر بعد ما الخطوط تاخد شكلها (من 50% لـ 100% من الوقت)
     _logoOpacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _animationController,
@@ -58,7 +55,6 @@ class _SplashBodyState extends State<SplashBody>
       ),
     );
 
-    // 4. حجم اللوجو: بيعمل زووم بسيط وهو بيظهر
     _logoScaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
       CurvedAnimation(
         parent: _animationController,
@@ -66,14 +62,12 @@ class _SplashBodyState extends State<SplashBody>
       ),
     );
 
-    // تشغيل الأنيميشن
     _animationController.forward();
   }
 
+  ///
   void _navigateToNextScreen() {
-    // هنستنى 3.5 ثانية (عشان الأنيميشن ياخد وقته واليوزر يشوفه) وبعدين ننقل
     Timer(const Duration(milliseconds: 3500), () {
-      // مؤقتاً هنروح للـ OnBoarding، قدام هنحط هنا لوجيك الـ SharedPrefs
       context.pushReplacementNamed(Routes.onBoardingScreen);
     });
   }
@@ -87,12 +81,12 @@ class _SplashBodyState extends State<SplashBody>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
+      width: .infinity,
+      height: .infinity,
       child: Stack(
-        alignment: Alignment.center,
+        alignment: .center,
         children: [
-          // أنيميشن الخطوط (لف وزووم)
+          // Lines Animations
           AnimatedBuilder(
             animation: _animationController,
             builder: (context, child) {
@@ -109,8 +103,8 @@ class _SplashBodyState extends State<SplashBody>
               );
             },
           ),
-
-          // أنيميشن اللوجو (Fade و Zoom)
+          //
+          // Logo Animations
           AnimatedBuilder(
             animation: _animationController,
             builder: (context, child) {
@@ -127,6 +121,7 @@ class _SplashBodyState extends State<SplashBody>
               );
             },
           ),
+          //
         ],
       ),
     );
