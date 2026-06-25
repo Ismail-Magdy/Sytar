@@ -25,7 +25,7 @@ class SytarApp extends StatelessWidget {
 
         //
         child: MaterialApp(
-          theme: ThemeData(useMaterial3: true, fontFamily: "Poppins"),
+          theme: ThemeData(useMaterial3: true, fontFamily: "Tajawal"),
           //
           initialRoute: initialRoute,
           onGenerateRoute: appRouter.generateRoute,
