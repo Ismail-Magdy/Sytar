@@ -182,7 +182,7 @@ class _LoginBodyState extends State<LoginBody> {
                               showFeedbackDialog(
                                 context,
                                 icon: Icons.check_circle_outline_rounded,
-                                color: Colors.green,
+                                color: AppColors.success,
                                 title: "تم بنجاح",
                                 message: "مرحباً بك مجدداً في سيطر",
                                 onFinish: () => context.pushReplacementNamed(

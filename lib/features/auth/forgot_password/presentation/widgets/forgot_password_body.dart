@@ -105,7 +105,7 @@ class _ForgotPasswordBodyState extends State<ForgotPasswordBody> {
                   showFeedbackDialog(
                     context,
                     icon: Icons.mark_email_read_rounded,
-                    color: Colors.green,
+                    color: AppColors.success,
                     title: "تم الإرسال",
                     message:
                         "تم إرسال رابط إعادة تعيين كلمة المرور بنجاح. يرجى مراجعة بريدك الإلكتروني",
