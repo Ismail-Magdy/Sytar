@@ -185,10 +185,19 @@ class _LoginBodyState extends State<LoginBody> {
                                 color: AppColors.success,
                                 title: "تم بنجاح",
                                 message: "مرحباً بك مجدداً في سيطر",
-                                onFinish: () => context.pushReplacementNamed(
-                                  Routes.setupProfileScreen,
-                                ),
+                                onFinish: () {
+                                  if (state.isProfileSetupCompleted) {
+                                    context.pushReplacementNamed(
+                                      Routes.rootScreen,
+                                    );
+                                  } else {
+                                    context.pushReplacementNamed(
+                                      Routes.setupProfileScreen,
+                                    );
+                                  }
+                                },
                               );
+                              //
                             } else if (state is LoginFailure) {
                               //
                               showFeedbackDialog(
@@ -198,6 +207,7 @@ class _LoginBodyState extends State<LoginBody> {
                                 title: "عفواً",
                                 message: state.errMessage,
                               );
+                              //
                             }
                           },
                           builder: (context, state) {

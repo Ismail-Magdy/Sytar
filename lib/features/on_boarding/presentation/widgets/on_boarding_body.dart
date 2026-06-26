@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:sytar/core/helpers/extensions.dart";
+import "package:sytar/core/helpers/shared_prefrences_helper.dart";
 import "package:sytar/core/helpers/spacing.dart";
 import "package:sytar/core/routes/routes.dart";
 import "package:sytar/core/themes/app_colors.dart";
@@ -26,7 +27,8 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
     super.dispose();
   }
 
-  void _nextPage() {
+  //
+  void _nextPage() async {
     if (_currentIndex < onBoardingData.length - 1) {
       _pageController.animateToPage(
         _currentIndex + 1,
@@ -34,7 +36,10 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
         curve: Curves.fastLinearToSlowEaseIn,
       );
     } else {
-      context.pushReplacementNamed(Routes.welcomeAuthScreen);
+      await SharedPrefHelper.setData('isOnboardingViewed', true);
+      if (mounted) {
+        context.pushReplacementNamed(Routes.welcomeAuthScreen);
+      }
     }
   }
 
@@ -202,4 +207,3 @@ class _OnBoardingBodyState extends State<OnBoardingBody> {
     );
   }
 }
-// 235

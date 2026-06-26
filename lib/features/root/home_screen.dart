@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sytar/core/themes/app_colors.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -7,7 +6,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: Colors.pinkAccent,
       body: Center(
         child: Column(
           crossAxisAlignment: .center,
