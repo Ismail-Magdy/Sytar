@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sytar/core/di/dependency_injection.dart';
 import 'package:sytar/core/routes/routes.dart';
 import 'package:sytar/core/widgets/unknown_route_screen.dart';
+import 'package:sytar/features/auth/forgot_password/manager/forgot_password_bloc.dart';
 import 'package:sytar/features/auth/forgot_password/presentation/screens/forgot_password_screen.dart';
 import 'package:sytar/features/auth/login/manager/login_bloc.dart';
 import 'package:sytar/features/auth/login/presentation/screens/login_screen.dart';
@@ -48,7 +49,12 @@ class AppRouter {
 
       /// Forgot Password Screen
       case Routes.forgotPasswordScreen:
-        return MaterialPageRoute(builder: (_) => const ForgotPasswordScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<ForgotPasswordBloc>(),
+            child: const ForgotPasswordScreen(),
+          ),
+        );
 
       /// Root Screen
       case Routes.rootScreen:
