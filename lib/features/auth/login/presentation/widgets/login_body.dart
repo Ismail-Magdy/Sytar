@@ -8,6 +8,7 @@ import "package:sytar/core/helpers/spacing.dart";
 import "package:sytar/core/routes/routes.dart";
 import "package:sytar/core/themes/app_colors.dart";
 import "package:sytar/core/widgets/custom_button.dart";
+import "package:sytar/core/widgets/custom_feedback_dialog.dart";
 import "package:sytar/core/widgets/custom_text_field.dart";
 import "package:sytar/features/auth/login/manager/login_bloc.dart";
 import "package:sytar/features/auth/login/manager/login_event.dart";
@@ -177,23 +178,25 @@ class _LoginBodyState extends State<LoginBody> {
                           listener: (context, state) {
                             //
                             if (state is LoginSuccess) {
-                              // TODO: CHANGE SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("تم تسجيل الدخول بنجاح"),
-                                  backgroundColor: Colors.green,
+                              //
+                              showFeedbackDialog(
+                                context,
+                                icon: Icons.check_circle_outline_rounded,
+                                color: Colors.green,
+                                title: "تم بنجاح",
+                                message: "مرحباً بك مجدداً في سيطر",
+                                onFinish: () => context.pushReplacementNamed(
+                                  Routes.rootScreen,
                                 ),
                               );
-
-                              context.pushReplacementNamed(Routes.rootScreen);
                             } else if (state is LoginFailure) {
                               //
-                              // TODO: CHANGE SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(state.errMessage),
-                                  backgroundColor: Colors.red,
-                                ),
+                              showFeedbackDialog(
+                                context,
+                                icon: Icons.error_outline_rounded,
+                                color: Colors.red,
+                                title: "عفواً",
+                                message: state.errMessage,
                               );
                             }
                           },
