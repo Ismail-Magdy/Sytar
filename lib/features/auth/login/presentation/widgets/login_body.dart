@@ -186,7 +186,7 @@ class _LoginBodyState extends State<LoginBody> {
                                 title: "تم بنجاح",
                                 message: "مرحباً بك مجدداً في سيطر",
                                 onFinish: () => context.pushReplacementNamed(
-                                  Routes.rootScreen,
+                                  Routes.setupProfileScreen,
                                 ),
                               );
                             } else if (state is LoginFailure) {

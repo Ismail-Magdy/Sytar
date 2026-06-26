@@ -12,6 +12,8 @@ import 'package:sytar/features/auth/sign_up/presentation/screens/signup_screen.d
 import 'package:sytar/features/auth/welcome/presentation/welcome_auth_screen.dart';
 import 'package:sytar/features/on_boarding/presentation/screens/on_boarding_screen.dart';
 import 'package:sytar/features/root/screens/root_screen.dart';
+import 'package:sytar/features/setup_profile/manager/setup_profile_bloc.dart';
+import 'package:sytar/features/setup_profile/presentation/screens/setup_profile_screen.dart';
 import 'package:sytar/features/splash/presentation/screens/splash_screen.dart';
 
 class AppRouter {
@@ -53,6 +55,15 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => getIt<ForgotPasswordBloc>(),
             child: const ForgotPasswordScreen(),
+          ),
+        );
+
+      /// setup Profile Screen
+      case Routes.setupProfileScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<SetupProfileBloc>(),
+            child: const SetupProfileScreen(),
           ),
         );
 
