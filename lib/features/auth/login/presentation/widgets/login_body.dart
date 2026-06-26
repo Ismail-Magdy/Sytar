@@ -1,4 +1,6 @@
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "package:sytar/core/helpers/extensions.dart";
@@ -7,6 +9,9 @@ import "package:sytar/core/routes/routes.dart";
 import "package:sytar/core/themes/app_colors.dart";
 import "package:sytar/core/widgets/custom_button.dart";
 import "package:sytar/core/widgets/custom_text_field.dart";
+import "package:sytar/features/auth/login/manager/login_bloc.dart";
+import "package:sytar/features/auth/login/manager/login_event.dart";
+import "package:sytar/features/auth/login/manager/login_state.dart";
 import "package:sytar/features/auth/welcome/widgets/custom_divider.dart";
 import "package:sytar/features/auth/welcome/widgets/social_login_button.dart";
 
@@ -48,7 +53,7 @@ class _LoginBodyState extends State<LoginBody> {
                   children: [
                     //
                     Align(
-                      alignment: .centerRight,
+                      alignment: Alignment.centerRight,
                       child: Padding(
                         padding: .only(right: 16.w),
                         child: GestureDetector(
@@ -135,6 +140,15 @@ class _LoginBodyState extends State<LoginBody> {
                           hintText: "كلمة المرور",
                           fieldType: .password,
                           prefixIcon: Icons.lock_outline_rounded,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return "برجاء إدخال كلمة المرور";
+                            }
+                            if (value.trim().length < 8) {
+                              return "كلمة المرور يجب ألا تقل عن 8 أحرف";
+                            }
+                            return null; // كده كله تمام
+                          },
                         ),
                         //
                         verticalSpace(10),
@@ -159,18 +173,68 @@ class _LoginBodyState extends State<LoginBody> {
                         verticalSpace(16),
                         //
                         // Login Button
-                        CustomButton(
-                          text: "تسجيل الدخول",
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              // TODO: هنهندل اللوجيك هنا بعدين
+                        BlocConsumer<LoginBloc, LoginState>(
+                          listener: (context, state) {
+                            //
+                            if (state is LoginSuccess) {
+                              // TODO: CHANGE SnackBar
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("تم تسجيل الدخول بنجاح"),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+
+                              context.pushReplacementNamed(Routes.rootScreen);
+                            } else if (state is LoginFailure) {
+                              //
+                              // TODO: CHANGE SnackBar
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(state.errMessage),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
                             }
+                          },
+                          builder: (context, state) {
+                            if (state is LoginLoading) {
+                              return Container(
+                                height: 50.h,
+                                width: .infinity,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryColor.withValues(
+                                    alpha: 0.7,
+                                  ),
+                                  borderRadius: .circular(14.r),
+                                ),
+                                child: const Center(
+                                  child: CupertinoActivityIndicator(
+                                    color: Colors.white,
+                                    radius: 14,
+                                  ),
+                                ),
+                              );
+                            }
+                            return CustomButton(
+                              text: "تسجيل الدخول",
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  context.read<LoginBloc>().add(
+                                    LoginRequested(
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                    ),
+                                  );
+                                }
+                              },
+                            );
                           },
                         ),
                         //
                         verticalSpace(32),
-                        // Or
-                        CustomDivider(),
+                        //
+                        const CustomDivider(),
                         //
                         verticalSpace(32),
                         //
@@ -192,6 +256,7 @@ class _LoginBodyState extends State<LoginBody> {
                         verticalSpace(30),
                         //
                         const Spacer(),
+                        //
                         // زرار إنشاء حساب جديد
                         GestureDetector(
                           onTap: () => context.pushNamed(Routes.signupScreen),
@@ -212,9 +277,10 @@ class _LoginBodyState extends State<LoginBody> {
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: .bold,
                                 ),
                               ),
+                              //
                             ],
                           ),
                         ),

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sytar/core/di/dependency_injection.dart';
 import 'package:sytar/core/routes/routes.dart';
 import 'package:sytar/core/widgets/unknown_route_screen.dart';
 import 'package:sytar/features/auth/forgot_password/presentation/screens/forgot_password_screen.dart';
+import 'package:sytar/features/auth/login/manager/login_bloc.dart';
 import 'package:sytar/features/auth/login/presentation/screens/login_screen.dart';
+import 'package:sytar/features/auth/sign_up/manager/signup_bloc.dart';
 import 'package:sytar/features/auth/sign_up/presentation/screens/signup_screen.dart';
 import 'package:sytar/features/auth/welcome/presentation/welcome_auth_screen.dart';
 import 'package:sytar/features/on_boarding/presentation/screens/on_boarding_screen.dart';
+import 'package:sytar/features/root/screens/root_screen.dart';
 import 'package:sytar/features/splash/presentation/screens/splash_screen.dart';
 
 class AppRouter {
@@ -25,15 +30,29 @@ class AppRouter {
 
       /// Login Screen
       case Routes.loginScreen:
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<LoginBloc>(),
+            child: const LoginScreen(),
+          ),
+        );
 
       /// Signup Screen
       case Routes.signupScreen:
-        return MaterialPageRoute(builder: (_) => const SignupScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<SignupBloc>(),
+            child: const SignupScreen(),
+          ),
+        );
 
       /// Forgot Password Screen
       case Routes.forgotPasswordScreen:
         return MaterialPageRoute(builder: (_) => const ForgotPasswordScreen());
+
+      /// Root Screen
+      case Routes.rootScreen:
+        return MaterialPageRoute(builder: (_) => const RootScreen());
 
       /// Default Case (Unknown Route)
       default:
