@@ -1,4 +1,6 @@
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "package:sytar/core/helpers/extensions.dart";
@@ -6,6 +8,10 @@ import "package:sytar/core/helpers/spacing.dart";
 import "package:sytar/core/themes/app_colors.dart";
 import "package:sytar/core/widgets/custom_button.dart";
 import "package:sytar/core/widgets/custom_text_field.dart";
+import "package:sytar/features/auth/sign_up/manager/signup_bloc.dart";
+import "package:sytar/features/auth/sign_up/manager/signup_event.dart";
+import "package:sytar/features/auth/sign_up/manager/signup_state.dart";
+import "package:sytar/features/auth/sign_up/presentation/widgets/custom_verification_dialog.dart";
 import "package:sytar/features/auth/welcome/widgets/custom_divider.dart";
 import "package:sytar/features/auth/welcome/widgets/social_login_button.dart";
 
@@ -19,7 +25,6 @@ class SignupBody extends StatefulWidget {
 class _SignupBodyState extends State<SignupBody> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -27,9 +32,30 @@ class _SignupBodyState extends State<SignupBody> {
   void dispose() {
     _userNameController.dispose();
     _emailController.dispose();
-    _phoneController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  /// Email Verification Dialog
+  void _showVerificationDialog(BuildContext context) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierLabel: "Verification",
+      transitionDuration: const Duration(milliseconds: 400),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return CustomVerificationDialog();
+      },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return Transform.scale(
+          scale: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOutBack,
+          ).value,
+          child: FadeTransition(opacity: animation, child: child),
+        );
+      },
+    );
   }
 
   @override
@@ -53,7 +79,7 @@ class _SignupBodyState extends State<SignupBody> {
                     Align(
                       alignment: .centerRight,
                       child: Padding(
-                        padding: .only(right: 16.w),
+                        padding: EdgeInsets.only(right: 16.w),
                         child: GestureDetector(
                           onTap: () => context.pop(),
                           child: const Icon(
@@ -156,22 +182,66 @@ class _SignupBodyState extends State<SignupBody> {
                         //
                         verticalSpace(32),
                         //
-                        // زرار إنشاء حساب
-                        CustomButton(
-                          text: "إنشاء حساب",
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              //TODO:  هنهندل اللوجيك هنا في مرحلة الـ Bloc/Cubit
+                        // Create Account Button
+                        BlocConsumer<SignupBloc, SignupState>(
+                          listener: (context, state) {
+                            if (state is SignupSuccess) {
+                              _showVerificationDialog(context);
+                            } else if (state is SignupFailure) {
+                              // TODO : CHANGE SnackBar
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(state.errMessage),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
                             }
+                          },
+                          builder: (context, state) {
+                            if (state is SignupLoading) {
+                              //
+                              return Container(
+                                height: 50.h,
+                                width: .infinity,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryColor.withValues(
+                                    alpha: 0.7,
+                                  ),
+                                  borderRadius: .circular(14.r),
+                                ),
+                                child: const Center(
+                                  child: CupertinoActivityIndicator(
+                                    color: Colors.white,
+                                    radius: 14,
+                                  ),
+                                ),
+                              );
+                              //
+                            }
+                            //
+                            return CustomButton(
+                              text: "إنشاء حساب",
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  context.read<SignupBloc>().add(
+                                    SignupRequested(
+                                      name: _userNameController.text,
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                            //
                           },
                         ),
                         //
                         verticalSpace(32),
-                        // Or
-                        CustomDivider(),
+                        //
+                        const CustomDivider(),
                         //
                         verticalSpace(32),
-                        //
                         //
                         // Social Buttons
                         SocialLoginButton(
@@ -198,6 +268,7 @@ class _SignupBodyState extends State<SignupBody> {
                           child: Row(
                             mainAxisAlignment: .center,
                             children: [
+                              //
                               Text(
                                 "لديك حساب بالفعل؟",
                                 style: TextStyle(
@@ -205,14 +276,16 @@ class _SignupBodyState extends State<SignupBody> {
                                   color: Colors.grey.shade600,
                                 ),
                               ),
+                              //
                               Text(
                                 " تسجيل الدخول",
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: .bold,
                                 ),
                               ),
+                              //
                             ],
                           ),
                         ),
@@ -222,7 +295,6 @@ class _SignupBodyState extends State<SignupBody> {
                   ),
                 ),
               ),
-              //
             ],
           ),
         ),
