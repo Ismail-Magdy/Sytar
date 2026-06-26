@@ -58,7 +58,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # تم ضبط المسافات هنا لتكون تابعة لـ flutter مباشرة
+  #
   assets:
     - assets/images/
     - assets/svgs/

@@ -7,6 +7,7 @@ import "package:sytar/core/helpers/extensions.dart";
 import "package:sytar/core/helpers/spacing.dart";
 import "package:sytar/core/themes/app_colors.dart";
 import "package:sytar/core/widgets/custom_button.dart";
+import "package:sytar/core/widgets/custom_feedback_dialog.dart";
 import "package:sytar/core/widgets/custom_text_field.dart";
 import "package:sytar/features/auth/sign_up/manager/signup_bloc.dart";
 import "package:sytar/features/auth/sign_up/manager/signup_event.dart";
@@ -188,13 +189,15 @@ class _SignupBodyState extends State<SignupBody> {
                             if (state is SignupSuccess) {
                               _showVerificationDialog(context);
                             } else if (state is SignupFailure) {
-                              // TODO : CHANGE SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(state.errMessage),
-                                  backgroundColor: Colors.red,
-                                ),
+                              //
+                              showFeedbackDialog(
+                                context,
+                                icon: Icons.error_outline_rounded,
+                                color: Colors.red,
+                                title: "عفواً",
+                                message: state.errMessage,
                               );
+                              //
                             }
                           },
                           builder: (context, state) {
