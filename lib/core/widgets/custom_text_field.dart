@@ -14,6 +14,7 @@ enum FieldType {
   email,
   password,
   normal,
+  number, // التعديل هنا: ضفنا نوع الأرقام
 }
 
 class CustomTextFormField extends StatefulWidget {
@@ -136,6 +137,12 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         }
         break;
 
+      case .number: // التعديل هنا: فالديشن افتراضي يمنع الحقل يتبعت فاضي
+        if (trimmedValue.isEmpty) {
+          return "برجاء إدخال قيمة";
+        }
+        break;
+
       case .normal:
         return null;
     }
@@ -155,6 +162,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
       case .email:
         return .emailAddress;
+
+      case .number: // التعديل هنا: فتح كيبورد الأرقام مع دعم العلامة العشرية
+        return const TextInputType.numberWithOptions(decimal: true);
 
       default:
         return .text;
