@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "package:sytar/core/helpers/extensions.dart";
@@ -6,6 +7,8 @@ import "package:sytar/core/helpers/spacing.dart";
 import "package:sytar/core/routes/routes.dart";
 import "package:sytar/core/themes/app_colors.dart";
 import "package:sytar/core/widgets/custom_button.dart";
+import "package:sytar/features/auth/social_auth/manager/ocial_auth_bloc.dart";
+import "package:sytar/features/auth/social_auth/manager/social_auth_event.dart";
 import "package:sytar/features/auth/welcome/widgets/custom_divider.dart";
 import "package:sytar/features/auth/welcome/widgets/social_login_button.dart";
 
@@ -83,8 +86,9 @@ class WelcomeAuthBody extends StatelessWidget {
           // Google
           SocialLoginButton(
             text: "تسجيل الدخول باستخدام جوجل",
-            iconPath: "assets/svgs/google.svg", // محتاج تنزل أيقونة جوجل svg
-            onPressed: () {},
+            iconPath: "assets/svgs/google.svg",
+            onPressed: () =>
+                context.read<SocialAuthBloc>().add(GoogleSignInRequested()),
           ),
           //
           verticalSpace(16),
@@ -92,9 +96,9 @@ class WelcomeAuthBody extends StatelessWidget {
           // Facebook
           SocialLoginButton(
             text: "تسجيل الدخول باستخدام فيسبوك",
-            iconPath:
-                "assets/svgs/facebook.svg", // محتاج تنزل أيقونة فيسبوك svg
-            onPressed: () {},
+            iconPath: "assets/svgs/facebook.svg",
+            onPressed: () =>
+                context.read<SocialAuthBloc>().add(FacebookSignInRequested()),
           ),
           //
           const Spacer(flex: 1),

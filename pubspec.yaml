@@ -40,10 +40,12 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   flutter_dotenv: ^6.0.1
 
-  # FireBase
+  # FireBase & Social Media
   firebase_core: ^4.11.0
   firebase_auth: ^6.5.4
   cloud_firestore: ^6.6.0
+  flutter_facebook_auth: ^7.1.5
+  google_sign_in: ^6.3.0
 
   # Splash Screen & App Icon
   flutter_native_splash: ^2.4.7

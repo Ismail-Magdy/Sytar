@@ -13,6 +13,8 @@ import "package:sytar/core/widgets/custom_text_field.dart";
 import "package:sytar/features/auth/login/manager/login_bloc.dart";
 import "package:sytar/features/auth/login/manager/login_event.dart";
 import "package:sytar/features/auth/login/manager/login_state.dart";
+import "package:sytar/features/auth/social_auth/manager/ocial_auth_bloc.dart";
+import "package:sytar/features/auth/social_auth/manager/social_auth_event.dart";
 import "package:sytar/features/auth/welcome/widgets/custom_divider.dart";
 import "package:sytar/features/auth/welcome/widgets/social_login_button.dart";
 
@@ -255,7 +257,9 @@ class _LoginBodyState extends State<LoginBody> {
                         SocialLoginButton(
                           text: "تسجيل الدخول بإستخدام جوجل",
                           iconPath: "assets/svgs/google.svg",
-                          onPressed: () {},
+                          onPressed: () => context.read<SocialAuthBloc>().add(
+                            GoogleSignInRequested(),
+                          ),
                         ),
                         //
                         verticalSpace(20),
@@ -263,7 +267,9 @@ class _LoginBodyState extends State<LoginBody> {
                         SocialLoginButton(
                           text: "تسجيل الدخول بإستخدام فيسبوك",
                           iconPath: "assets/svgs/facebook.svg",
-                          onPressed: () {},
+                          onPressed: () => context.read<SocialAuthBloc>().add(
+                            FacebookSignInRequested(),
+                          ),
                         ),
                         //
                         verticalSpace(30),

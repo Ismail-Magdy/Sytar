@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>565768713387-ioa0ds00dve2tj5p57ljjtgqm2p7e5l3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.565768713387-ioa0ds00dve2tj5p57ljjtgqm2p7e5l3</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>565768713387-anfetnj7ntdis8tli3ilskbm1crlrecb.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC8SG-1HXB8lilJRoiM6RVL4a-MsHjocAI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>565768713387</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.sytar</string>
+	<key>PROJECT_ID</key>
+	<string>sytar-c298f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sytar-c298f.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:565768713387:ios:6a1df7381fad67c52a33ee</string>
+</dict>
+</plist>
