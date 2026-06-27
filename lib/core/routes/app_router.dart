@@ -9,6 +9,7 @@ import 'package:sytar/features/auth/login/manager/login_bloc.dart';
 import 'package:sytar/features/auth/login/presentation/screens/login_screen.dart';
 import 'package:sytar/features/auth/sign_up/manager/signup_bloc.dart';
 import 'package:sytar/features/auth/sign_up/presentation/screens/signup_screen.dart';
+import 'package:sytar/features/auth/social_auth/manager/ocial_auth_bloc.dart';
 import 'package:sytar/features/auth/welcome/presentation/welcome_auth_screen.dart';
 import 'package:sytar/features/on_boarding/presentation/screens/on_boarding_screen.dart';
 import 'package:sytar/features/root/screens/root_screen.dart';
@@ -29,7 +30,12 @@ class AppRouter {
 
       /// Welcome AuthScreen
       case Routes.welcomeAuthScreen:
-        return MaterialPageRoute(builder: (_) => const WelcomeAuthScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<SocialAuthBloc>(),
+            child: const WelcomeAuthScreen(),
+          ),
+        );
 
       /// Login Screen
       case Routes.loginScreen:

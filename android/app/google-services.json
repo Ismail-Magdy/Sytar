@@ -12,7 +12,20 @@
           "package_name": "com.example.sytar"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "565768713387-anfetnj7ntdis8tli3ilskbm1crlrecb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sytar",
+            "certificate_hash": "636f4b33cef942549134a5f7b21b3e01e5b98d04"
+          }
+        },
+        {
+          "client_id": "565768713387-v249slspvevb2qbd2rr0p5ojqdjmqtb7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAuq2KlzGTd5Ynml47T6GLnKbYlhGOwNao"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "565768713387-v249slspvevb2qbd2rr0p5ojqdjmqtb7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "565768713387-ioa0ds00dve2tj5p57ljjtgqm2p7e5l3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sytar"
+              }
+            }
+          ]
         }
       }
     }

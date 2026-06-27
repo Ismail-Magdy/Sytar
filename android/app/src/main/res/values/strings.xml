@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- اسم التطبيق -->
+    <string name="app_name">Sytar</string>
+
+    <!-- إعدادات فيسبوك -->
+    <string name="facebook_app_id">1462027439300733</string>
+    <string name="facebook_client_token">97d3fa44c1d357f45ba3d7ea98d91441</string>
+    <string name="facebook_login_protocol_scheme">fb1462027439300733</string>
+</resources>

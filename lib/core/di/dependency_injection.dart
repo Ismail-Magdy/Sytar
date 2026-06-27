@@ -8,6 +8,8 @@ import 'package:sytar/features/auth/login/data/repos/login_repo.dart';
 import 'package:sytar/features/auth/login/manager/login_bloc.dart';
 import 'package:sytar/features/auth/sign_up/data/repos/signup_repo.dart';
 import 'package:sytar/features/auth/sign_up/manager/signup_bloc.dart';
+import 'package:sytar/features/auth/social_auth/data/repos/social_auth_repo.dart';
+import 'package:sytar/features/auth/social_auth/manager/ocial_auth_bloc.dart';
 import 'package:sytar/features/setup_profile/data/repos/setup_profile_repo.dart';
 import 'package:sytar/features/setup_profile/manager/setup_profile_bloc.dart';
 
@@ -36,6 +38,12 @@ Future<void> initGetIt() async {
   getIt.registerLazySingleton<ForgotPasswordRepo>(() => ForgotPasswordRepo());
   getIt.registerFactory<ForgotPasswordBloc>(
     () => ForgotPasswordBloc(getIt<ForgotPasswordRepo>()),
+  );
+
+  // Social Auth
+  getIt.registerLazySingleton<SocialAuthRepo>(() => SocialAuthRepo());
+  getIt.registerFactory<SocialAuthBloc>(
+    () => SocialAuthBloc(getIt<SocialAuthRepo>()),
   );
 
   /// Setup Profile
