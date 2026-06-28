@@ -40,8 +40,11 @@ class AppRouter {
       /// Login Screen
       case Routes.loginScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<LoginBloc>(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => getIt<LoginBloc>()),
+              BlocProvider(create: (context) => getIt<SocialAuthBloc>()),
+            ],
             child: const LoginScreen(),
           ),
         );
@@ -49,8 +52,11 @@ class AppRouter {
       /// Signup Screen
       case Routes.signupScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<SignupBloc>(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => getIt<SignupBloc>()),
+              BlocProvider(create: (context) => getIt<SocialAuthBloc>()),
+            ],
             child: const SignupScreen(),
           ),
         );

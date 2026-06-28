@@ -10,22 +10,25 @@ import 'package:sytar/firebase_options.dart';
 import 'package:sytar/sytar_app.dart';
 
 void main() async {
+  //
   WidgetsFlutterBinding.ensureInitialized();
-
+  //
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  //
   await initGetIt();
-
+  //
   await ScreenUtil.ensureScreenSize();
-
+  //
   bool isOnboardingViewed = await SharedPrefHelper.getBool(
     "isOnboardingViewed",
   );
+  //
   bool isProfileSetupCompleted = await SharedPrefHelper.getBool(
     "isProfileSetupCompleted",
   );
+  //
   bool isLoggedIn = FirebaseAuth.instance.currentUser != null;
-
+  //
   String initialRoute;
 
   //
