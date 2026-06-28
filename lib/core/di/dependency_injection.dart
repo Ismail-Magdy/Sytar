@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sytar/core/network/network_cubit.dart';
 import 'package:sytar/features/auth/forgot_password/data/repos/forgot_password_repo.dart';
 import 'package:sytar/features/auth/forgot_password/manager/forgot_password_bloc.dart';
 import 'package:sytar/features/auth/login/data/repos/login_repo.dart';
@@ -25,6 +26,9 @@ Future<void> initGetIt() async {
   getIt.registerLazySingleton<FirebaseFirestore>(
     () => FirebaseFirestore.instance,
   );
+
+  /// Offline Mode
+  getIt.registerLazySingleton<NetworkCubit>(() => NetworkCubit());
 
   /// Signup
   getIt.registerLazySingleton<SignupRepo>(() => SignupRepo());
