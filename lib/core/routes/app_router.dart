@@ -14,6 +14,8 @@ import 'package:sytar/features/auth/sign_up/manager/signup_bloc.dart';
 import 'package:sytar/features/auth/sign_up/presentation/screens/signup_screen.dart';
 import 'package:sytar/features/auth/social_auth/manager/ocial_auth_bloc.dart';
 import 'package:sytar/features/auth/welcome/presentation/welcome_auth_screen.dart';
+import 'package:sytar/features/home/manager/home_cubit.dart';
+import 'package:sytar/features/home/presentation/screens/home_screen.dart';
 import 'package:sytar/features/on_boarding/presentation/screens/on_boarding_screen.dart';
 import 'package:sytar/features/root/screens/root_screen.dart';
 import 'package:sytar/features/setup_profile/manager/setup_profile_bloc.dart';
@@ -111,7 +113,23 @@ class AppRouter {
       /// Root Screen
       case Routes.rootScreen:
         return MaterialPageRoute(
-          builder: (_) => _withNetwork(const RootScreen()),
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<HomeCubit>()..getDashboardData(),
+              child: const RootScreen(),
+            ),
+          ),
+        );
+
+      /// Home Screen
+      case Routes.homeScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<HomeCubit>()..getDashboardData(),
+              child: const HomeScreen(),
+            ),
+          ),
         );
 
       /// Default Case (Unknown Route)
