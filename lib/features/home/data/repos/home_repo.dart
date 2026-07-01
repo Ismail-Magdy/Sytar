@@ -24,6 +24,7 @@ class HomeRepo {
           .doc(userId)
           .collection("tasks")
           .where("status", isNotEqualTo: "completed")
+          .orderBy('status')
           .orderBy("deadline")
           .limit(5)
           .get();
