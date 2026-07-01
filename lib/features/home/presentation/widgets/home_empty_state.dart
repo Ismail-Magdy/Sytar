@@ -12,8 +12,8 @@ class HomeEmptyState extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: .center,
+        crossAxisAlignment: .stretch,
         children: [
           // Greeting
           Text(
