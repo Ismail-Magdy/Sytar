@@ -8,4 +8,6 @@ class Routes {
   //
   static const String setupProfileScreen = "/setupProfileScreen";
   static const String rootScreen = "/rootScreen";
+  //
+  static const String homeScreen = "/homeScreen";
 }

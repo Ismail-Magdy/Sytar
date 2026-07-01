@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sytar/features/home/presentation/screens/home_screen.dart';
 import 'package:sytar/features/root/gpa_screen.dart';
-import 'package:sytar/features/root/home_screen.dart';
 import 'package:sytar/features/root/profile_screen.dart';
 import 'package:sytar/features/root/subjects_screen.dart';
 import 'package:sytar/features/root/tasks_screen.dart';

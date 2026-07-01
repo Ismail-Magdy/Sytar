@@ -11,6 +11,8 @@ import 'package:sytar/features/auth/sign_up/data/repos/signup_repo.dart';
 import 'package:sytar/features/auth/sign_up/manager/signup_bloc.dart';
 import 'package:sytar/features/auth/social_auth/data/repos/social_auth_repo.dart';
 import 'package:sytar/features/auth/social_auth/manager/ocial_auth_bloc.dart';
+import 'package:sytar/features/home/data/repos/home_repo.dart';
+import 'package:sytar/features/home/manager/home_cubit.dart';
 import 'package:sytar/features/setup_profile/data/repos/setup_profile_repo.dart';
 import 'package:sytar/features/setup_profile/manager/setup_profile_bloc.dart';
 
@@ -55,4 +57,11 @@ Future<void> initGetIt() async {
   getIt.registerFactory<SetupProfileBloc>(
     () => SetupProfileBloc(getIt<SetupProfileRepo>()),
   );
+
+  /// Home
+  getIt.registerLazySingleton<HomeRepo>(
+    () => HomeRepo(FirebaseFirestore.instance, FirebaseAuth.instance),
+  );
+
+  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
 }
