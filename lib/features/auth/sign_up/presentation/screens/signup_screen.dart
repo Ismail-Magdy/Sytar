@@ -28,8 +28,9 @@ class SignupScreen extends StatelessWidget {
                     const Center(child: CupertinoActivityIndicator()),
               );
             } else if (state is SocialAuthSuccess) {
+              //
               context.pop();
-
+              //
               showFeedbackDialog(
                 context,
                 icon: Icons.check_circle_outline_rounded,
@@ -44,9 +45,11 @@ class SignupScreen extends StatelessWidget {
                   }
                 },
               );
+              //
             } else if (state is SocialAuthFailure) {
+              //
               context.pop();
-
+              //
               showFeedbackDialog(
                 context,
                 icon: Icons.error_outline_rounded,
@@ -54,6 +57,7 @@ class SignupScreen extends StatelessWidget {
                 title: "عفواً",
                 message: state.errMessage,
               );
+              //
             }
           },
           child: const SignupBody(),

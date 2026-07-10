@@ -117,9 +117,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         if (trimmedValue.isEmpty) {
           return "برجاء إدخال اسم المستخدم";
         }
-        if (trimmedValue.contains(" ")) {
-          return "اسم المستخدم يجب ألا يحتوي على مسافات";
-        }
+        // if (trimmedValue.contains(" ")) {
+        //   return "اسم المستخدم يجب ألا يحتوي على مسافات";
+        // }
         break;
 
       case .email:
