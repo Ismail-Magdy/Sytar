@@ -1,4 +1,3 @@
-import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:sytar/core/helpers/spacing.dart";
@@ -54,27 +53,6 @@ class HomeEmptyState extends StatelessWidget {
                 ],
               ),
               //
-              //
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: .circle,
-                    border: .all(color: Colors.grey.shade300, width: 1.5),
-                  ),
-                  child: CircleAvatar(
-                    radius: 22.r,
-                    backgroundColor: AppColors.secondaryColor.withValues(
-                      alpha: 0.1,
-                    ),
-                    child: Icon(
-                      CupertinoIcons.person_alt_circle,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                ),
-              ),
-              //
             ],
           ),
           //
@@ -109,7 +87,7 @@ class HomeEmptyState extends StatelessWidget {
           const Spacer(),
           //
           Padding(
-            padding: EdgeInsets.only(bottom: 20.h),
+            padding: .only(bottom: 20.h),
             child: Row(
               mainAxisAlignment: .center,
               children: [
