@@ -22,7 +22,7 @@ class OfflineModeWidget extends StatelessWidget {
                 Lottie.asset(
                   "assets/lottie/offline_mode.json",
                   height: 250.h,
-                  fit: BoxFit.contain,
+                  fit: .contain,
                 ),
                 //
                 verticalSpace(30),
