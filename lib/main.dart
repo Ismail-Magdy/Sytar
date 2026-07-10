@@ -9,10 +9,13 @@ import 'package:sytar/core/routes/app_router.dart';
 import 'package:sytar/core/routes/routes.dart';
 import 'package:sytar/firebase_options.dart';
 import 'package:sytar/sytar_app.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   //
   WidgetsFlutterBinding.ensureInitialized();
+  //
+  await initializeDateFormatting("ar");
   //
   await SystemChrome.setPreferredOrientations([.portraitUp]);
   //
