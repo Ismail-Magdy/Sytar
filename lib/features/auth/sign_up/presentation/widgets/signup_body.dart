@@ -158,7 +158,7 @@ class _SignupBodyState extends State<SignupBody> {
                         // حقل اسم المستخدم
                         CustomTextFormField(
                           controller: _userNameController,
-                          hintText: "اسم المستخدم",
+                          hintText: "الإسم  (مثال : إسماعيل مجدي)",
                           fieldType: .userName,
                           prefixIcon: Icons.person_outline_rounded,
                         ),
