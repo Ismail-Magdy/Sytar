@@ -23,6 +23,9 @@ dependencies:
   image_cropper: ^12.2.1
   flutter_svg: ^2.3.0
 
+  # For Internationalization & Localization
+  intl: ^0.20.3
+
   # State Management
   flutter_bloc: ^9.1.1
 
