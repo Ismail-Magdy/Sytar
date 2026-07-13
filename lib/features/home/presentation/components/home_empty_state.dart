@@ -86,31 +86,28 @@ class HomeEmptyState extends StatelessWidget {
           //
           const Spacer(),
           //
-          Padding(
-            padding: .only(bottom: 20.h),
-            child: Row(
-              mainAxisAlignment: .center,
-              children: [
-                //
-                Icon(
-                  Icons.lightbulb_outline_rounded,
-                  color: AppColors.secondaryColor,
-                  size: 16.sp,
+          Row(
+            mainAxisAlignment: .center,
+            children: [
+              //
+              Icon(
+                Icons.lightbulb_outline_rounded,
+                color: AppColors.secondaryColor,
+                size: 16.sp,
+              ),
+              //
+              horizontalSpace(5),
+              //
+              Text(
+                "نصيحة: السيطرة بتبدأ بتنظيم وقتك",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Colors.grey[700],
+                  fontWeight: .w500,
                 ),
-                //
-                horizontalSpace(5),
-                //
-                Text(
-                  "نصيحة: السيطرة بتبدأ بتنظيم وقتك",
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Colors.grey[700],
-                    fontWeight: .w500,
-                  ),
-                ),
-                //
-              ],
-            ),
+              ),
+              //
+            ],
           ),
           //
         ],
