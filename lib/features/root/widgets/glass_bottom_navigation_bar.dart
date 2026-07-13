@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 
 class GlassBottomNavigationBar extends StatefulWidget {
@@ -45,12 +44,11 @@ class _GlassBottomNavigationBarState extends State<GlassBottomNavigationBar> {
     final bool isRtl = Directionality.of(context) == .rtl;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+      padding: .symmetric(horizontal: 25.w, vertical: 35.h),
       child: Material(
         color: Colors.transparent,
-        elevation: 10,
-        shadowColor: Colors.black,
-        borderRadius: BorderRadius.circular(100),
+        elevation: 4,
+        borderRadius: .circular(100),
         child: LayoutBuilder(
           builder: (context, constraints) {
             final totalWidth = constraints.maxWidth;
@@ -73,9 +71,9 @@ class _GlassBottomNavigationBarState extends State<GlassBottomNavigationBar> {
             }
 
             return ClipRRect(
-              borderRadius: BorderRadius.circular(100),
+              borderRadius: .circular(100),
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                filter: .blur(sigmaX: 10, sigmaY: 10),
                 child: Container(
                   height: 60,
                   decoration: BoxDecoration(
@@ -192,7 +190,7 @@ class _GlassBottomNavigationBarState extends State<GlassBottomNavigationBar> {
                           ),
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: .spaceEvenly,
                           children: List.generate(widget.items.length, (index) {
                             final item = widget.items[index];
                             final isSelected = index == activeIndex;
