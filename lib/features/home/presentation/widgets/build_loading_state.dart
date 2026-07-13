@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sytar/features/home/data/models/home_dashboard_model.dart';
 import 'package:sytar/features/home/data/models/upcoming_task_model.dart';
+import 'package:sytar/features/home/presentation/components/home_header.dart';
 import 'package:sytar/features/home/presentation/widgets/build_active_state.dart';
-import 'package:sytar/features/home/presentation/widgets/build_term_switchers.dart';
 
 class BuildLoadingState extends StatefulWidget {
   const BuildLoadingState({super.key});
@@ -51,7 +51,7 @@ class _BuildLoadingStateState extends State<BuildLoadingState> {
         children: [
           Padding(
             padding: .symmetric(horizontal: 20.w, vertical: 10.h),
-            child: BuildTermSwitchers(data: dummyData),
+            child: HomeHeader(userName: dummyData.userName),
           ),
           Expanded(child: BuildActiveState(data: dummyData)),
         ],
