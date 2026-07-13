@@ -4,7 +4,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sytar/features/home/data/models/home_dashboard_model.dart';
 import 'package:sytar/features/home/data/models/upcoming_task_model.dart';
 import 'package:sytar/features/home/presentation/components/home_header.dart';
-import 'package:sytar/features/home/presentation/widgets/build_active_state.dart';
+import 'package:sytar/features/home/presentation/components/build_active_state.dart';
 
 class BuildLoadingState extends StatefulWidget {
   const BuildLoadingState({super.key});
