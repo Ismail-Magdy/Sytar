@@ -5,7 +5,7 @@ import "package:sytar/core/widgets/error_screen.dart";
 import "package:sytar/features/home/manager/home_cubit.dart";
 import "package:sytar/features/home/manager/home_state.dart";
 import "package:sytar/features/home/presentation/components/home_header.dart";
-import "package:sytar/features/home/presentation/widgets/build_active_state.dart";
+import "package:sytar/features/home/presentation/components/build_active_state.dart";
 import "package:sytar/features/home/presentation/widgets/build_loading_state.dart";
 import "../components/home_empty_state.dart";
 
@@ -47,8 +47,9 @@ class HomeScreen extends StatelessWidget {
                   // Screen Content
                   Expanded(
                     child: isDataEmpty
-                        ? HomeEmptyState(userName: data.userName)
-                        : BuildActiveState(data: data),
+                        ? BuildActiveState(data: data)
+                        : HomeEmptyState(userName: data.userName),
+                    //  BuildActiveState(data: data),
                   ),
                   //
                 ],
