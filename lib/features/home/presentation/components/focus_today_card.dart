@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sytar/core/helpers/spacing.dart';
+import 'package:sytar/core/themes/app_colors.dart';
 
 class FocusTodayCard extends StatelessWidget {
   final String taskTitle;
-  final String buttonText; // المتغير الجديد للزرار الذكي
+  final String buttonText;
   final VoidCallback onStartPressed;
 
   const FocusTodayCard({
@@ -17,52 +18,59 @@ class FocusTodayCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(16.w),
+      width: .infinity,
+      padding: .all(16.w),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E), // لون غامق
-        borderRadius: BorderRadius.circular(16.r),
+        color: AppColors.primaryColor,
+        borderRadius: .circular(16.r),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: .start,
+            mainAxisAlignment: .spaceBetween,
             children: [
+              //
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   children: [
+                    //
                     Text(
-                      "اللي هتركز عليه انهارده",
+                      "اللي هتركز عليه النهاردة",
                       style: TextStyle(
                         fontSize: 16.sp,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: .w800,
                         color: Colors.white,
                       ),
                     ),
-                    verticalSpace(8),
+                    //
+                    verticalSpace(5),
+                    //
                     Text(
                       taskTitle,
                       style: TextStyle(
                         fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: .w500,
                         color: Colors.grey[400],
                       ),
                       maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                      overflow: .ellipsis,
                     ),
+                    //
                   ],
                 ),
               ),
+              //
               horizontalSpace(12),
+              //
               Container(
                 width: 60.w,
                 height: 60.w,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: .circular(12.r),
                 ),
                 child: Center(
                   child: Icon(

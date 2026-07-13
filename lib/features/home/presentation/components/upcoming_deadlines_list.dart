@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
+import "package:sytar/core/helpers/spacing.dart";
 import "../../data/models/upcoming_task_model.dart";
 
 class UpcomingDeadlinesList extends StatelessWidget {
@@ -16,27 +17,29 @@ class UpcomingDeadlinesList extends StatelessWidget {
       children: [
         Text(
           "أقرب التسليمات",
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 18.sp, fontWeight: .bold),
         ),
-        SizedBox(height: 12.h),
+        //
+        verticalSpace(12),
+        //
         SizedBox(
           height: 90.h,
           child: ListView.builder(
-            scrollDirection: Axis.horizontal,
+            scrollDirection: .horizontal,
             itemCount: tasks.length,
             itemBuilder: (context, index) {
               final task = tasks[index];
               return Container(
                 width: 220.w,
-                margin: EdgeInsets.only(left: 12.w), // Left margin for RTL
-                padding: EdgeInsets.all(12.w),
+                margin: .only(left: 12.w),
+                padding: .all(12.w),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: .circular(12.r),
                   border: Border.all(color: Colors.grey.shade200),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.05),
+                      color: Colors.grey.withValues(alpha: 0.05),
                       spreadRadius: 1,
                       blurRadius: 5,
                       offset: const Offset(0, 2),
@@ -44,19 +47,19 @@ class UpcomingDeadlinesList extends StatelessWidget {
                   ],
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: .start,
+                  mainAxisAlignment: .center,
                   children: [
+                    //
                     Text(
                       task.title,
                       maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      overflow: .ellipsis,
+                      style: TextStyle(fontSize: 14.sp, fontWeight: .bold),
                     ),
-                    SizedBox(height: 4.h),
+                    //
+                    verticalSpace(4),
+                    //
                     Text(
                       task.subjectName,
                       style: TextStyle(
@@ -64,12 +67,14 @@ class UpcomingDeadlinesList extends StatelessWidget {
                         color: Colors.grey[600],
                       ),
                     ),
+                    //
                   ],
                 ),
               );
             },
           ),
         ),
+        //
       ],
     );
   }

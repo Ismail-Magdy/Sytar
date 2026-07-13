@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sytar/core/helpers/spacing.dart';
+import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/features/home/data/models/home_dashboard_model.dart';
 import 'package:sytar/features/home/data/models/upcoming_task_model.dart';
-import 'package:sytar/features/home/presentation/widgets/focus_today_card.dart';
-import 'package:sytar/features/home/presentation/widgets/gpa_summary_card.dart';
-import 'package:sytar/features/home/presentation/widgets/today_task_item.dart';
+import 'package:sytar/features/home/presentation/components/focus_today_card.dart';
+import 'package:sytar/features/home/presentation/components/gpa_summary_card.dart';
+import 'package:sytar/features/home/presentation/components/today_task_item.dart';
 
 class BuildActiveState extends StatelessWidget {
   final HomeDashboardModel data;
@@ -14,20 +15,20 @@ class BuildActiveState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 1. فحص الداتا (هل اليوزر ضاف مواد أو تاسكات؟)
+    // If there are no subjects and no tasks, show the setup card
     final bool hasSubjects = data.subjectsProgress.isNotEmpty;
     final bool hasTasks = data.upcomingTasks.isNotEmpty;
 
-    // هل محتاجين نعرض كارت الإعداد (Gamification)؟
+    // Determine if we should show the setup card
     final bool showSetupCard = !hasSubjects || !hasTasks;
 
-    // 2. كارت التركيز الذكي
+    // Determine the focus task title and button text
     final String focusTaskTitle = hasTasks
         ? data.upcomingTasks.first.title
-        : "خطط لترمك وضيف أول مهامك!";
-    final String focusButtonText = hasTasks ? "ابدأ المذاكره" : "إضافة تاسك ➕";
+        : "خطط لترمك وضيف أول مهامك";
+    final String focusButtonText = hasTasks ? "ابدأ المذاكره" : "إضافة تاسك";
 
-    // 3. فلترة محتاجين أتنشن
+    // Determine urgent tasks (tasks with deadlines within 48 hours)
     final DateTime now = DateTime.now();
     final List<UpcomingTaskModel> urgentTasks = data.upcomingTasks.where((
       task,
@@ -40,17 +41,19 @@ class BuildActiveState extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: 20.w).copyWith(bottom: 24.h),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
+          //
           verticalSpace(20),
-
-          // --- لمسة الـ Gamification ---
+          // Gamification
           if (showSetupCard) ...[
             _buildSetupProgressCard(hasSubjects, hasTasks),
+            //
             verticalSpace(24),
+            //
           ],
-
-          // --- كارت التركيز ---
+          //
+          // Focus Today Card
           FocusTodayCard(
             taskTitle: focusTaskTitle,
             buttonText: focusButtonText,
@@ -62,9 +65,10 @@ class BuildActiveState extends StatelessWidget {
               }
             },
           ),
+          //
           verticalSpace(24),
-
-          // --- كارت الـ GPA ---
+          //
+          // GPA Card
           GpaSummaryCard(currentGpa: data.currentGpa),
           verticalSpace(24),
 
@@ -244,82 +248,97 @@ class BuildActiveState extends StatelessWidget {
     );
   }
 
-  // ==========================================
-  // لمسة الـ Gamification (إعداد الترم)
-  // ==========================================
+  /// Gamification
   Widget _buildSetupProgressCard(bool hasSubjects, bool hasTasks) {
     int completedSteps = (hasSubjects ? 1 : 0) + (hasTasks ? 1 : 0);
     double progress = completedSteps / 2;
 
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: .all(16.w),
       decoration: BoxDecoration(
-        color: Colors.blueAccent.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: Colors.blueAccent.withOpacity(0.3)),
+        color: AppColors.secondaryColor.withValues(alpha: 0.08),
+        borderRadius: .circular(16.r),
+        border: .all(color: AppColors.secondaryColor.withValues(alpha: 0.3)),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
+          //
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: .spaceBetween,
             children: [
+              //
               Text(
-                "تجهيز الترم 🚀",
+                "تجهيز الترم",
                 style: TextStyle(
                   fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueAccent[700],
+                  fontWeight: .bold,
+                  color: AppColors.primaryColor,
                 ),
               ),
+              //
               Text(
                 "$completedSteps/2",
                 style: TextStyle(
                   fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueAccent,
+                  fontWeight: .bold,
+                  color: AppColors.primaryColor,
                 ),
               ),
+              //
             ],
           ),
+          //
           verticalSpace(12),
+          //
           LinearProgressIndicator(
             value: progress,
-            backgroundColor: Colors.blueAccent.withOpacity(0.2),
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-            borderRadius: BorderRadius.circular(10.r),
+            backgroundColor: AppColors.secondaryColor.withValues(alpha: 0.2),
+            valueColor: AlwaysStoppedAnimation<Color>(AppColors.secondaryColor),
+            borderRadius: .circular(10.r),
             minHeight: 8.h,
           ),
+          //
           verticalSpace(16),
+          //
           _buildSetupStep("إضافة أول مادة في الجدول", hasSubjects),
+          //
           verticalSpace(8),
+          //
           _buildSetupStep("إضافة أول تاسك أو تسليم", hasTasks),
+          //
         ],
       ),
     );
   }
+  //
 
+  ///
   Widget _buildSetupStep(String title, bool isDone) {
     return Row(
       children: [
+        //
         Icon(
           isDone ? Icons.check_circle_rounded : Icons.circle_outlined,
           color: isDone ? Colors.green : Colors.grey[500],
           size: 20.sp,
         ),
+        //
         horizontalSpace(8),
+        //
         Text(
           title,
           style: TextStyle(
             fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
-            color: isDone ? Colors.grey[700] : Colors.black87,
-            decoration: isDone
-                ? TextDecoration.lineThrough
-                : TextDecoration.none,
+            fontWeight: .w600,
+            color: isDone ? Colors.grey[700] : AppColors.secondaryColor,
+            decoration: isDone ? .lineThrough : .none,
           ),
         ),
+        //
       ],
     );
   }
+
+  //
 }
