@@ -4,9 +4,9 @@ import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:sytar/core/widgets/error_screen.dart";
 import "package:sytar/features/home/manager/home_cubit.dart";
 import "package:sytar/features/home/manager/home_state.dart";
+import "package:sytar/features/home/presentation/components/home_header.dart";
 import "package:sytar/features/home/presentation/widgets/build_active_state.dart";
 import "package:sytar/features/home/presentation/widgets/build_loading_state.dart";
-import "package:sytar/features/home/presentation/widgets/build_term_switchers.dart";
 import "../components/home_empty_state.dart";
 
 class HomeScreen extends StatelessWidget {
@@ -41,7 +41,7 @@ class HomeScreen extends StatelessWidget {
                   //
                   Padding(
                     padding: .symmetric(horizontal: 20.w, vertical: 10.h),
-                    child: BuildTermSwitchers(data: data),
+                    child: HomeHeader(userName: data.userName),
                   ),
                   //
                   // Screen Content
