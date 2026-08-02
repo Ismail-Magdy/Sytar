@@ -51,17 +51,6 @@ class ErrorScreen extends StatelessWidget {
               ),
             ),
             //
-            verticalSpace(15),
-            //
-            Text(
-              errorText,
-              textAlign: .center,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: .bold,
-                color: Colors.black,
-              ),
-            ),
             //
           ],
         ),

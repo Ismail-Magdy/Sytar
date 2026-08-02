@@ -26,7 +26,7 @@ class BuildActiveState extends StatelessWidget {
     final String focusTaskTitle = hasTasks
         ? data.upcomingTasks.first.title
         : "خطط لترمك وضيف أول مهامك";
-    final String focusButtonText = hasTasks ? "ابدأ المذاكره" : "إضافة تاسك";
+    final String focusButtonText = hasTasks ? "إبدأ المذاكرة" : "إضافة تاسك";
 
     // Determine urgent tasks (tasks with deadlines within 48 hours)
     final DateTime now = DateTime.now();
@@ -66,48 +66,60 @@ class BuildActiveState extends StatelessWidget {
             },
           ),
           //
-          verticalSpace(24),
+          verticalSpace(40),
           //
           // GPA Card
           GpaSummaryCard(currentGpa: data.currentGpa),
-          verticalSpace(24),
-
-          // --- قسم تاسكات انهارده ---
+          //
+          verticalSpace(5),
+          //
+          Divider(color: AppColors.darkGrey),
+          //
+          verticalSpace(15),
+          //
+          // قسم تاسكات النهاردة
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: .spaceBetween,
+            crossAxisAlignment: .end,
             children: [
+              //
               Text(
-                "تاسكات انهارده",
+                "تاسكات النهاردة",
                 style: TextStyle(
                   fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  fontWeight: .bold,
+                  color: AppColors.primaryColor,
                 ),
               ),
+              //
               if (hasTasks)
+                //
                 GestureDetector(
                   onTap: () {},
                   child: Text(
                     "المزيد",
                     style: TextStyle(
                       fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: .w600,
                       color: Colors.grey[600],
                     ),
                   ),
                 ),
+              //
             ],
           ),
+          //
           verticalSpace(16),
-
+          //
           !hasTasks
+              //
               ? Center(
                   child: Text(
-                    "مفيش مهام متسجلة، ضيف مهامك عشان تتابعها هنا.",
-                    style: TextStyle(color: Colors.grey),
+                    "مفيش تاسكات متسجلة، ضيف تاسكاتك عشان تتابعها هنا",
+                    style: TextStyle(color: AppColors.darkGrey),
                   ),
                 )
+              //
               : ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -121,24 +133,30 @@ class BuildActiveState extends StatelessWidget {
                     );
                   },
                 ),
-
-          verticalSpace(24),
-
-          // --- قسم محتاجين أتنشن ---
+          //
+          verticalSpace(5),
+          //
+          Divider(color: AppColors.darkGrey),
+          //
+          verticalSpace(20),
+          //
+          // قسم محتاجين أتنشن
           Text(
             "محتاجين أتنشن",
             style: TextStyle(
               fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              fontWeight: .bold,
+              color: AppColors.primaryColor,
             ),
           ),
-          verticalSpace(16),
 
+          //
+          verticalSpace(16),
+          //
           // اللوجيك الذكي لصندوق الأتنشن
           if (!hasTasks)
             _buildEmptyStateMessage(
-              "ابدأ خطط لترمك عشان تتابع زنقتك هنا!",
+              "إبدأ خطط لترمك عشان تتابع زنقتك هنا",
               Icons.event_note_rounded,
               Colors.blue,
             )
@@ -155,9 +173,7 @@ class BuildActiveState extends StatelessWidget {
     );
   }
 
-  // ==========================================
   // ويدجت صندوق "الأتنشن"
-  // ==========================================
   Widget _buildAttentionContainer(List<UpcomingTaskModel> urgentTasks) {
     return Container(
       width: double.infinity,
@@ -248,6 +264,7 @@ class BuildActiveState extends StatelessWidget {
     );
   }
 
+  //
   /// Gamification
   Widget _buildSetupProgressCard(bool hasSubjects, bool hasTasks) {
     int completedSteps = (hasSubjects ? 1 : 0) + (hasTasks ? 1 : 0);
