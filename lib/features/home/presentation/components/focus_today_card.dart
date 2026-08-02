@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
+import 'package:sytar/core/widgets/custom_button.dart';
 
 class FocusTodayCard extends StatelessWidget {
   final String taskTitle;
@@ -19,14 +21,16 @@ class FocusTodayCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: .infinity,
-      padding: .all(16.w),
+      padding: .all(20.w),
       decoration: BoxDecoration(
-        color: AppColors.primaryColor,
+        color: Colors.white,
         borderRadius: .circular(16.r),
+        border: .all(color: AppColors.secondaryColor, width: 1),
       ),
       child: Column(
         crossAxisAlignment: .start,
         children: [
+          //
           Row(
             crossAxisAlignment: .start,
             mainAxisAlignment: .spaceBetween,
@@ -38,22 +42,22 @@ class FocusTodayCard extends StatelessWidget {
                   children: [
                     //
                     Text(
-                      "اللي هتركز عليه النهاردة",
+                      "التركيز اليومي",
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: 13.sp,
                         fontWeight: .w800,
-                        color: Colors.white,
+                        color: AppColors.primaryColor,
                       ),
                     ),
                     //
-                    verticalSpace(5),
+                    verticalSpace(8),
                     //
                     Text(
                       taskTitle,
                       style: TextStyle(
-                        fontSize: 14.sp,
+                        fontSize: 15.sp,
                         fontWeight: .w500,
-                        color: Colors.grey[400],
+                        color: AppColors.secondaryColor,
                       ),
                       maxLines: 2,
                       overflow: .ellipsis,
@@ -63,48 +67,33 @@ class FocusTodayCard extends StatelessWidget {
                 ),
               ),
               //
-              horizontalSpace(12),
+              horizontalSpace(16),
               //
+              // أيقونة الهدف
               Container(
-                width: 60.w,
-                height: 60.w,
+                width: 45.w,
+                height: 45.w,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.primaryColor.withValues(alpha: 0.08),
                   borderRadius: .circular(12.r),
                 ),
                 child: Center(
                   child: Icon(
-                    Icons.local_fire_department_rounded,
-                    color: Colors.orangeAccent,
-                    size: 30.sp,
+                    CupertinoIcons.triangle_lefthalf_fill,
+                    color: AppColors.primaryColor,
+                    size: 22.sp,
                   ),
                 ),
               ),
+              //
             ],
           ),
-          verticalSpace(16),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: ElevatedButton(
-              onPressed: onStartPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white.withOpacity(0.15),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
-              ),
-              child: Text(
-                buttonText, // بنقرأ النص من هنا
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
+          //
+          verticalSpace(20),
+          //
+          // زرار بعرض الكارت
+          CustomButton(text: buttonText, onPressed: onStartPressed),
+          //
         ],
       ),
     );

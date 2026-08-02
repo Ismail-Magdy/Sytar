@@ -49,7 +49,6 @@ class HomeScreen extends StatelessWidget {
                     child: isDataEmpty
                         ? BuildActiveState(data: data)
                         : HomeEmptyState(userName: data.userName),
-                    //  BuildActiveState(data: data),
                   ),
                   //
                 ],
