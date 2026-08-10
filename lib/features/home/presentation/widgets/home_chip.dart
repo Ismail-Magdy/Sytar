@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 
-class BuildChip extends StatelessWidget {
-  const BuildChip({super.key, required this.text});
+class HomeChip extends StatelessWidget {
+  const HomeChip({super.key, required this.text});
   final String text;
 
   @override

@@ -45,7 +45,7 @@ class HomeEmptyState extends StatelessWidget {
           //  Main action button
           CustomButton(text: "إضافة أول مادة", onPressed: () {}),
           //
-          const Spacer(),
+          verticalSpace(50),
           //
           Row(
             mainAxisAlignment: .center,
@@ -54,16 +54,16 @@ class HomeEmptyState extends StatelessWidget {
               Icon(
                 Icons.lightbulb_outline_rounded,
                 color: AppColors.secondaryColor,
-                size: 16.sp,
+                size: 15.sp,
               ),
               //
-              horizontalSpace(5),
+              horizontalSpace(4),
               //
               Text(
                 "نصيحة: السيطرة بتبدأ بتنظيم وقتك",
                 style: TextStyle(
                   fontSize: 12.sp,
-                  color: Colors.grey[700],
+                  color: AppColors.secondaryColor,
                   fontWeight: .w500,
                 ),
               ),

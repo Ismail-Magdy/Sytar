@@ -53,6 +53,7 @@ class HomeHeader extends StatelessWidget {
             color: AppColors.primaryColor,
           ),
         ),
+        //
       ],
     );
   }

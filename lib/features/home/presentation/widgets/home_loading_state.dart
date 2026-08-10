@@ -4,16 +4,16 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sytar/features/home/data/models/home_dashboard_model.dart';
 import 'package:sytar/features/home/data/models/upcoming_task_model.dart';
 import 'package:sytar/features/home/presentation/components/home_header.dart';
-import 'package:sytar/features/home/presentation/components/build_active_state.dart';
+import 'package:sytar/features/home/presentation/components/home_active_state.dart';
 
-class BuildLoadingState extends StatefulWidget {
-  const BuildLoadingState({super.key});
+class HomeLoadingState extends StatefulWidget {
+  const HomeLoadingState({super.key});
 
   @override
-  State<BuildLoadingState> createState() => _BuildLoadingStateState();
+  State<HomeLoadingState> createState() => _HomeLoadingStateState();
 }
 
-class _BuildLoadingStateState extends State<BuildLoadingState> {
+class _HomeLoadingStateState extends State<HomeLoadingState> {
   // Skeleton
   final dummyData = HomeDashboardModel(
     userName: "Loading Name",
@@ -53,7 +53,7 @@ class _BuildLoadingStateState extends State<BuildLoadingState> {
             padding: .symmetric(horizontal: 20.w, vertical: 10.h),
             child: HomeHeader(userName: dummyData.userName),
           ),
-          Expanded(child: BuildActiveState(data: dummyData)),
+          Expanded(child: HomeActiveState(data: dummyData)),
         ],
       ),
     );

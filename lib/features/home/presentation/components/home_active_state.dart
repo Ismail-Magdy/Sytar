@@ -4,14 +4,16 @@ import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/features/home/data/models/home_dashboard_model.dart';
 import 'package:sytar/features/home/data/models/upcoming_task_model.dart';
-import 'package:sytar/features/home/presentation/components/focus_today_card.dart';
-import 'package:sytar/features/home/presentation/components/gpa_summary_card.dart';
-import 'package:sytar/features/home/presentation/components/today_task_item.dart';
+import 'package:sytar/features/home/presentation/components/home_focus_today_card.dart';
+import 'package:sytar/features/home/presentation/components/home_gpa_summary_card.dart';
+import 'package:sytar/features/home/presentation/components/home_today_task_item.dart';
+import 'package:sytar/features/home/presentation/widgets/home_empty_state_message.dart';
+import 'package:sytar/features/home/presentation/widgets/home_setup_progress_card.dart';
 
-class BuildActiveState extends StatelessWidget {
+class HomeActiveState extends StatelessWidget {
   final HomeDashboardModel data;
 
-  const BuildActiveState({super.key, required this.data});
+  const HomeActiveState({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class BuildActiveState extends StatelessWidget {
 
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: 20.w).copyWith(bottom: 24.h),
+      padding: EdgeInsets.symmetric(horizontal: 20.w).copyWith(bottom: 120.h),
       child: Column(
         crossAxisAlignment: .start,
         children: [
@@ -54,7 +56,7 @@ class BuildActiveState extends StatelessWidget {
           ],
           //
           // Focus Today Card
-          FocusTodayCard(
+          HomeFocusTodayCard(
             taskTitle: focusTaskTitle,
             buttonText: focusButtonText,
             onStartPressed: () {
@@ -127,7 +129,7 @@ class BuildActiveState extends StatelessWidget {
                       ? 3
                       : data.upcomingTasks.length,
                   itemBuilder: (context, index) {
-                    return TodayTaskItem(
+                    return HomeTodayTaskItem(
                       title: data.upcomingTasks[index].title,
                       onTap: () {},
                     );
@@ -149,23 +151,26 @@ class BuildActiveState extends StatelessWidget {
               color: AppColors.primaryColor,
             ),
           ),
-
           //
           verticalSpace(16),
           //
           // اللوجيك الذكي لصندوق الأتنشن
           if (!hasTasks)
-            _buildEmptyStateMessage(
-              "إبدأ خطط لترمك عشان تتابع زنقتك هنا",
-              Icons.event_note_rounded,
-              Colors.blue,
+            //
+            HomeEmptyStateMessage(
+              message: "إبدأ خطط لترمك عشان تتابع زنقتك هنا",
+              icon: Icons.event_note_rounded,
+              color: AppColors.secondaryColor,
             )
+          //
           else if (urgentTasks.isEmpty)
-            _buildEmptyStateMessage(
-              "مفيش ضغط، أنت مسيطر!",
-              Icons.check_circle_outline_rounded,
-              Colors.green,
+            //
+            HomeEmptyStateMessage(
+              message: "مفيش ضغط، أنت مسيطر",
+              icon: Icons.check_circle_outline_rounded,
+              color: AppColors.success,
             )
+          //
           else
             _buildAttentionContainer(urgentTasks),
         ],
@@ -173,14 +178,14 @@ class BuildActiveState extends StatelessWidget {
     );
   }
 
-  // ويدجت صندوق "الأتنشن"
+  /// ويدجت صندوق "الأتنشن"
   Widget _buildAttentionContainer(List<UpcomingTaskModel> urgentTasks) {
     return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(16.w),
+      width: .infinity,
+      padding: .all(16.w),
       decoration: BoxDecoration(
         color: const Color(0xFF1E1E1E),
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: .circular(16.r),
       ),
       child: Column(
         children: urgentTasks.map((task) => _buildAttentionItem(task)).toList(),
@@ -226,136 +231,22 @@ class BuildActiveState extends StatelessWidget {
 
   String _formatTimeLeft(DateTime deadline) {
     final difference = deadline.difference(DateTime.now());
-    if (difference.isNegative) return "متأخر ⚠️";
-    if (difference.inHours <= 24) return "النهارده 🚨";
-    return "فاضل يومين ⏰";
+    if (difference.isNegative) return "متأخر";
+    if (difference.inHours <= 24) return "النهاردة";
+    return "فاضل يومين";
   }
 
-  // ==========================================
-  // رسائل الحالات الفاضية (Smart Empty States)
-  // ==========================================
-  Widget _buildEmptyStateMessage(
-    String message,
-    IconData icon,
-    MaterialColor color,
-  ) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 20.h),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: color, size: 32.sp),
-          verticalSpace(8),
-          Text(
-            message,
-            style: TextStyle(
-              fontSize: 15.sp,
-              fontWeight: FontWeight.bold,
-              color: color[700],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  //
   /// Gamification
   Widget _buildSetupProgressCard(bool hasSubjects, bool hasTasks) {
     int completedSteps = (hasSubjects ? 1 : 0) + (hasTasks ? 1 : 0);
     double progress = completedSteps / 2;
 
-    return Container(
-      padding: .all(16.w),
-      decoration: BoxDecoration(
-        color: AppColors.secondaryColor.withValues(alpha: 0.08),
-        borderRadius: .circular(16.r),
-        border: .all(color: AppColors.secondaryColor.withValues(alpha: 0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: .start,
-        children: [
-          //
-          Row(
-            mainAxisAlignment: .spaceBetween,
-            children: [
-              //
-              Text(
-                "تجهيز الترم",
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: .bold,
-                  color: AppColors.primaryColor,
-                ),
-              ),
-              //
-              Text(
-                "$completedSteps/2",
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: .bold,
-                  color: AppColors.primaryColor,
-                ),
-              ),
-              //
-            ],
-          ),
-          //
-          verticalSpace(12),
-          //
-          LinearProgressIndicator(
-            value: progress,
-            backgroundColor: AppColors.secondaryColor.withValues(alpha: 0.2),
-            valueColor: AlwaysStoppedAnimation<Color>(AppColors.secondaryColor),
-            borderRadius: .circular(10.r),
-            minHeight: 8.h,
-          ),
-          //
-          verticalSpace(16),
-          //
-          _buildSetupStep("إضافة أول مادة في الجدول", hasSubjects),
-          //
-          verticalSpace(8),
-          //
-          _buildSetupStep("إضافة أول تاسك أو تسليم", hasTasks),
-          //
-        ],
-      ),
+    return HomeSetupProgressCard(
+      hasSubjects: hasSubjects,
+      hasTasks: hasTasks,
+      completedSteps: completedSteps,
+      progress: progress,
     );
   }
-  //
-
-  ///
-  Widget _buildSetupStep(String title, bool isDone) {
-    return Row(
-      children: [
-        //
-        Icon(
-          isDone ? Icons.check_circle_rounded : Icons.circle_outlined,
-          color: isDone ? Colors.green : Colors.grey[500],
-          size: 20.sp,
-        ),
-        //
-        horizontalSpace(8),
-        //
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: .w600,
-            color: isDone ? Colors.grey[700] : AppColors.secondaryColor,
-            decoration: isDone ? .lineThrough : .none,
-          ),
-        ),
-        //
-      ],
-    );
-  }
-
-  //
 }
+// 359

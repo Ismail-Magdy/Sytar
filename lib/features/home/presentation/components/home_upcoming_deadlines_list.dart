@@ -3,18 +3,19 @@ import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:sytar/core/helpers/spacing.dart";
 import "../../data/models/upcoming_task_model.dart";
 
-class UpcomingDeadlinesList extends StatelessWidget {
+class HomeUpcomingDeadlinesList extends StatelessWidget {
   final List<UpcomingTaskModel> tasks;
 
-  const UpcomingDeadlinesList({super.key, required this.tasks});
+  const HomeUpcomingDeadlinesList({super.key, required this.tasks});
 
   @override
   Widget build(BuildContext context) {
     if (tasks.isEmpty) return const SizedBox.shrink();
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
+        //
         Text(
           "أقرب التسليمات",
           style: TextStyle(fontSize: 18.sp, fontWeight: .bold),

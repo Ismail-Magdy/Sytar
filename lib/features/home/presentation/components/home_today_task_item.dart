@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 
-class TodayTaskItem extends StatelessWidget {
+class HomeTodayTaskItem extends StatelessWidget {
   final String title;
   final bool isCompleted;
   final VoidCallback onTap;
 
-  const TodayTaskItem({
+  const HomeTodayTaskItem({
     super.key,
     required this.title,
     this.isCompleted = false,
@@ -21,9 +21,8 @@ class TodayTaskItem extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(bottom: 12.h),
         decoration: BoxDecoration(
-          color: Colors.grey[300], // اللون الرمادي الفاتح
+          color: Colors.grey[300],
           borderRadius: BorderRadius.circular(8.r),
-          // الظل الأسود الحاد اللي في الديزاين
           boxShadow: const [
             BoxShadow(
               color: Colors.black87,
