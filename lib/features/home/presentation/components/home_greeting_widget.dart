@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
+import "package:sytar/core/helpers/spacing.dart";
 
 class HomeGreetingWidget extends StatelessWidget {
   final String userName;
@@ -14,8 +15,9 @@ class HomeGreetingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
+        //
         Text(
           "صباح الخير يا $userName",
           style: TextStyle(
@@ -24,11 +26,14 @@ class HomeGreetingWidget extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        SizedBox(height: 6.h),
+        //
+        verticalSpace(6),
+        //
         Text(
           academicStatus,
           style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]),
         ),
+        //
       ],
     );
   }

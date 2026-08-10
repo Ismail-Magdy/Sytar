@@ -5,12 +5,12 @@ import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/core/widgets/custom_button.dart';
 
-class FocusTodayCard extends StatelessWidget {
+class HomeFocusTodayCard extends StatelessWidget {
   final String taskTitle;
   final String buttonText;
   final VoidCallback onStartPressed;
 
-  const FocusTodayCard({
+  const HomeFocusTodayCard({
     super.key,
     required this.taskTitle,
     required this.buttonText,

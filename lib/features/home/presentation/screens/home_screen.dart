@@ -5,8 +5,8 @@ import "package:sytar/core/widgets/error_screen.dart";
 import "package:sytar/features/home/manager/home_cubit.dart";
 import "package:sytar/features/home/manager/home_state.dart";
 import "package:sytar/features/home/presentation/components/home_header.dart";
-import "package:sytar/features/home/presentation/components/build_active_state.dart";
-import "package:sytar/features/home/presentation/widgets/build_loading_state.dart";
+import "package:sytar/features/home/presentation/components/home_active_state.dart";
+import "package:sytar/features/home/presentation/widgets/home_loading_state.dart";
 import "../components/home_empty_state.dart";
 
 class HomeScreen extends StatelessWidget {
@@ -17,11 +17,12 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
+        bottom: false,
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
             // Loading State (Skeletonizer)
             if (state is HomeLoading) {
-              return BuildLoadingState();
+              return HomeLoadingState();
             }
             //
             // Error State
@@ -47,8 +48,8 @@ class HomeScreen extends StatelessWidget {
                   // Screen Content
                   Expanded(
                     child: isDataEmpty
-                        ? BuildActiveState(data: data)
-                        : HomeEmptyState(userName: data.userName),
+                        ? HomeEmptyState(userName: data.userName)
+                        : HomeActiveState(data: data),
                   ),
                   //
                 ],

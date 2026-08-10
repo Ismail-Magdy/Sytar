@@ -8,16 +8,16 @@ class GpaSummaryCard extends StatelessWidget {
 
   const GpaSummaryCard({super.key, required this.currentGpa});
 
-  // دوال تحديد اللون والنص بناءً على الـ GPA
+  ///
   Color _getGpaColor(double gpa) {
-    if (gpa >= 3.5) return AppColors.success; // امتياز
-    if (gpa >= 3.0) return AppColors.secondaryColor; // جيد جداً
-    if (gpa >= 2.5) return Colors.orange; // جيد/مقبول
-    return AppColors.error; // خطر (أحمر)
+    if (gpa >= 3.5) return AppColors.success; // Excellent
+    if (gpa >= 3.0) return AppColors.secondaryColor; // Very Good
+    if (gpa >= 2.5) return Colors.orange; // Good
+    return AppColors.error; // Not Good
   }
 
   String _getGpaMessage(double gpa) {
-    if (gpa >= 3.5) return "أداء ممتاز، استمر على القمة!";
+    if (gpa >= 3.5) return "أداء ممتاز، استمر على القمة";
     if (gpa >= 3.0) return "مستوى جيد جداً، تقدر تقفلها";
     if (gpa >= 2.5) return "أداء جيد، شد حيلك الفترة الجاية";
     return "محتاج تركز وتشد حيلك أكتر";
@@ -27,7 +27,6 @@ class GpaSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final double percentage = currentGpa / 4.0;
 
-    // سحب اللون والنص الديناميكي
     final Color gpaColor = _getGpaColor(currentGpa);
     final String gpaMessage = _getGpaMessage(currentGpa);
 
@@ -65,7 +64,7 @@ class GpaSummaryCard extends StatelessWidget {
               //
               verticalSpace(12),
               //
-              // أنيميشن عداد الأرقام
+              // Number Animation
               TweenAnimationBuilder<double>(
                 tween: Tween<double>(begin: 0.0, end: currentGpa),
                 duration: const Duration(milliseconds: 1500),
@@ -106,7 +105,7 @@ class GpaSummaryCard extends StatelessWidget {
             return Stack(
               alignment: Alignment.center,
               children: [
-                // الدايرة اللي بتنور (Glow Effect) بنفس لون الـ GPA
+                //
                 Container(
                   width: 75.w,
                   height: 75.w,
@@ -129,7 +128,6 @@ class GpaSummaryCard extends StatelessWidget {
                   ),
                 ),
                 //
-                // النسبة المئوية جوه الدايرة
                 Text(
                   "${(value * 100).toInt()}%",
                   style: TextStyle(

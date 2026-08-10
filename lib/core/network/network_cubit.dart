@@ -16,7 +16,7 @@ class NetworkCubit extends Cubit<NetworkState> {
         emit(NetworkConnected());
       } else {
         _debounceTimer?.cancel();
-        _debounceTimer = Timer(const Duration(seconds: 5), () {
+        _debounceTimer = Timer(const Duration(seconds: 10), () {
           emit(NetworkDisconnected());
         });
       }
