@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
             //
             // Error State
             else if (state is HomeError) {
-              return ErrorScreen(errorText: state.error);
+              return ErrorScreen();
             }
             //
             // Success State
