@@ -32,22 +32,27 @@ class HomeRepo {
         userData['availableSemesters'] ?? [semesterToFetch],
       );
 
-      final tasksSnapshot = await _firestore
-          .collection("users")
-          .doc(userId)
-          .collection("tasks")
-          .where("level", isEqualTo: levelToFetch)
-          .where("semester", isEqualTo: semesterToFetch)
-          .where("status", isNotEqualTo: "completed")
-          .orderBy('status')
-          .orderBy('deadline')
-          .limit(5)
-          .get();
+      //
+      List<UpcomingTaskModel> tasks = [];
+      try {
+        final tasksSnapshot = await _firestore
+            .collection("users")
+            .doc(userId)
+            .collection("tasks")
+            .where("level", isEqualTo: levelToFetch)
+            .where("semester", isEqualTo: semesterToFetch)
+            .where("status", isNotEqualTo: "completed")
+            .orderBy('status')
+            .orderBy('deadline')
+            .limit(5)
+            .get();
 
-      List<UpcomingTaskModel> tasks = tasksSnapshot.docs
-          .map((doc) => UpcomingTaskModel.fromJson(doc.data(), doc.id))
-          .toList();
+        tasks = tasksSnapshot.docs
+            .map((doc) => UpcomingTaskModel.fromJson(doc.data(), doc.id))
+            .toList();
+      } catch (e) {}
 
+      //
       final subjectsSnapshot = await _firestore
           .collection("users")
           .doc(userId)

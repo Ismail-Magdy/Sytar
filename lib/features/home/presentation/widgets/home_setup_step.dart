@@ -27,7 +27,7 @@ class HomeSetupStep extends StatelessWidget {
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: .w600,
-            color: isDone ? Colors.grey[700] : AppColors.secondaryColor,
+            color: isDone ? Colors.grey[500] : AppColors.secondaryColor,
             decoration: isDone ? .lineThrough : .none,
           ),
         ),

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sytar/features/subjects/data/models/subject_model.dart';
+import '../models/subject_model.dart';
 
 class SubjectRepo {
   final FirebaseFirestore _firestore;
@@ -8,11 +8,28 @@ class SubjectRepo {
 
   SubjectRepo(this._firestore, this._auth);
 
-  Future<void> addSubject(SubjectModel subject) async {
+  ///
+  Future<void> addSubject(String subjectName, String colorCode) async {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) throw Exception("User not logged in");
 
+      final userDoc = await _firestore.collection('users').doc(userId).get();
+      final userData = userDoc.data() ?? {};
+
+      final String currentLevel = userData['currentLevel'] ?? "المستوى الأول";
+      final String currentSemester =
+          userData['currentSemester'] ?? "الترم الأول";
+
+      final subject = SubjectModel(
+        id: "",
+        subjectName: subjectName,
+        level: currentLevel,
+        semester: currentSemester,
+        colorCode: colorCode,
+      );
+
+      //
       await _firestore
           .collection('users')
           .doc(userId)
@@ -23,21 +40,27 @@ class SubjectRepo {
     }
   }
 
-  //
-  Future<List<SubjectModel>> getSubjectsForCurrentSemester(
-    String level,
-    String semester,
-  ) async {
+  ///
+  Future<List<SubjectModel>> getSubjectsForCurrentSemester() async {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) throw Exception("User not logged in");
 
+      //
+      final userDoc = await _firestore.collection('users').doc(userId).get();
+      final userData = userDoc.data() ?? {};
+
+      final String currentLevel = userData['currentLevel'] ?? "المستوى الأول";
+      final String currentSemester =
+          userData['currentSemester'] ?? "الترم الأول";
+
+      //
       final snapshot = await _firestore
           .collection('users')
           .doc(userId)
           .collection('subjects')
-          .where('level', isEqualTo: level)
-          .where('semester', isEqualTo: semester)
+          .where('level', isEqualTo: currentLevel)
+          .where('semester', isEqualTo: currentSemester)
           .get();
 
       return snapshot.docs

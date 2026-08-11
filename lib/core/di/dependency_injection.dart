@@ -73,11 +73,13 @@ Future<void> initGetIt() async {
   getIt.registerLazySingleton<SubjectRepo>(
     () => SubjectRepo(FirebaseFirestore.instance, FirebaseAuth.instance),
   );
+
+  getIt.registerLazySingleton<SubjectsCubit>(
+    () => SubjectsCubit(getIt<SubjectRepo>()),
+  );
+
   getIt.registerFactory<AddSubjectCubit>(
     () => AddSubjectCubit(getIt<SubjectRepo>()),
-  );
-  getIt.registerFactory<SubjectsCubit>(
-    () => SubjectsCubit(getIt<SubjectRepo>()),
   );
 
   /// Task

@@ -15,7 +15,7 @@ class SubjectProgressModel {
   ) {
     return SubjectProgressModel(
       id: documentId,
-      name: json["name"] ?? "",
+      name: json["subject_name"] ?? "",
       progressPercentage: (json["progress_percentage"] ?? 0.0).toDouble(),
     );
   }
