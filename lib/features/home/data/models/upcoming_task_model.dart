@@ -4,6 +4,7 @@ class UpcomingTaskModel {
   final String subjectName;
   final DateTime deadline;
   final String priority;
+  final String status;
 
   UpcomingTaskModel({
     required this.id,
@@ -11,6 +12,7 @@ class UpcomingTaskModel {
     required this.subjectName,
     required this.deadline,
     required this.priority,
+    required this.status,
   });
 
   factory UpcomingTaskModel.fromJson(
@@ -23,6 +25,17 @@ class UpcomingTaskModel {
       subjectName: json["subject_name"] ?? "",
       deadline: json["deadline"].toDate(),
       priority: json["priority"] ?? "low",
+      status: json["status"] ?? "pending",
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "title": title,
+      "subject_name": subjectName,
+      "deadline": deadline,
+      "priority": priority,
+      "status": status,
+    };
   }
 }

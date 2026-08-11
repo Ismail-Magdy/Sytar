@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sytar/core/di/dependency_injection.dart';
 import 'package:sytar/features/home/presentation/screens/home_screen.dart';
 import 'package:sytar/features/root/gpa_screen.dart';
 import 'package:sytar/features/root/profile_screen.dart';
-import 'package:sytar/features/root/subjects_screen.dart';
-import 'package:sytar/features/root/tasks_screen.dart';
 import 'package:sytar/features/root/widgets/glass_bottom_navigation_bar.dart';
+import 'package:sytar/features/subjects/presentation/screens/subjects_screen.dart';
+import 'package:sytar/features/tasks/manager/add_task_cubit.dart';
+import 'package:sytar/features/tasks/presentation/screens/add_task_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -24,8 +27,11 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
     super.initState();
 
     screens = [
-      const SubjectsScreen(),
-      const TasksScreen(),
+      SubjectsScreen(),
+      BlocProvider(
+        create: (_) => getIt<AddTaskCubit>(),
+        child: const AddTaskScreen(),
+      ),
       const HomeScreen(),
       const GpaScreen(),
       const ProfileScreen(),
@@ -55,7 +61,10 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
     if (index == currentScreen) return;
 
     if (index == 1) {
-      screens[1] = TasksScreen(key: UniqueKey());
+      screens[1] = BlocProvider(
+        create: (_) => getIt<AddTaskCubit>(),
+        child: AddTaskScreen(key: UniqueKey()),
+      );
     }
 
     if (index == 4) {
