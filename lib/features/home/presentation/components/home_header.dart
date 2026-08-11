@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:sytar/core/helpers/extensions.dart';
+import 'package:sytar/core/routes/routes.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -44,9 +46,7 @@ class HomeHeader extends StatelessWidget {
         //
         // Notification icon
         GestureDetector(
-          onTap: () {
-            // TODO: Navigate to notifications screen
-          },
+          onTap: () => context.pushNamed(Routes.notificationsScreen),
           child: Icon(
             CupertinoIcons.bell_solid,
             size: 23.sp,

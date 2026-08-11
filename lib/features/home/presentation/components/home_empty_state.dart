@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
+import "package:sytar/core/helpers/extensions.dart";
 import "package:sytar/core/helpers/spacing.dart";
+import "package:sytar/core/routes/routes.dart";
 import "package:sytar/core/themes/app_colors.dart";
 import "package:sytar/core/widgets/custom_button.dart";
 
@@ -43,7 +45,10 @@ class HomeEmptyState extends StatelessWidget {
           verticalSpace(50),
           //
           //  Main action button
-          CustomButton(text: "إضافة أول مادة", onPressed: () {}),
+          CustomButton(
+            text: "إضافة أول مادة",
+            onPressed: () => context.pushNamed(Routes.addSubjectScreen),
+          ),
           //
           verticalSpace(50),
           //

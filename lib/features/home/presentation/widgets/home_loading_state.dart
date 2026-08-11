@@ -30,6 +30,7 @@ class _HomeLoadingStateState extends State<HomeLoadingState> {
         subjectName: "علوم حاسب",
         deadline: DateTime.now(),
         priority: "high",
+        status: "pending",
       ),
       UpcomingTaskModel(
         id: "2",
@@ -37,6 +38,7 @@ class _HomeLoadingStateState extends State<HomeLoadingState> {
         subjectName: "رياضيات",
         deadline: DateTime.now(),
         priority: "medium",
+        status: "pending",
       ),
     ],
     subjectsProgress: [],

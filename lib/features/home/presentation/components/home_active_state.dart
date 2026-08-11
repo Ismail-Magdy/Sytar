@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sytar/core/helpers/extensions.dart';
 import 'package:sytar/core/helpers/spacing.dart';
+import 'package:sytar/core/routes/routes.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/features/home/data/models/home_dashboard_model.dart';
 import 'package:sytar/features/home/data/models/upcoming_task_model.dart';
@@ -63,7 +65,7 @@ class HomeActiveState extends StatelessWidget {
               if (hasTasks) {
                 // TODO: بدأ المذاكرة
               } else {
-                // TODO: Navigate to Add Task Screen
+                context.pushNamed(Routes.addTaskScreen);
               }
             },
           ),
@@ -195,12 +197,12 @@ class HomeActiveState extends StatelessWidget {
 
   Widget _buildAttentionItem(UpcomingTaskModel task) {
     return Container(
-      width: double.infinity,
-      margin: EdgeInsets.only(bottom: 12.h),
-      padding: EdgeInsets.symmetric(vertical: 14.h),
+      width: .infinity,
+      margin: .only(bottom: 12.h),
+      padding: .symmetric(vertical: 14.h),
       decoration: BoxDecoration(
         color: Colors.grey[400],
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: .circular(8.r),
         boxShadow: const [
           BoxShadow(color: Colors.black, offset: Offset(0, 3), blurRadius: 0),
         ],
@@ -211,7 +213,7 @@ class HomeActiveState extends StatelessWidget {
             task.subjectName,
             style: TextStyle(
               fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
+              fontWeight: .bold,
               color: Colors.black87,
             ),
           ),
@@ -220,7 +222,7 @@ class HomeActiveState extends StatelessWidget {
             _formatTimeLeft(task.deadline),
             style: TextStyle(
               fontSize: 13.sp,
-              fontWeight: FontWeight.w800,
+              fontWeight: .w800,
               color: const Color(0xFFD32F2F),
             ),
           ),

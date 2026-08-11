@@ -15,12 +15,18 @@ import 'package:sytar/features/auth/sign_up/presentation/screens/signup_screen.d
 import 'package:sytar/features/auth/social_auth/manager/ocial_auth_bloc.dart';
 import 'package:sytar/features/auth/welcome/presentation/welcome_auth_screen.dart';
 import 'package:sytar/features/home/manager/home_cubit.dart';
-import 'package:sytar/features/home/presentation/screens/home_screen.dart';
 import 'package:sytar/features/on_boarding/presentation/screens/on_boarding_screen.dart';
 import 'package:sytar/features/root/screens/root_screen.dart';
 import 'package:sytar/features/setup_profile/manager/setup_profile_bloc.dart';
 import 'package:sytar/features/setup_profile/presentation/screens/setup_profile_screen.dart';
 import 'package:sytar/features/splash/presentation/screens/splash_screen.dart';
+import 'package:sytar/features/subjects/manager/add_subjects/add_subject_cubit.dart';
+import 'package:sytar/features/subjects/manager/subjects/subjects_cubit.dart';
+import 'package:sytar/features/subjects/presentation/screens/add_subject_screen.dart';
+import 'package:sytar/features/subjects/presentation/screens/subjects_screen.dart';
+import 'package:sytar/features/tasks/manager/add_task_cubit.dart';
+import 'package:sytar/features/tasks/presentation/screens/add_task_screen.dart';
+import 'package:sytar/features/notifications/presentation/screens/notifications_screen.dart';
 
 class AppRouter {
   Widget _withNetwork(Widget screen) {
@@ -121,15 +127,44 @@ class AppRouter {
           ),
         );
 
-      /// Home Screen
-      case Routes.homeScreen:
+      /// Subjects Screen
+      case Routes.subjectsScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             BlocProvider(
-              create: (context) => getIt<HomeCubit>()..getDashboardData(),
-              child: const HomeScreen(),
+              create: (context) =>
+                  getIt<SubjectsCubit>()..fetchCurrentSemesterSubjects(),
+              child: const SubjectsScreen(),
             ),
           ),
+        );
+
+      /// Add Subject Screen
+      case Routes.addSubjectScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<AddSubjectCubit>(),
+              child: const AddSubjectScreen(),
+            ),
+          ),
+        );
+
+      /// Add Task Screen
+      case Routes.addTaskScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<AddTaskCubit>(),
+              child: const AddTaskScreen(),
+            ),
+          ),
+        );
+
+      /// Notifications Screen
+      case Routes.notificationsScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(const NotificationsScreen()),
         );
 
       /// Default Case (Unknown Route)

@@ -10,4 +10,12 @@ class Routes {
   static const String rootScreen = "/rootScreen";
   //
   static const String homeScreen = "/homeScreen";
+  //
+  static const String addSubjectScreen = "/addSubjectScreen";
+  static const String subjectsScreen = "/subjectsScreen";
+  //
+  static const String addTaskScreen = "/addTaskScreen";
+  static const String tasksScreen = "/tasksScreen";
+  //
+  static const String notificationsScreen = "/notificationsScreen";
 }
