@@ -9,7 +9,15 @@ class SubjectRepo {
   SubjectRepo(this._firestore, this._auth);
 
   ///
-  Future<void> addSubject(String subjectName, String colorCode) async {
+  Future<void> addSubject({
+    required String subjectName,
+    required String colorCode,
+    required int creditHours,
+    String? subjectCode,
+    String? instructorName,
+    String? targetGrade,
+    int? totalMarks,
+  }) async {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) throw Exception("User not logged in");
@@ -27,9 +35,14 @@ class SubjectRepo {
         level: currentLevel,
         semester: currentSemester,
         colorCode: colorCode,
+        // القيم الجديدة
+        creditHours: creditHours,
+        subjectCode: subjectCode,
+        instructorName: instructorName,
+        targetGrade: targetGrade,
+        totalMarks: totalMarks,
       );
 
-      //
       await _firestore
           .collection('users')
           .doc(userId)

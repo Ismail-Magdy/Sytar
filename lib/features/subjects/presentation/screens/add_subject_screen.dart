@@ -1,11 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
-
+import 'package:sytar/core/widgets/custom_app_bar.dart';
+import 'package:sytar/core/widgets/custom_feedback_dialog.dart';
+import 'package:sytar/core/widgets/custom_text_field.dart';
 import 'package:sytar/features/subjects/manager/add_subjects/add_subject_cubit.dart';
 import 'package:sytar/features/subjects/manager/add_subjects/add_subject_state.dart';
+import 'package:sytar/features/subjects/presentation/widgets/add_subject_input_decoration.dart';
+import 'package:sytar/features/subjects/presentation/widgets/add_subject_section_title.dart';
 
 class AddSubjectScreen extends StatefulWidget {
   const AddSubjectScreen({super.key});
@@ -16,9 +21,19 @@ class AddSubjectScreen extends StatefulWidget {
 
 class _AddSubjectScreenState extends State<AddSubjectScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _subjectNameController = TextEditingController();
-  Color _selectedColor = AppColors.primaryColor;
 
+  // Controllers
+  final TextEditingController _subjectNameController = TextEditingController();
+  final TextEditingController _subjectCodeController = TextEditingController();
+  final TextEditingController _instructorNameController =
+      TextEditingController();
+  final TextEditingController _totalMarksController = TextEditingController();
+
+  // Variables
+  Color _selectedColor = AppColors.primaryColor;
+  int _selectedCreditHours = 3;
+  String? _selectedTargetGrade;
+  // Colors
   final List<Color> _availableColors = [
     AppColors.primaryColor,
     AppColors.success,
@@ -30,9 +45,15 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
     Colors.brown,
   ];
 
+  final List<int> _creditHoursList = [1, 2, 3, 4];
+  final List<String> _gradesList = ["A+", "A", "B+", "B", "C+", "C", "D+", "D"];
+
   @override
   void dispose() {
     _subjectNameController.dispose();
+    _subjectCodeController.dispose();
+    _instructorNameController.dispose();
+    _totalMarksController.dispose();
     super.dispose();
   }
 
@@ -41,6 +62,11 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
       context.read<AddSubjectCubit>().addSubject(
         subjectName: _subjectNameController.text.trim(),
         colorCode: _selectedColor.value.toRadixString(16),
+        creditHours: _selectedCreditHours,
+        subjectCode: _subjectCodeController.text.trim(),
+        instructorName: _instructorNameController.text.trim(),
+        targetGrade: _selectedTargetGrade,
+        totalMarks: int.tryParse(_totalMarksController.text.trim()),
       );
     }
   }
@@ -48,66 +74,182 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'إضافة مادة',
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: AppColors.primaryColor),
-      ),
+      //
+      backgroundColor: AppColors.white,
+      //
+      appBar: CustomAppBar(text: "إضافة مادة"),
+      //
       body: BlocConsumer<AddSubjectCubit, AddSubjectState>(
         listener: (context, state) {
           if (state is AddSubjectSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('تم إضافة المادة بنجاح'),
-                backgroundColor: AppColors.success,
+            // Success Dialog
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => CustomFeedbackDialog(
+                icon: Icons.check_circle_outline_rounded,
+                color: AppColors.success,
+                title: "عاش",
+                message: "تم إضافة المادة بنجاح",
+                onFinish: () => Navigator.pop(context, true),
               ),
             );
-
-            // بنقفل الشاشة ونبعت true عشان الشاشة اللي قبلها (الهوم) تعمل ريفريش
-            Navigator.pop(context, true);
+            //
           } else if (state is AddSubjectError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-                backgroundColor: AppColors.error,
+            // Error Dialog
+            showDialog(
+              context: context,
+              builder: (context) => CustomFeedbackDialog(
+                icon: Icons.error_outline_rounded,
+                color: AppColors.error,
+                title: "عذراً",
+                message: state.error,
               ),
             );
+            //
           }
         },
         builder: (context, state) {
           return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+            padding: .symmetric(horizontal: 24.w, vertical: 20.h),
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: .start,
                 children: [
-                  _buildSectionTitle('اسم المادة'),
+                  //
+                  AddSubjectSectionTitle(title: "إسم المادة"),
+                  //
                   verticalSpace(8),
-                  TextFormField(
+                  //
+                  CustomTextFormField(
                     controller: _subjectNameController,
-                    decoration: _buildInputDecoration('ادخل اسم المادة'),
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'يرجى إدخال اسم المادة';
-                      }
-                      return null;
-                    },
+                    hintText: "أدخل إسم المادة",
+                    validator: (value) =>
+                        (value == null || value.trim().isEmpty)
+                        ? "يرجى إدخال اسم المادة"
+                        : null,
                   ),
-                  verticalSpace(32),
-                  _buildSectionTitle('لون المادة'),
+                  //
+                  verticalSpace(24),
+                  //
+                  AddSubjectSectionTitle(title: "الساعات المعتمدة"),
+                  //
+                  verticalSpace(8),
+                  //
+                  DropdownButtonFormField<int>(
+                    focusColor: AppColors.white,
+                    borderRadius: .circular(5.r),
+                    value: _selectedCreditHours,
+                    items: _creditHoursList.map((hours) {
+                      return DropdownMenuItem(
+                        value: hours,
+                        child: Text("$hours ${hours == 1 ? "ساعة" : "ساعات"}"),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() => _selectedCreditHours = value);
+                      }
+                    },
+                    decoration: addSubjectsInputDecoration("إختر الساعات"),
+                  ),
+                  //
+                  verticalSpace(24),
+                  //
+                  Row(
+                    children: [
+                      //
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: .start,
+                          children: [
+                            //
+                            AddSubjectSectionTitle(
+                              title: "كود المادة (اختياري)",
+                            ),
+                            //
+                            verticalSpace(8),
+                            //
+                            CustomTextFormField(
+                              controller: _subjectCodeController,
+                              hintText: "مثال: CS101",
+                            ),
+                            //
+                          ],
+                        ),
+                      ),
+                      //
+                      horizontalSpace(16),
+                      //
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: .start,
+                          children: [
+                            //
+                            AddSubjectSectionTitle(
+                              title: "الدرجة الكلية (اختياري)",
+                            ),
+                            //
+                            verticalSpace(8),
+                            //
+                            CustomTextFormField(
+                              controller: _totalMarksController,
+                              hintText: "مثال: 100",
+                              keyboardType: .number,
+                            ),
+                            //
+                          ],
+                        ),
+                      ),
+                      //
+                    ],
+                  ),
+                  //
+                  verticalSpace(24),
+                  //
+                  AddSubjectSectionTitle(title: "إسم الدكتور (اختياري)"),
+                  //
+                  verticalSpace(8),
+                  CustomTextFormField(
+                    controller: _instructorNameController,
+                    hintText: "ادخل إسم الدكتور",
+                  ),
+                  //
+                  verticalSpace(24),
+                  //
+                  AddSubjectSectionTitle(title: "التقدير المستهدف (اختياري)"),
+                  //
+                  verticalSpace(8),
+                  //
+                  DropdownButtonFormField<String>(
+                    focusColor: AppColors.white,
+                    borderRadius: .circular(5.r),
+                    value: _selectedTargetGrade,
+                    hint: Text(
+                      "نفسك تجيب كام؟",
+                      style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                    ),
+                    items: _gradesList.map((grade) {
+                      return DropdownMenuItem(value: grade, child: Text(grade));
+                    }).toList(),
+                    onChanged: (value) =>
+                        setState(() => _selectedTargetGrade = value),
+                    decoration: addSubjectsInputDecoration(""),
+                  ),
+                  //
+                  verticalSpace(24),
+                  //
+                  AddSubjectSectionTitle(title: "لون المادة"),
+                  //
                   verticalSpace(12),
+                  //
                   _buildColorPicker(),
+                  //
                   verticalSpace(50),
+                  //
                   SizedBox(
-                    width: double.infinity,
+                    width: .infinity,
                     height: 50.h,
                     child: ElevatedButton(
                       onPressed: state is AddSubjectLoading
@@ -116,21 +258,22 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
+                          borderRadius: .circular(12.r),
                         ),
                       ),
                       child: state is AddSubjectLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
+                          ? CupertinoActivityIndicator(color: AppColors.white)
                           : Text(
-                              'حفظ',
+                              "حفظ",
                               style: TextStyle(
                                 fontSize: 16.sp,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: .bold,
                                 color: Colors.white,
                               ),
                             ),
                     ),
                   ),
+                  //
                 ],
               ),
             ),
@@ -140,34 +283,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
     );
   }
 
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: TextStyle(
-        fontSize: 16.sp,
-        fontWeight: FontWeight.bold,
-        color: AppColors.primaryColor,
-      ),
-    );
-  }
-
-  InputDecoration _buildInputDecoration(String hint) {
-    return InputDecoration(
-      hintText: hint,
-      hintStyle: TextStyle(color: Colors.grey, fontSize: 14.sp),
-      filled: true,
-      fillColor: Colors.grey[100],
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide.none,
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: const BorderSide(color: AppColors.primaryColor),
-      ),
-    );
-  }
-
+  /// Color Picker
   Widget _buildColorPicker() {
     return Wrap(
       spacing: 12.w,
@@ -181,9 +297,9 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
             height: 40.w,
             decoration: BoxDecoration(
               color: color,
-              shape: BoxShape.circle,
+              shape: .circle,
               border: isSelected
-                  ? Border.all(color: Colors.black87, width: 2.5)
+                  ? .all(color: Colors.black87, width: 2.5)
                   : null,
             ),
             child: isSelected

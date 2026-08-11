@@ -10,10 +10,23 @@ class AddSubjectCubit extends Cubit<AddSubjectState> {
   Future<void> addSubject({
     required String subjectName,
     required String colorCode,
+    required int creditHours,
+    String? subjectCode,
+    String? instructorName,
+    String? targetGrade,
+    int? totalMarks,
   }) async {
     emit(AddSubjectLoading());
     try {
-      await _subjectRepo.addSubject(subjectName, colorCode);
+      await _subjectRepo.addSubject(
+        subjectName: subjectName,
+        colorCode: colorCode,
+        creditHours: creditHours,
+        subjectCode: subjectCode,
+        instructorName: instructorName,
+        targetGrade: targetGrade,
+        totalMarks: totalMarks,
+      );
       emit(AddSubjectSuccess());
     } catch (e) {
       emit(AddSubjectError(e.toString()));
