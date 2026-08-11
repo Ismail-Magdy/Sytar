@@ -1,10 +1,14 @@
-import "package:flutter/material.dart";
-import "package:flutter_screenutil/flutter_screenutil.dart";
-import "package:sytar/core/helpers/extensions.dart";
-import "package:sytar/core/helpers/spacing.dart";
-import "package:sytar/core/routes/routes.dart";
-import "package:sytar/core/themes/app_colors.dart";
-import "package:sytar/core/widgets/custom_button.dart";
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sytar/core/di/dependency_injection.dart';
+import 'package:sytar/core/helpers/extensions.dart';
+import 'package:sytar/core/helpers/spacing.dart';
+import 'package:sytar/core/routes/routes.dart';
+import 'package:sytar/core/themes/app_colors.dart';
+import 'package:sytar/core/widgets/custom_button.dart';
+import 'package:sytar/features/home/manager/home_cubit.dart';
+import 'package:sytar/features/subjects/manager/subjects/subjects_cubit.dart';
 
 class HomeEmptyState extends StatelessWidget {
   final String userName;
@@ -25,7 +29,7 @@ class HomeEmptyState extends StatelessWidget {
           Image.asset(
             "assets/images/empty_home.png",
             height: 240.h,
-            fit: .contain,
+            fit: BoxFit.contain,
           ),
           //
           verticalSpace(30),
@@ -33,12 +37,12 @@ class HomeEmptyState extends StatelessWidget {
           // Subtitle
           Text(
             "الترم بيبدأ من هنا، جاهز تسيطر؟\nضيف أول مادة ليك دلوقتي عشان نبدأ نظبطلك الـ GPA والمهام بتاعتك",
-            textAlign: .center,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 15.sp,
               color: Colors.grey[700],
               height: 1.6,
-              fontWeight: .w500,
+              fontWeight: FontWeight.w500,
             ),
           ),
           //
@@ -47,7 +51,16 @@ class HomeEmptyState extends StatelessWidget {
           //  Main action button
           CustomButton(
             text: "إضافة أول مادة",
-            onPressed: () => context.pushNamed(Routes.addSubjectScreen),
+            onPressed: () async {
+              final result = await context.pushNamed(Routes.addSubjectScreen);
+
+              if (result == true) {
+                if (context.mounted) {
+                  context.read<HomeCubit>().getDashboardData();
+                  getIt<SubjectsCubit>().fetchCurrentSemesterSubjects();
+                }
+              }
+            },
           ),
           //
           verticalSpace(50),

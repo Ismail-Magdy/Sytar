@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 
-import 'package:sytar/features/home/manager/home_cubit.dart';
 import 'package:sytar/features/subjects/manager/add_subjects/add_subject_cubit.dart';
 import 'package:sytar/features/subjects/manager/add_subjects/add_subject_state.dart';
 
@@ -39,13 +38,8 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      const String currentLevel = "المستوى الأول";
-      const String currentSemester = "الترم الأول";
-
       context.read<AddSubjectCubit>().addSubject(
         subjectName: _subjectNameController.text.trim(),
-        level: currentLevel,
-        semester: currentSemester,
         colorCode: _selectedColor.value.toRadixString(16),
       );
     }
@@ -76,11 +70,8 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
               ),
             );
 
-            // التعديل المهم هنا: تحديث الهوم سكرين عشان تخرج من الـ Empty State
-            // وممكن نحدث لستة المواد كمان لو مفتوحة
-            context.read<HomeCubit>().getDashboardData();
-
-            Navigator.pop(context);
+            // بنقفل الشاشة ونبعت true عشان الشاشة اللي قبلها (الهوم) تعمل ريفريش
+            Navigator.pop(context, true);
           } else if (state is AddSubjectError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

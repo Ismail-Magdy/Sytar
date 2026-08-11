@@ -10,14 +10,7 @@ class SubjectsCubit extends Cubit<SubjectsState> {
   Future<void> fetchCurrentSemesterSubjects() async {
     emit(SubjectsLoading());
     try {
-      // TODO: هنجيب دول من البروفايل بعدين
-      const String currentLevel = "المستوى الأول";
-      const String currentSemester = "الترم الأول";
-
-      final subjects = await _subjectRepo.getSubjectsForCurrentSemester(
-        currentLevel,
-        currentSemester,
-      );
+      final subjects = await _subjectRepo.getSubjectsForCurrentSemester();
       emit(SubjectsSuccess(subjects));
     } catch (e) {
       emit(SubjectsError(e.toString()));
