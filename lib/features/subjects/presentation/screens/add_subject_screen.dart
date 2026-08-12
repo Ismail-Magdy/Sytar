@@ -187,16 +187,23 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                           crossAxisAlignment: .start,
                           children: [
                             //
-                            AddSubjectSectionTitle(
-                              title: "الدرجة الكلية (اختياري)",
-                            ),
+                            AddSubjectSectionTitle(title: "الدرجة الكلية"),
                             //
                             verticalSpace(8),
                             //
                             CustomTextFormField(
                               controller: _totalMarksController,
                               hintText: "مثال: 100",
-                              keyboardType: .number,
+                              fieldType: .number,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return "يرجى إدخال الدرجة النهائية";
+                                }
+                                if (int.tryParse(value.trim()) == null) {
+                                  return "يرجى إدخال رقم صحيح";
+                                }
+                                return null;
+                              },
                             ),
                             //
                           ],
