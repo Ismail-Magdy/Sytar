@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sytar/core/helpers/extensions.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/routes/routes.dart';
@@ -7,7 +8,6 @@ import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/features/home/data/models/home_dashboard_model.dart';
 import 'package:sytar/features/home/data/models/upcoming_task_model.dart';
 import 'package:sytar/features/home/presentation/components/home_focus_today_card.dart';
-import 'package:sytar/features/home/presentation/components/home_gpa_summary_card.dart';
 import 'package:sytar/features/home/presentation/components/home_today_task_item.dart';
 import 'package:sytar/features/home/presentation/widgets/home_empty_state_message.dart';
 import 'package:sytar/features/home/presentation/widgets/home_setup_progress_card.dart';
@@ -70,16 +70,7 @@ class HomeActiveState extends StatelessWidget {
             },
           ),
           //
-          verticalSpace(40),
-          //
-          // GPA Card
-          GpaSummaryCard(currentGpa: data.currentGpa),
-          //
-          verticalSpace(5),
-          //
-          Divider(color: AppColors.darkGrey),
-          //
-          verticalSpace(15),
+          verticalSpace(24),
           //
           // قسم تاسكات النهاردة
           Row(
@@ -118,9 +109,19 @@ class HomeActiveState extends StatelessWidget {
           !hasTasks
               //
               ? Center(
-                  child: Text(
-                    "مفيش تاسكات متسجلة، ضيف تاسكاتك عشان تتابعها هنا",
-                    style: TextStyle(color: AppColors.darkGrey),
+                  child: Column(
+                    children: [
+                      Lottie.asset(
+                        "assets/lottie/no_tasks.json",
+                        width: 300.w,
+                        height: 180.h,
+                        fit: .contain,
+                      ),
+                      Text(
+                        "مفيش تاسكات متسجلة، ضيف تاسكاتك عشان تتابعها هنا",
+                        style: TextStyle(color: AppColors.darkGrey),
+                      ),
+                    ],
                   ),
                 )
               //
