@@ -67,7 +67,7 @@ Future<void> initGetIt() async {
   getIt.registerLazySingleton<HomeRepo>(
     () => HomeRepo(FirebaseFirestore.instance, FirebaseAuth.instance),
   );
-  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
+  getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
 
   /// Subject
   getIt.registerLazySingleton<SubjectRepo>(
