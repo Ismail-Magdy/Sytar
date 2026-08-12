@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sytar/core/helpers/spacing.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subjects_add_card.dart';
 
 class SubjectsEmptyState extends StatelessWidget {
   const SubjectsEmptyState({super.key});
@@ -28,8 +27,6 @@ class SubjectsEmptyState extends StatelessWidget {
                 color: Colors.grey[500],
               ),
             ),
-            verticalSpace(32),
-            SubjectsAddCard(),
           ],
         ),
       ),

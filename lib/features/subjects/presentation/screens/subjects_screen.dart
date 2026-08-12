@@ -8,7 +8,7 @@ import 'package:sytar/core/widgets/custom_app_bar_without_leading.dart';
 import 'package:sytar/core/widgets/error_screen.dart';
 import 'package:sytar/features/subjects/manager/subjects/subjects_cubit.dart';
 import 'package:sytar/features/subjects/manager/subjects/subjects_state.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subjects_add_card.dart';
+import 'package:sytar/features/subjects/presentation/widgets/subjects_floating_action_button.dart';
 import 'package:sytar/features/subjects/presentation/widgets/subjects_empty_state.dart';
 import 'package:sytar/features/subjects/presentation/widgets/subjects_loading_widget.dart';
 
@@ -19,6 +19,13 @@ class SubjectsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
+      //
+      floatingActionButton: Padding(
+        padding: .only(bottom: 90.h),
+        child: const SubjectsFloatingActionButton(),
+      ),
+
+      floatingActionButtonLocation: .endFloat,
       //
       appBar: CustomAppBarWithNoLeading(text: "المواد الدراسية"),
       //
@@ -43,20 +50,17 @@ class SubjectsScreen extends StatelessWidget {
                   // Subjects Success
                   else if (state is SubjectsSuccess) {
                     if (state.subjects.isEmpty) {
-                      return SubjectsEmptyState();
+                      return const SubjectsEmptyState();
                     }
                     return ListView.separated(
                       padding: EdgeInsets.symmetric(
                         horizontal: 20.w,
-                      ).copyWith(bottom: 120.h),
+                      ).copyWith(bottom: 165.h),
                       physics: const BouncingScrollPhysics(),
-                      itemCount: state.subjects.length + 1,
+                      itemCount: state.subjects.length,
                       separatorBuilder: (context, index) => verticalSpace(16),
                       itemBuilder: (context, index) {
-                        if (index == state.subjects.length) {
-                          return SubjectsAddCard();
-                        }
-
+                        //
                         final subject = state.subjects[index];
                         final subjectColor = Color(
                           int.parse(subject.colorCode, radix: 16),
