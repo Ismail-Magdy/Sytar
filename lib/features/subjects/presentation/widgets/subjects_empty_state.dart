@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 
 class SubjectsEmptyState extends StatelessWidget {
@@ -11,14 +12,19 @@ class SubjectsEmptyState extends StatelessWidget {
       child: Padding(
         padding: .symmetric(horizontal: 24.w),
         child: Column(
-          mainAxisAlignment: .center,
           children: [
-            Icon(
-              Icons.library_books_rounded,
-              size: 60.sp,
-              color: Colors.grey[300],
+            //
+            verticalSpace(100),
+            //
+            Lottie.asset(
+              "assets/lottie/no_subjects.json",
+              width: 300.w,
+              height: 300.h,
+              fit: .contain,
             ),
-            verticalSpace(16),
+            //
+            verticalSpace(25),
+            //
             Text(
               "مفيش مواد متسجلة للترم ده",
               style: TextStyle(
@@ -27,6 +33,7 @@ class SubjectsEmptyState extends StatelessWidget {
                 color: Colors.grey[500],
               ),
             ),
+            //
           ],
         ),
       ),
