@@ -23,9 +23,9 @@ class SubjectsFloatingActionButton extends StatelessWidget {
       backgroundColor: AppColors.primaryColor,
       shape: RoundedRectangleBorder(borderRadius: .circular(14.r)),
       label: Text(
-        "إضافة مادة",
+        "+",
         style: TextStyle(
-          fontSize: 16.sp,
+          fontSize: 28.sp,
           fontWeight: .bold,
           color: AppColors.white,
         ),
