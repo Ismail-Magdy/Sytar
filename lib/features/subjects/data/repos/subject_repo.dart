@@ -13,10 +13,18 @@ class SubjectRepo {
     required String subjectName,
     required String colorCode,
     required int creditHours,
+    required int totalMarks, // بقت إجبارية هنا كمان
     String? subjectCode,
     String? instructorName,
     String? targetGrade,
-    int? totalMarks,
+    String? notes,
+    bool isBreakdownKnown = true,
+    int finalExamTotal = 0,
+    int? midterm1Total,
+    int? midterm2Total,
+    int? courseworkTotal,
+    int? midtermMonth,
+    DateTime? exactMidtermDate,
   }) async {
     try {
       final userId = _auth.currentUser?.uid;
@@ -35,12 +43,22 @@ class SubjectRepo {
         level: currentLevel,
         semester: currentSemester,
         colorCode: colorCode,
-        // القيم الجديدة
         creditHours: creditHours,
+        totalMarks:
+            totalMarks, // مبقناش محتاجين علامة التعجب (!) لأنها مش Nullable
         subjectCode: subjectCode,
         instructorName: instructorName,
         targetGrade: targetGrade,
-        totalMarks: totalMarks,
+
+        // تمرير الحقول الجديدة
+        notes: notes,
+        isBreakdownKnown: isBreakdownKnown,
+        finalExamTotal: finalExamTotal,
+        midterm1Total: midterm1Total,
+        midterm2Total: midterm2Total,
+        courseworkTotal: courseworkTotal,
+        midtermMonth: midtermMonth,
+        exactMidtermDate: exactMidtermDate,
       );
 
       await _firestore

@@ -13,6 +13,7 @@ class Routes {
   //
   static const String addSubjectScreen = "/addSubjectScreen";
   static const String subjectsScreen = "/subjectsScreen";
+  static const String subjectDetailsScreen = "/subjectDetailsScreen";
   //
   static const String addTaskScreen = "/addTaskScreen";
   static const String tasksScreen = "/tasksScreen";
