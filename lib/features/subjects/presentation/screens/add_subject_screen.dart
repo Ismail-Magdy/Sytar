@@ -9,8 +9,8 @@ import 'package:sytar/core/widgets/custom_feedback_dialog.dart';
 import 'package:sytar/core/widgets/custom_text_field.dart';
 import 'package:sytar/features/subjects/manager/add_subjects/add_subject_cubit.dart';
 import 'package:sytar/features/subjects/manager/add_subjects/add_subject_state.dart';
-import 'package:sytar/features/subjects/presentation/widgets/add_subject_input_decoration.dart';
-import 'package:sytar/features/subjects/presentation/widgets/add_subject_section_title.dart';
+import 'package:sytar/features/subjects/presentation/widgets/add_subject/add_subject_input_decoration.dart';
+import 'package:sytar/features/subjects/presentation/widgets/add_subject/add_subject_section_title.dart';
 
 class AddSubjectScreen extends StatefulWidget {
   const AddSubjectScreen({super.key});
@@ -66,7 +66,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
         subjectCode: _subjectCodeController.text.trim(),
         instructorName: _instructorNameController.text.trim(),
         targetGrade: _selectedTargetGrade,
-        totalMarks: int.tryParse(_totalMarksController.text.trim()),
+        totalMarks: int.parse(_totalMarksController.text.trim()),
       );
     }
   }

@@ -11,10 +11,10 @@ class AddSubjectCubit extends Cubit<AddSubjectState> {
     required String subjectName,
     required String colorCode,
     required int creditHours,
+    required int totalMarks, // التعديل الأول: بقت إجبارية
     String? subjectCode,
     String? instructorName,
     String? targetGrade,
-    int? totalMarks,
   }) async {
     emit(AddSubjectLoading());
     try {
@@ -22,10 +22,10 @@ class AddSubjectCubit extends Cubit<AddSubjectState> {
         subjectName: subjectName,
         colorCode: colorCode,
         creditHours: creditHours,
+        totalMarks: totalMarks, // هتتبعت إجبارية للـ Repo
         subjectCode: subjectCode,
         instructorName: instructorName,
         targetGrade: targetGrade,
-        totalMarks: totalMarks,
       );
       emit(AddSubjectSuccess());
     } catch (e) {
