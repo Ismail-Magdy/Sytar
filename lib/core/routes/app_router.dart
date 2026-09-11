@@ -22,6 +22,7 @@ import 'package:sytar/features/setup_profile/presentation/screens/setup_profile_
 import 'package:sytar/features/splash/presentation/screens/splash_screen.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
 import 'package:sytar/features/subjects/manager/add_subjects/add_subject_cubit.dart';
+import 'package:sytar/features/subjects/manager/subject_details/subject_details_cubit.dart';
 import 'package:sytar/features/subjects/manager/subjects/subjects_cubit.dart';
 import 'package:sytar/features/subjects/presentation/screens/add_subject_screen.dart';
 import 'package:sytar/features/subjects/presentation/screens/subject_details_screen.dart';
@@ -156,7 +157,12 @@ class AppRouter {
       case Routes.subjectDetailsScreen:
         final subject = settings.arguments as SubjectModel;
         return MaterialPageRoute(
-          builder: (_) => SubjectDetailsScreen(subject: subject),
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<SubjectDetailsCubit>(),
+              child: SubjectDetailsScreen(subject: subject),
+            ),
+          ),
         );
 
       /// Add Task Screen
@@ -178,9 +184,7 @@ class AppRouter {
 
       /// Default Case (Unknown Route)
       default:
-        return MaterialPageRoute(
-          builder: (_) => _withNetwork(const UnknownRouteScreen()),
-        );
+        return MaterialPageRoute(builder: (_) => const UnknownRouteScreen());
     }
   }
 }
