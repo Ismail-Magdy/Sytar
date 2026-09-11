@@ -13,7 +13,7 @@ class SubjectRepo {
     required String subjectName,
     required String colorCode,
     required int creditHours,
-    required int totalMarks, // بقت إجبارية هنا كمان
+    required int totalMarks,
     String? subjectCode,
     String? instructorName,
     String? targetGrade,
@@ -30,12 +30,12 @@ class SubjectRepo {
       final userId = _auth.currentUser?.uid;
       if (userId == null) throw Exception("User not logged in");
 
-      final userDoc = await _firestore.collection('users').doc(userId).get();
+      final userDoc = await _firestore.collection("users").doc(userId).get();
       final userData = userDoc.data() ?? {};
 
-      final String currentLevel = userData['currentLevel'] ?? "المستوى الأول";
+      final String currentLevel = userData["currentLevel"] ?? "المستوى الأول";
       final String currentSemester =
-          userData['currentSemester'] ?? "الترم الأول";
+          userData["currentSemester"] ?? "الترم الأول";
 
       final subject = SubjectModel(
         id: "",
@@ -44,13 +44,10 @@ class SubjectRepo {
         semester: currentSemester,
         colorCode: colorCode,
         creditHours: creditHours,
-        totalMarks:
-            totalMarks, // مبقناش محتاجين علامة التعجب (!) لأنها مش Nullable
+        totalMarks: totalMarks,
         subjectCode: subjectCode,
         instructorName: instructorName,
         targetGrade: targetGrade,
-
-        // تمرير الحقول الجديدة
         notes: notes,
         isBreakdownKnown: isBreakdownKnown,
         finalExamTotal: finalExamTotal,
@@ -62,9 +59,9 @@ class SubjectRepo {
       );
 
       await _firestore
-          .collection('users')
+          .collection("users")
           .doc(userId)
-          .collection('subjects')
+          .collection("subjects")
           .add(subject.toJson());
     } catch (e) {
       throw Exception("Failed to add subject: $e");
@@ -78,20 +75,20 @@ class SubjectRepo {
       if (userId == null) throw Exception("User not logged in");
 
       //
-      final userDoc = await _firestore.collection('users').doc(userId).get();
+      final userDoc = await _firestore.collection("users").doc(userId).get();
       final userData = userDoc.data() ?? {};
 
-      final String currentLevel = userData['currentLevel'] ?? "المستوى الأول";
+      final String currentLevel = userData["currentLevel"] ?? "المستوى الأول";
       final String currentSemester =
-          userData['currentSemester'] ?? "الترم الأول";
+          userData["currentSemester"] ?? "الترم الأول";
 
       //
       final snapshot = await _firestore
-          .collection('users')
+          .collection("users")
           .doc(userId)
-          .collection('subjects')
-          .where('level', isEqualTo: currentLevel)
-          .where('semester', isEqualTo: currentSemester)
+          .collection("subjects")
+          .where("level", isEqualTo: currentLevel)
+          .where("semester", isEqualTo: currentSemester)
           .get();
 
       return snapshot.docs
@@ -99,6 +96,23 @@ class SubjectRepo {
           .toList();
     } catch (e) {
       throw Exception("Failed to fetch subjects: $e");
+    }
+  }
+
+  ///
+  Future<void> updateSubject(SubjectModel updatedSubject) async {
+    try {
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) throw Exception("User not logged in");
+
+      await _firestore
+          .collection("users")
+          .doc(userId)
+          .collection("subjects")
+          .doc(updatedSubject.id)
+          .update(updatedSubject.toJson());
+    } catch (e) {
+      throw Exception("Failed to update subject: $e");
     }
   }
 }

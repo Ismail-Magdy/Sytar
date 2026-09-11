@@ -11,7 +11,7 @@ class AddSubjectCubit extends Cubit<AddSubjectState> {
     required String subjectName,
     required String colorCode,
     required int creditHours,
-    required int totalMarks, // التعديل الأول: بقت إجبارية
+    required int totalMarks,
     String? subjectCode,
     String? instructorName,
     String? targetGrade,
@@ -22,7 +22,7 @@ class AddSubjectCubit extends Cubit<AddSubjectState> {
         subjectName: subjectName,
         colorCode: colorCode,
         creditHours: creditHours,
-        totalMarks: totalMarks, // هتتبعت إجبارية للـ Repo
+        totalMarks: totalMarks,
         subjectCode: subjectCode,
         instructorName: instructorName,
         targetGrade: targetGrade,

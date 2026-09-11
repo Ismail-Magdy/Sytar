@@ -17,6 +17,7 @@ import 'package:sytar/features/setup_profile/data/repos/setup_profile_repo.dart'
 import 'package:sytar/features/setup_profile/manager/setup_profile_bloc.dart';
 import 'package:sytar/features/subjects/data/repos/subject_repo.dart';
 import 'package:sytar/features/subjects/manager/add_subjects/add_subject_cubit.dart';
+import 'package:sytar/features/subjects/manager/subject_details/subject_details_cubit.dart';
 import 'package:sytar/features/subjects/manager/subjects/subjects_cubit.dart';
 import 'package:sytar/features/tasks/data/repos/task_repo.dart';
 import 'package:sytar/features/tasks/manager/add_task_cubit.dart';
@@ -69,7 +70,7 @@ Future<void> initGetIt() async {
   );
   getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
 
-  /// Subject
+  /// Subjects
   getIt.registerLazySingleton<SubjectRepo>(
     () => SubjectRepo(FirebaseFirestore.instance, FirebaseAuth.instance),
   );
@@ -80,6 +81,9 @@ Future<void> initGetIt() async {
 
   getIt.registerFactory<AddSubjectCubit>(
     () => AddSubjectCubit(getIt<SubjectRepo>()),
+  );
+  getIt.registerFactory<SubjectDetailsCubit>(
+    () => SubjectDetailsCubit(getIt<SubjectRepo>()),
   );
 
   /// Task
