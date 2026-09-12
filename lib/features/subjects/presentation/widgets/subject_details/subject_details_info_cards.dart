@@ -6,13 +6,12 @@ import 'package:sytar/features/subjects/presentation/widgets/subject_details/sub
 class SubjectDetailsInfoCards extends StatelessWidget {
   const SubjectDetailsInfoCards({
     super.key,
-    required this.subjectColor,
+
     required this.valueCreditHours,
     required this.valueTotalMarks,
     required this.valueTargetGrade,
   });
 
-  final Color subjectColor;
   final String valueCreditHours;
   final String valueTotalMarks;
   final String valueTargetGrade;
@@ -29,7 +28,6 @@ class SubjectDetailsInfoCards extends StatelessWidget {
               title: "الساعات",
               value: valueCreditHours,
               icon: Icons.access_time_rounded,
-              subjectColor: subjectColor,
             ),
           ),
           //
@@ -40,7 +38,6 @@ class SubjectDetailsInfoCards extends StatelessWidget {
               title: "الدرجة",
               value: valueTotalMarks,
               icon: Icons.score_rounded,
-              subjectColor: subjectColor,
             ),
           ),
           //
@@ -51,7 +48,6 @@ class SubjectDetailsInfoCards extends StatelessWidget {
               title: "الهدف",
               value: valueTargetGrade,
               icon: Icons.flag_rounded,
-              subjectColor: subjectColor,
             ),
           ),
           //

@@ -61,7 +61,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
     if (_formKey.currentState!.validate()) {
       context.read<AddSubjectCubit>().addSubject(
         subjectName: _subjectNameController.text.trim(),
-        colorCode: _selectedColor.value.toRadixString(16),
+        colorCode: _selectedColor.toARGB32().toRadixString(16),
         creditHours: _selectedCreditHours,
         subjectCode: _subjectCodeController.text.trim(),
         instructorName: _instructorNameController.text.trim(),
@@ -140,7 +140,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                   DropdownButtonFormField<int>(
                     focusColor: AppColors.white,
                     borderRadius: .circular(5.r),
-                    value: _selectedCreditHours,
+                    initialValue: _selectedCreditHours,
                     items: _creditHoursList.map((hours) {
                       return DropdownMenuItem(
                         value: hours,
@@ -232,7 +232,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                   DropdownButtonFormField<String>(
                     focusColor: AppColors.white,
                     borderRadius: .circular(5.r),
-                    value: _selectedTargetGrade,
+                    initialValue: _selectedTargetGrade,
                     hint: Text(
                       "نفسك تجيب كام؟",
                       style: TextStyle(color: Colors.grey, fontSize: 14.sp),

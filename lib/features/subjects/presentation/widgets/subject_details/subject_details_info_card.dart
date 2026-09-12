@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sytar/core/helpers/spacing.dart';
+import 'package:sytar/core/themes/app_colors.dart';
 
 class SubjectDetailsInfoCard extends StatelessWidget {
   const SubjectDetailsInfoCard({
@@ -8,13 +9,11 @@ class SubjectDetailsInfoCard extends StatelessWidget {
     required this.title,
     required this.value,
     required this.icon,
-    required this.subjectColor,
   });
 
   final String title;
   final String value;
   final IconData icon;
-  final Color subjectColor;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class SubjectDetailsInfoCard extends StatelessWidget {
         border: .all(color: Colors.grey.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
-            color: subjectColor.withValues(alpha: 0.05),
+            color: AppColors.secondaryColor.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -35,7 +34,7 @@ class SubjectDetailsInfoCard extends StatelessWidget {
       child: Column(
         children: [
           //
-          Icon(icon, color: subjectColor, size: 28.sp),
+          Icon(icon, color: AppColors.secondaryColor, size: 28.sp),
           //
           verticalSpace(12),
           //
@@ -52,7 +51,7 @@ class SubjectDetailsInfoCard extends StatelessWidget {
           //
           Text(
             title,
-            style: TextStyle(fontSize: 12.sp, color: Colors.grey[700]),
+            style: TextStyle(fontSize: 12.sp, color: AppColors.grey),
           ),
           //
         ],
