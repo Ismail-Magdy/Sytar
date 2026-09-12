@@ -36,14 +36,14 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //
       backgroundColor: AppColors.white,
-      appBar: CustomAppBar(
-        text: "تفاصيل المادة",
-        color: subjectColor,
-        backgroundColor: subjectColor.withValues(alpha: 0.07),
-      ),
+      //
+      appBar: CustomAppBar(text: "تفاصيل المادة"),
+      //
       body: BlocConsumer<SubjectDetailsCubit, SubjectDetailsState>(
         listener: (context, state) {
+          // Success
           if (state is SubjectDetailsUpdateSuccess) {
             setState(() {
               currentSubject = state.updatedSubject;
@@ -54,7 +54,9 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                 backgroundColor: AppColors.success,
               ),
             );
-          } else if (state is SubjectDetailsUpdateError) {
+          }
+          // Error
+          else if (state is SubjectDetailsUpdateError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error),
@@ -62,6 +64,7 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
               ),
             );
           }
+          //
         },
         builder: (context, state) {
           final isLoading = state is SubjectDetailsUpdateLoading;
@@ -71,34 +74,40 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
               SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   children: [
+                    // Subject Details Header
                     SubjectDetailsHeader(
                       subject: currentSubject,
                       subjectColor: subjectColor,
                     ),
-                    verticalSpace(24),
+                    // Subject Details InfoCards
                     SubjectDetailsInfoCards(
-                      subjectColor: subjectColor,
                       valueCreditHours: "${currentSubject.creditHours}",
                       valueTotalMarks: "${currentSubject.totalMarks}",
                       valueTargetGrade: currentSubject.targetGrade ?? "?",
                     ),
+                    //
                     verticalSpace(32),
+                    //
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      padding: .symmetric(horizontal: 24.w),
                       child: Text(
                         "مساعد سيطر",
                         style: TextStyle(
                           fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: .bold,
                           color: AppColors.primaryColor,
                         ),
                       ),
                     ),
+                    //
                     verticalSpace(12),
+                    //
                     _buildSmartAssistantSection(),
+                    //
                     verticalSpace(32),
+                    //
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: Text(
@@ -110,11 +119,16 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                         ),
                       ),
                     ),
+                    //
                     verticalSpace(16),
+                    //
                     _buildTasksPlaceholder(),
+                    //
                     verticalSpace(40),
+                    //
                   ],
                 ),
+                //
               ),
               if (isLoading)
                 Container(

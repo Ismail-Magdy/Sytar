@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sytar/core/helpers/spacing.dart';
+import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
 
 class SubjectDetailsHeader extends StatelessWidget {
@@ -17,9 +19,8 @@ class SubjectDetailsHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: .infinity,
-      padding: .symmetric(vertical: 30.h, horizontal: 24.w),
+      padding: .only(bottom: 30.h, left: 24.w, right: 24.w),
       decoration: BoxDecoration(
-        color: subjectColor.withValues(alpha: 0.05),
         borderRadius: .only(
           bottomLeft: .circular(30.r),
           bottomRight: .circular(30.r),
@@ -28,20 +29,7 @@ class SubjectDetailsHeader extends StatelessWidget {
       child: Column(
         children: [
           //
-          Container(
-            padding: .all(16.w),
-            decoration: BoxDecoration(
-              color: subjectColor.withValues(alpha: 0.15),
-              shape: .circle,
-            ),
-            child: Icon(
-              Icons.menu_book_rounded,
-              size: 40.sp,
-              color: subjectColor,
-            ),
-          ),
-          //
-          verticalSpace(16),
+          Lottie.asset("assets/lottie/subject.json", height: 260.h, fit: .fill),
           //
           Text(
             subject.subjectName,
@@ -56,11 +44,11 @@ class SubjectDetailsHeader extends StatelessWidget {
           if (subject.instructorName != null &&
               subject.instructorName!.isNotEmpty) ...[
             //
-            verticalSpace(8),
+            verticalSpace(2),
             //
             Text(
               "د. ${subject.instructorName}",
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey[800]),
+              style: TextStyle(fontSize: 15.sp, color: AppColors.grey),
             ),
             //
           ],
