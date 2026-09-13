@@ -6,14 +6,9 @@ import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
 
 class SubjectDetailsHeader extends StatelessWidget {
-  const SubjectDetailsHeader({
-    super.key,
-    required this.subject,
-    required this.subjectColor,
-  });
+  const SubjectDetailsHeader({super.key, required this.subject});
 
   final SubjectModel subject;
-  final Color subjectColor;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +43,7 @@ class SubjectDetailsHeader extends StatelessWidget {
             //
             Text(
               "د. ${subject.instructorName}",
-              style: TextStyle(fontSize: 15.sp, color: AppColors.grey),
+              style: TextStyle(fontSize: 15.sp, color: AppColors.darkGrey),
             ),
             //
           ],

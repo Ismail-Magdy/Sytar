@@ -86,24 +86,21 @@ class SubjectModel {
       "color_code": colorCode,
       "credit_hours": creditHours,
       "total_marks": totalMarks,
-
-      if (subjectCode != null && subjectCode!.isNotEmpty)
-        "subject_code": subjectCode,
-      if (instructorName != null && instructorName!.isNotEmpty)
-        "instructor_name": instructorName,
-      if (targetGrade != null) "target_grade": targetGrade,
-      if (notes != null && notes!.isNotEmpty) "notes": notes,
+      "subject_code": subjectCode,
+      "instructor_name": instructorName,
+      "target_grade": targetGrade,
+      "notes": notes,
       "is_breakdown_known": isBreakdownKnown,
       "final_exam_total": finalExamTotal,
-      if (midterm1Total != null) "midterm1_total": midterm1Total,
-      if (midterm2Total != null) "midterm2_total": midterm2Total,
-      if (courseworkTotal != null) "coursework_total": courseworkTotal,
-      if (obtainedFinal != null) "obtained_final": obtainedFinal,
-      if (obtainedMidterm1 != null) "obtained_midterm1": obtainedMidterm1,
-      if (obtainedMidterm2 != null) "obtained_midterm2": obtainedMidterm2,
-      if (obtainedCoursework != null) "obtained_coursework": obtainedCoursework,
-      if (midtermMonth != null) "midterm_month": midtermMonth,
-      if (exactMidtermDate != null) "exact_midterm_date": exactMidtermDate,
+      "midterm1_total": midterm1Total,
+      "midterm2_total": midterm2Total,
+      "coursework_total": courseworkTotal,
+      "obtained_final": obtainedFinal,
+      "obtained_midterm1": obtainedMidterm1,
+      "obtained_midterm2": obtainedMidterm2,
+      "obtained_coursework": obtainedCoursework,
+      "midterm_month": midtermMonth,
+      "exact_midterm_date": exactMidtermDate,
     };
   }
 

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +42,7 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
       isScrollControlled: true,
       backgroundColor: AppColors.white,
       shape: RoundedRectangleBorder(
-        borderRadius: .vertical(top: Radius.circular(30.r)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
       ),
       builder: (_) {
         return BlocProvider.value(
@@ -92,41 +93,37 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    //
-                    SubjectDetailsHeader(
-                      subject: currentSubject,
-                      subjectColor: subjectColor,
-                    ),
-                    //
+                    SubjectDetailsHeader(subject: currentSubject),
                     SubjectDetailsInfoCards(
                       valueCreditHours: "${currentSubject.creditHours}",
                       valueTotalMarks: "${currentSubject.totalMarks}",
                       valueTargetGrade: currentSubject.targetGrade ?? "?",
                     ),
-                    //
                     verticalSpace(24),
-                    // شريط توزيع الدرجات
+
+                    if (currentSubject.midtermMonth != null) ...[
+                      _buildExamDateCard(),
+                      verticalSpace(24),
+                    ],
+
                     _buildMarksBreakdownSection(),
-                    //
                     verticalSpace(24),
-                    //
+
                     Padding(
-                      padding: .symmetric(horizontal: 24.w),
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: Text(
                         "مساعد سيطر",
                         style: TextStyle(
                           fontSize: 16.sp,
-                          fontWeight: .bold,
+                          fontWeight: FontWeight.bold,
                           color: AppColors.primaryColor,
                         ),
                       ),
                     ),
-                    //
                     verticalSpace(12),
-                    // المساعد الذكي بالشكل الجديد الصغير
                     _buildSmartAssistantSection(),
-                    //
                     verticalSpace(32),
+
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: Text(
@@ -148,7 +145,10 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                 Container(
                   color: AppColors.white.withValues(alpha: 0.6),
                   child: Center(
-                    child: CircularProgressIndicator(color: subjectColor),
+                    child: CupertinoActivityIndicator(
+                      color: subjectColor,
+                      radius: 16.r,
+                    ),
                   ),
                 ),
             ],
@@ -158,10 +158,71 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
     );
   }
 
-  // Marks Breakdown Section
+  Widget _buildExamDateCard() {
+    final List<String> months = [
+      "يناير",
+      "فبراير",
+      "مارس",
+      "أبريل",
+      "مايو",
+      "يونيو",
+      "يوليو",
+      "أغسطس",
+      "سبتمبر",
+      "أكتوبر",
+      "نوفمبر",
+      "ديسمبر",
+    ];
+    final monthName = months[currentSubject.midtermMonth! - 1];
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        decoration: BoxDecoration(
+          color: AppColors.secondaryColor.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(
+            color: AppColors.secondaryColor.withValues(alpha: 0.1),
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.calendar_month_rounded,
+              color: AppColors.secondaryColor,
+              size: 24.sp,
+            ),
+            horizontalSpace(12),
+            Text(
+              "شهر الميدتيرم التقريبي: ",
+              style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]),
+            ),
+            Text(
+              monthName,
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.bold,
+                color: subjectColor,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildMarksBreakdownSection() {
-    // لو التقسيمة مش معروفة، هنعرض كارت "إضافة" بدل ما نلغي السكشن
-    if (!currentSubject.isBreakdownKnown) {
+    // بنحسب المجموع الفعلي للدرجات اللي اليوزر مسجلها
+    final currentBreakdownSum =
+        currentSubject.finalExamTotal +
+        (currentSubject.midterm1Total ?? 0) +
+        (currentSubject.midterm2Total ?? 0) +
+        (currentSubject.courseworkTotal ?? 0);
+
+    // لو التقسيمة مش معروفة، أو المجموع مش بيكمل الدرجة الكلية بتاعت المادة!
+    if (!currentSubject.isBreakdownKnown ||
+        currentBreakdownSum < currentSubject.totalMarks) {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
@@ -220,13 +281,11 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
       );
     }
 
-    // لو التقسيمة معروفة، هنعرض الـ Chips بتاعت الدرجات زي ما هي
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          //
           Text(
             "توزيع الدرجات",
             style: TextStyle(
@@ -235,56 +294,45 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
               color: AppColors.primaryColor,
             ),
           ),
-          //
           verticalSpace(12),
-          //
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             child: Row(
               children: [
-                //
-                _buildMarkChip(
-                  "الفاينل",
-                  currentSubject.finalExamTotal,
-                  currentSubject.obtainedFinal,
-                ),
-                //
+                if (currentSubject.finalExamTotal > 0) ...[
+                  _buildMarkChip(
+                    "الفاينل",
+                    currentSubject.finalExamTotal,
+                    currentSubject.obtainedFinal,
+                  ),
+                ],
                 if (currentSubject.midterm1Total != null &&
                     currentSubject.midterm1Total! > 0) ...[
-                  //
                   horizontalSpace(8),
-                  //
                   _buildMarkChip(
                     "ميد 1",
                     currentSubject.midterm1Total!,
                     currentSubject.obtainedMidterm1,
                   ),
-                  //
                 ],
                 if (currentSubject.midterm2Total != null &&
                     currentSubject.midterm2Total! > 0) ...[
-                  //
                   horizontalSpace(8),
-                  //
                   _buildMarkChip(
                     "ميد 2",
                     currentSubject.midterm2Total!,
                     currentSubject.obtainedMidterm2,
                   ),
-                  //
                 ],
                 if (currentSubject.courseworkTotal != null &&
                     currentSubject.courseworkTotal! > 0) ...[
-                  //
                   horizontalSpace(8),
-                  //
                   _buildMarkChip(
                     "أعمال سنة",
                     currentSubject.courseworkTotal!,
                     currentSubject.obtainedCoursework,
                   ),
-                  //
                 ],
               ],
             ),
@@ -327,9 +375,34 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
   }
 
   //  Smart UX Section
-
   Widget _buildSmartAssistantSection() {
-    // حالة المواعيد
+    // 1. لو المجموع لسه ناقص، هنجبره يكمل توزيع الدرجات من هنا كمان عشان ميعرفش يسجل درجات على الفاضي
+    final currentBreakdownSum =
+        currentSubject.finalExamTotal +
+        (currentSubject.midterm1Total ?? 0) +
+        (currentSubject.midterm2Total ?? 0) +
+        (currentSubject.courseworkTotal ?? 0);
+
+    if (!currentSubject.isBreakdownKnown ||
+        currentBreakdownSum < currentSubject.totalMarks) {
+      final mysteriousMarks = currentSubject.totalMarks - currentBreakdownSum;
+      return _buildCompactInteractiveCard(
+        icon: Icons.search_rounded,
+        iconColor: Colors.orange,
+        title: "درجات مفقودة",
+        message:
+            "في $mysteriousMarks درجة مش متوزعين، خلينا نحددهم عشان نقدر نسجل الدرجات.",
+        buttonText: "توزيع الدرجات",
+        onTap: () => _openBottomSheet(
+          UpdateBreakdownBottomSheet(
+            subject: currentSubject,
+            subjectColor: subjectColor,
+          ),
+        ),
+      );
+    }
+
+    // 2. حالة المواعيد
     if (currentSubject.midtermMonth == null) {
       return _buildCompactInteractiveCard(
         icon: Icons.calendar_month_rounded,
@@ -342,7 +415,7 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
       );
     }
 
-    // حالة التحفيز وتسجيل الدرجات
+    // 3. حالة التحفيز وتسجيل الدرجات
     if (currentSubject.obtainedMidterm1 != null &&
         currentSubject.midterm1Total != null &&
         currentSubject.midterm1Total! > 0) {
@@ -370,13 +443,13 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
       );
     }
 
-    // الحالة الافتراضية
+    // 4. الحالة الافتراضية
     return _buildCompactInteractiveCard(
       icon: Icons.add_task_rounded,
       iconColor: AppColors.primaryColor,
-      title: "تسجيل الدرجات", // تم التعديل
+      title: "تسجيل الدرجات",
       message:
-          "أول ما تمتحن حاجة ضيف نتيجتها هنا عشان نتابع مستواك.", // تم التعديل
+          "التقسيمة جاهزة، أول ما تمتحن حاجة ضيف نتيجتها هنا عشان نتابع مستواك.",
       buttonText: "تسجيل الدرجات",
       onTap: () => _openBottomSheet(
         AddGradesBottomSheet(
@@ -387,7 +460,6 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
     );
   }
 
-  // التصميم الجديد للكارت: مدمج جداً ومريح للعين
   Widget _buildCompactInteractiveCard({
     required IconData icon,
     required Color iconColor,
@@ -397,9 +469,9 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
     required VoidCallback onTap,
   }) {
     return Padding(
-      padding: .symmetric(horizontal: 24.w),
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: Container(
-        padding: .all(12.w),
+        padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(16.r),
@@ -468,8 +540,6 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
       ),
     );
   }
-
-  // ==============================================================
 
   Widget _buildTasksPlaceholder() {
     return Center(
