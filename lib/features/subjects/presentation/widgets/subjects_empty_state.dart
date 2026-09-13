@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sytar/core/helpers/spacing.dart';
+import 'package:sytar/core/themes/app_colors.dart';
 
 class SubjectsEmptyState extends StatelessWidget {
   const SubjectsEmptyState({super.key});
@@ -30,7 +31,7 @@ class SubjectsEmptyState extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: .bold,
-                color: Colors.grey[500],
+                color: AppColors.darkGrey,
               ),
             ),
             //

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class SubjectsLoadingWidget extends StatelessWidget {
   const SubjectsLoadingWidget({super.key});
@@ -22,7 +22,7 @@ class SubjectsLoadingWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: .circular(16.r),
-              border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+              border: Border.all(color: AppColors.grey.withValues(alpha: 0.2)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.04),
@@ -50,7 +50,7 @@ class SubjectsLoadingWidget extends StatelessWidget {
                         width: 140.w,
                         height: 16.h,
                         decoration: BoxDecoration(
-                          color: Colors.grey[300],
+                          color: AppColors.grey,
                           borderRadius: .circular(4.r),
                         ),
                       ),
@@ -59,7 +59,7 @@ class SubjectsLoadingWidget extends StatelessWidget {
                         width: 90.w,
                         height: 12.h,
                         decoration: BoxDecoration(
-                          color: Colors.grey[200],
+                          color: AppColors.grey,
                           borderRadius: .circular(4.r),
                         ),
                       ),
@@ -69,7 +69,7 @@ class SubjectsLoadingWidget extends StatelessWidget {
                 Icon(
                   Icons.arrow_forward_ios_rounded,
                   size: 16.sp,
-                  color: Colors.grey[300],
+                  color: AppColors.grey,
                 ),
               ],
             ),

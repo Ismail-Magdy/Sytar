@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../models/subject_model.dart';
+import 'package:sytar/features/subjects/data/models/subject_model.dart';
 
 class SubjectRepo {
   final FirebaseFirestore _firestore;
@@ -8,7 +8,6 @@ class SubjectRepo {
 
   SubjectRepo(this._firestore, this._auth);
 
-  ///
   Future<void> addSubject({
     required String subjectName,
     required String colorCode,
@@ -68,13 +67,11 @@ class SubjectRepo {
     }
   }
 
-  ///
   Future<List<SubjectModel>> getSubjectsForCurrentSemester() async {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) throw Exception("User not logged in");
 
-      //
       final userDoc = await _firestore.collection("users").doc(userId).get();
       final userData = userDoc.data() ?? {};
 
@@ -82,7 +79,6 @@ class SubjectRepo {
       final String currentSemester =
           userData["currentSemester"] ?? "الترم الأول";
 
-      //
       final snapshot = await _firestore
           .collection("users")
           .doc(userId)
@@ -99,7 +95,6 @@ class SubjectRepo {
     }
   }
 
-  ///
   Future<void> updateSubject(SubjectModel updatedSubject) async {
     try {
       final userId = _auth.currentUser?.uid;
