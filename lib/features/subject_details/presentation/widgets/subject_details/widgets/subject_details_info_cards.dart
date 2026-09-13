@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sytar/core/helpers/spacing.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subject_details/widgets/subject_details_info_card.dart';
+import 'package:sytar/features/subject_details/presentation/widgets/subject_details/widgets/subject_details_info_card.dart';
 
 class SubjectDetailsInfoCards extends StatelessWidget {
   const SubjectDetailsInfoCards({

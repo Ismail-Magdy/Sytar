@@ -1,4 +1,4 @@
-import '../../data/models/subject_model.dart';
+import '../../subjects/data/models/subject_model.dart';
 
 abstract class SubjectDetailsState {}
 

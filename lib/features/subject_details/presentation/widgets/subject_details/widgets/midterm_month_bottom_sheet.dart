@@ -5,7 +5,7 @@ import 'package:sytar/core/helpers/extensions.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
-import 'package:sytar/features/subjects/manager/subject_details/subject_details_cubit.dart';
+import 'package:sytar/features/subject_details/manager/subject_details_cubit.dart';
 
 class MidtermMonthBottomSheet extends StatefulWidget {
   final SubjectModel subject;
