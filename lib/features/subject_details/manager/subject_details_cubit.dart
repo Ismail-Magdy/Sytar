@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/models/subject_model.dart';
-import '../../data/repos/subject_repo.dart';
+import '../../subjects/data/models/subject_model.dart';
+import '../../subjects/data/repos/subject_repo.dart';
 import 'subject_details_state.dart';
 
 class SubjectDetailsCubit extends Cubit<SubjectDetailsState> {

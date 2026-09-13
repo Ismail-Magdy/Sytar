@@ -8,11 +8,11 @@ import 'package:sytar/core/routes/routes.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/core/widgets/custom_app_bar_without_leading.dart';
 import 'package:sytar/core/widgets/error_screen.dart';
-import 'package:sytar/features/subjects/manager/subjects/subjects_cubit.dart';
-import 'package:sytar/features/subjects/manager/subjects/subjects_state.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subjects/subjects_floating_action_button.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subjects/subjects_empty_state.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subjects/subjects_loading_widget.dart';
+import 'package:sytar/features/subjects/manager/subjects_cubit.dart';
+import 'package:sytar/features/subjects/manager/subjects_state.dart';
+import 'package:sytar/features/subjects/presentation/widgets/subjects_floating_action_button.dart';
+import 'package:sytar/features/subjects/presentation/widgets/subjects_empty_state.dart';
+import 'package:sytar/features/subjects/presentation/widgets/subjects_loading_widget.dart';
 
 class SubjectsScreen extends StatelessWidget {
   const SubjectsScreen({super.key});

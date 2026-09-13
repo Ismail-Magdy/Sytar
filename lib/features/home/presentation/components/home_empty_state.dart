@@ -8,7 +8,7 @@ import 'package:sytar/core/routes/routes.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/core/widgets/custom_button.dart';
 import 'package:sytar/features/home/manager/home_cubit.dart';
-import 'package:sytar/features/subjects/manager/subjects/subjects_cubit.dart';
+import 'package:sytar/features/subjects/manager/subjects_cubit.dart';
 
 class HomeEmptyState extends StatelessWidget {
   final String userName;

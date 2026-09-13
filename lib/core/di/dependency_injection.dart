@@ -16,9 +16,9 @@ import 'package:sytar/features/home/manager/home_cubit.dart';
 import 'package:sytar/features/setup_profile/data/repos/setup_profile_repo.dart';
 import 'package:sytar/features/setup_profile/manager/setup_profile_bloc.dart';
 import 'package:sytar/features/subjects/data/repos/subject_repo.dart';
-import 'package:sytar/features/subjects/manager/add_subjects/add_subject_cubit.dart';
-import 'package:sytar/features/subjects/manager/subject_details/subject_details_cubit.dart';
-import 'package:sytar/features/subjects/manager/subjects/subjects_cubit.dart';
+import 'package:sytar/features/add_subject/manager/add_subject_cubit.dart';
+import 'package:sytar/features/subject_details/manager/subject_details_cubit.dart';
+import 'package:sytar/features/subjects/manager/subjects_cubit.dart';
 import 'package:sytar/features/tasks/data/repos/task_repo.dart';
 import 'package:sytar/features/tasks/manager/add_task_cubit.dart';
 

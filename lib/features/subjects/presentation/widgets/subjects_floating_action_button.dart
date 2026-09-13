@@ -5,7 +5,7 @@ import 'package:sytar/core/helpers/extensions.dart';
 import 'package:sytar/core/routes/routes.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/features/home/manager/home_cubit.dart';
-import 'package:sytar/features/subjects/manager/subjects/subjects_cubit.dart';
+import 'package:sytar/features/subjects/manager/subjects_cubit.dart';
 
 class SubjectsFloatingActionButton extends StatelessWidget {
   const SubjectsFloatingActionButton({super.key});

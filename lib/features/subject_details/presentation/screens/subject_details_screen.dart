@@ -8,13 +8,13 @@ import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/core/widgets/custom_app_bar.dart';
 import 'package:sytar/core/widgets/custom_feedback_dialog.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
-import 'package:sytar/features/subjects/manager/subject_details/subject_details_cubit.dart';
-import 'package:sytar/features/subjects/manager/subject_details/subject_details_state.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subject_details/widgets/add_grades_bottom_sheet.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subject_details/widgets/midterm_month_bottom_sheet.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subject_details/widgets/subject_details_header.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subject_details/widgets/subject_details_info_cards.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subject_details/widgets/update_breakdown_bottom_sheet.dart';
+import 'package:sytar/features/subject_details/manager/subject_details_cubit.dart';
+import 'package:sytar/features/subject_details/manager/subject_details_state.dart';
+import 'package:sytar/features/subject_details/presentation/widgets/subject_details/widgets/add_grades_bottom_sheet.dart';
+import 'package:sytar/features/subject_details/presentation/widgets/subject_details/widgets/midterm_month_bottom_sheet.dart';
+import 'package:sytar/features/subject_details/presentation/widgets/subject_details/widgets/subject_details_header.dart';
+import 'package:sytar/features/subject_details/presentation/widgets/subject_details/widgets/subject_details_info_cards.dart';
+import 'package:sytar/features/subject_details/presentation/widgets/subject_details/widgets/update_breakdown_bottom_sheet.dart';
 
 class SubjectDetailsScreen extends StatefulWidget {
   final SubjectModel subject;
