@@ -24,35 +24,71 @@ class UpdateBreakdownBottomSheet extends StatefulWidget {
 
 class _UpdateBreakdownBottomSheetState
     extends State<UpdateBreakdownBottomSheet> {
-  final _midterm1Controller = TextEditingController();
-  final _midterm2Controller = TextEditingController();
-  final _courseworkController = TextEditingController();
+  late TextEditingController _finalController;
+  late TextEditingController _midterm1Controller;
+  late TextEditingController _midterm2Controller;
+  late TextEditingController _courseworkController;
 
-  late int missingMarks;
+  late int totalRequiredMarks;
   int currentSum = 0;
 
   @override
   void initState() {
     super.initState();
-    missingMarks = widget.subject.totalMarks - widget.subject.finalExamTotal;
+    // إحنا محتاجين نوزع الدرجة الكلية كلها
+    totalRequiredMarks = widget.subject.totalMarks;
 
+    // بنجيب القيم القديمة لو موجودة عشان اليوزر ميضطرش يكتبها من الأول
+    _finalController = TextEditingController(
+      text: widget.subject.finalExamTotal > 0
+          ? widget.subject.finalExamTotal.toString()
+          : '',
+    );
+    _midterm1Controller = TextEditingController(
+      text:
+          widget.subject.midterm1Total != null &&
+              widget.subject.midterm1Total! > 0
+          ? widget.subject.midterm1Total.toString()
+          : '',
+    );
+    _midterm2Controller = TextEditingController(
+      text:
+          widget.subject.midterm2Total != null &&
+              widget.subject.midterm2Total! > 0
+          ? widget.subject.midterm2Total.toString()
+          : '',
+    );
+    _courseworkController = TextEditingController(
+      text:
+          widget.subject.courseworkTotal != null &&
+              widget.subject.courseworkTotal! > 0
+          ? widget.subject.courseworkTotal.toString()
+          : '',
+    );
+
+    // بنراقب الحقول عشان نحسب المجموع لايف
+    _finalController.addListener(_calculateSum);
     _midterm1Controller.addListener(_calculateSum);
     _midterm2Controller.addListener(_calculateSum);
     _courseworkController.addListener(_calculateSum);
+
+    _calculateSum(); // نحسب المجموع المبدئي
   }
 
   void _calculateSum() {
+    final f = int.tryParse(_finalController.text) ?? 0;
     final m1 = int.tryParse(_midterm1Controller.text) ?? 0;
     final m2 = int.tryParse(_midterm2Controller.text) ?? 0;
     final cw = int.tryParse(_courseworkController.text) ?? 0;
 
     setState(() {
-      currentSum = m1 + m2 + cw;
+      currentSum = f + m1 + m2 + cw;
     });
   }
 
   @override
   void dispose() {
+    _finalController.dispose();
     _midterm1Controller.dispose();
     _midterm2Controller.dispose();
     _courseworkController.dispose();
@@ -60,9 +96,11 @@ class _UpdateBreakdownBottomSheetState
   }
 
   void _submit() {
-    if (currentSum == missingMarks) {
+    // الزرار مش هيشتغل غير لو المجموع = الدرجة الكلية
+    if (currentSum == totalRequiredMarks) {
       final updatedSubject = widget.subject.copyWith(
         isBreakdownKnown: true,
+        finalExamTotal: int.tryParse(_finalController.text) ?? 0,
         midterm1Total: int.tryParse(_midterm1Controller.text) ?? 0,
         midterm2Total: int.tryParse(_midterm2Controller.text) ?? 0,
         courseworkTotal: int.tryParse(_courseworkController.text) ?? 0,
@@ -75,25 +113,25 @@ class _UpdateBreakdownBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    final remaining = missingMarks - currentSum;
+    final remaining = totalRequiredMarks - currentSum;
     final isSumValid = remaining == 0;
 
     return Padding(
-      padding: .only(
+      padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom + 24.h,
         left: 24.w,
         right: 24.w,
         top: 24.h,
       ),
       child: Column(
-        mainAxisSize: .min,
-        crossAxisAlignment: .start,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: .spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "تقسيمة أعمال السنة",
+                "توزيع الدرجات",
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
@@ -121,10 +159,17 @@ class _UpdateBreakdownBottomSheetState
           ),
           verticalSpace(8),
           Text(
-            "عندك $missingMarks درجة محتاجين نوزعهم، لو في حاجة ملغية سيبها فاضية.",
+            "عندك $totalRequiredMarks درجة محتاجين نوزعهم، لو في حاجة ملغية سيبها فاضية.",
             style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
           ),
           verticalSpace(24),
+
+          CustomTextFormField(
+            controller: _finalController,
+            hintText: "الفاينل (مثال: 40)",
+            keyboardType: TextInputType.number,
+          ),
+          verticalSpace(16),
           CustomTextFormField(
             controller: _midterm1Controller,
             hintText: "ميدتيرم 1 (مثال: 30)",
@@ -143,6 +188,7 @@ class _UpdateBreakdownBottomSheetState
             keyboardType: TextInputType.number,
           ),
           verticalSpace(32),
+
           SizedBox(
             width: double.infinity,
             height: 50.h,
