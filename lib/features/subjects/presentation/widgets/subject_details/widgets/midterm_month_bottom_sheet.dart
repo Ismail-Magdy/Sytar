@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sytar/core/helpers/extensions.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
@@ -8,13 +9,8 @@ import 'package:sytar/features/subjects/manager/subject_details/subject_details_
 
 class MidtermMonthBottomSheet extends StatefulWidget {
   final SubjectModel subject;
-  final Color subjectColor;
 
-  const MidtermMonthBottomSheet({
-    super.key,
-    required this.subject,
-    required this.subjectColor,
-  });
+  const MidtermMonthBottomSheet({super.key, required this.subject});
 
   @override
   State<MidtermMonthBottomSheet> createState() =>
@@ -44,9 +40,8 @@ class _MidtermMonthBottomSheetState extends State<MidtermMonthBottomSheet> {
       final updatedSubject = widget.subject.copyWith(
         midtermMonth: selectedMonth,
       );
-
       context.read<SubjectDetailsCubit>().updateSubject(updatedSubject);
-      Navigator.pop(context);
+      context.pop();
     }
   }
 
@@ -58,23 +53,28 @@ class _MidtermMonthBottomSheetState extends State<MidtermMonthBottomSheet> {
         vertical: 24.h,
       ).copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 24.h),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: .min,
+        crossAxisAlignment: .start,
         children: [
+          //
           Text(
-            "تحديد شهر الميدتيرم 🗓️",
+            "تحديد شهر الميدتيرم",
             style: TextStyle(
               fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-              color: widget.subjectColor,
+              fontWeight: .bold,
+              color: AppColors.secondaryColor,
             ),
           ),
+          //
           verticalSpace(8),
+          //
           Text(
-            "اختار الشهر التقريبي للميدتيرم عشان الأبلكيشن يقدر يبعتلك تنبيه ذكي تفوق بيه للمادة.",
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+            "إختار الشهر التقريبي للميدتيرم عشان الأبلكيشن يقدر يبعتلك تنبيه تفوق بيه للمادة",
+            style: TextStyle(fontSize: 14.sp, color: AppColors.darkGrey),
           ),
+          //
           verticalSpace(24),
+          //
           Wrap(
             spacing: 10.w,
             runSpacing: 12.h,
@@ -88,31 +88,34 @@ class _MidtermMonthBottomSheetState extends State<MidtermMonthBottomSheet> {
                 onSelected: (selected) {
                   setState(() => selectedMonth = monthNumber);
                 },
-                selectedColor: widget.subjectColor,
+                selectedColor: AppColors.primaryColor,
+                checkmarkColor: AppColors.white,
                 labelStyle: TextStyle(
-                  color: isSelected ? AppColors.white : Colors.black87,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  color: isSelected ? AppColors.white : AppColors.black,
+                  fontWeight: isSelected ? .bold : .normal,
                 ),
-                backgroundColor: Colors.grey[100],
+                backgroundColor: AppColors.grey.withValues(alpha: 0.2),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: .circular(12.r),
                   side: BorderSide(
                     color: isSelected
-                        ? widget.subjectColor
+                        ? AppColors.primaryColor
                         : Colors.transparent,
                   ),
                 ),
               );
             }),
           ),
+          //
           verticalSpace(32),
+          //
           SizedBox(
             width: double.infinity,
             height: 50.h,
             child: ElevatedButton(
               onPressed: selectedMonth != null ? _submit : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: widget.subjectColor,
+                backgroundColor: AppColors.primaryColor,
                 disabledBackgroundColor: Colors.grey[300],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),

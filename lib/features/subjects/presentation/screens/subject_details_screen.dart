@@ -5,13 +5,15 @@ import 'package:lottie/lottie.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/core/widgets/custom_app_bar.dart';
+import 'package:sytar/core/widgets/custom_feedback_dialog.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
 import 'package:sytar/features/subjects/manager/subject_details/subject_details_cubit.dart';
 import 'package:sytar/features/subjects/manager/subject_details/subject_details_state.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subject_details/subject_details_header.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subject_details/subject_details_info_cards.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subject_details/update_breakdown_bottom_sheet.dart';
-import 'package:sytar/features/subjects/presentation/widgets/subject_details/midterm_month_bottom_sheet.dart';
+import 'package:sytar/features/subjects/presentation/widgets/subject_details/widgets/add_grades_bottom_sheet.dart';
+import 'package:sytar/features/subjects/presentation/widgets/subject_details/widgets/midterm_month_bottom_sheet.dart';
+import 'package:sytar/features/subjects/presentation/widgets/subject_details/widgets/subject_details_header.dart';
+import 'package:sytar/features/subjects/presentation/widgets/subject_details/widgets/subject_details_info_cards.dart';
+import 'package:sytar/features/subjects/presentation/widgets/subject_details/widgets/update_breakdown_bottom_sheet.dart';
 
 class SubjectDetailsScreen extends StatefulWidget {
   final SubjectModel subject;
@@ -33,38 +35,52 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
     subjectColor = Color(int.parse(currentSubject.colorCode, radix: 16));
   }
 
+  void _openBottomSheet(Widget bottomSheetWidget) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: .vertical(top: Radius.circular(30.r)),
+      ),
+      builder: (_) {
+        return BlocProvider.value(
+          value: context.read<SubjectDetailsCubit>(),
+          child: bottomSheetWidget,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //
       backgroundColor: AppColors.white,
       //
       appBar: CustomAppBar(text: "تفاصيل المادة"),
       //
       body: BlocConsumer<SubjectDetailsCubit, SubjectDetailsState>(
         listener: (context, state) {
-          // Success
           if (state is SubjectDetailsUpdateSuccess) {
             setState(() {
               currentSubject = state.updatedSubject;
             });
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("تم التحديث بنجاح 🚀"),
-                backgroundColor: AppColors.success,
-              ),
+            showFeedbackDialog(
+              context,
+              icon: Icons.check_circle_rounded,
+              color: AppColors.success,
+              title: "عاش",
+              message: "تم تحديث بيانات المادة بنجاح",
+            );
+          } else if (state is SubjectDetailsUpdateError) {
+            showFeedbackDialog(
+              context,
+              icon: Icons.error_rounded,
+              color: AppColors.error,
+              title: "عفواً",
+              message: state.error,
             );
           }
-          // Error
-          else if (state is SubjectDetailsUpdateError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-                backgroundColor: AppColors.error,
-              ),
-            );
-          }
-          //
         },
         builder: (context, state) {
           final isLoading = state is SubjectDetailsUpdateLoading;
@@ -74,28 +90,32 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
               SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Column(
-                  crossAxisAlignment: .start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Subject Details Header
+                    //
                     SubjectDetailsHeader(
                       subject: currentSubject,
                       subjectColor: subjectColor,
                     ),
-                    // Subject Details InfoCards
+                    //
                     SubjectDetailsInfoCards(
                       valueCreditHours: "${currentSubject.creditHours}",
                       valueTotalMarks: "${currentSubject.totalMarks}",
                       valueTargetGrade: currentSubject.targetGrade ?? "?",
                     ),
                     //
-                    verticalSpace(32),
+                    verticalSpace(24),
+                    // شريط توزيع الدرجات
+                    _buildMarksBreakdownSection(),
+                    //
+                    verticalSpace(24),
                     //
                     Padding(
                       padding: .symmetric(horizontal: 24.w),
                       child: Text(
                         "مساعد سيطر",
                         style: TextStyle(
-                          fontSize: 18.sp,
+                          fontSize: 16.sp,
                           fontWeight: .bold,
                           color: AppColors.primaryColor,
                         ),
@@ -103,32 +123,26 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                     ),
                     //
                     verticalSpace(12),
-                    //
+                    // المساعد الذكي بالشكل الجديد الصغير
                     _buildSmartAssistantSection(),
                     //
                     verticalSpace(32),
-                    //
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: Text(
                         "مهام المادة",
                         style: TextStyle(
-                          fontSize: 18.sp,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                           color: AppColors.primaryColor,
                         ),
                       ),
                     ),
-                    //
                     verticalSpace(16),
-                    //
                     _buildTasksPlaceholder(),
-                    //
                     verticalSpace(40),
-                    //
                   ],
                 ),
-                //
               ),
               if (isLoading)
                 Container(
@@ -144,160 +158,308 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
     );
   }
 
-  // ==================== [ Smart UX Section ] ====================
+  // Marks Breakdown Section
+  Widget _buildMarksBreakdownSection() {
+    // لو التقسيمة مش معروفة، هنعرض كارت "إضافة" بدل ما نلغي السكشن
+    if (!currentSubject.isBreakdownKnown) {
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "توزيع الدرجات",
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryColor,
+              ),
+            ),
+            verticalSpace(12),
+            InkWell(
+              onTap: () => _openBottomSheet(
+                UpdateBreakdownBottomSheet(
+                  subject: currentSubject,
+                  subjectColor: subjectColor,
+                ),
+              ),
+              borderRadius: BorderRadius.circular(16.r),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 20.h),
+                decoration: BoxDecoration(
+                  color: subjectColor.withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(16.r),
+                  border: Border.all(
+                    color: subjectColor.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.pie_chart_outline_rounded,
+                      color: subjectColor,
+                      size: 32.sp,
+                    ),
+                    verticalSpace(8),
+                    Text(
+                      "إضافة توزيعة أعمال السنة",
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.bold,
+                        color: subjectColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // لو التقسيمة معروفة، هنعرض الـ Chips بتاعت الدرجات زي ما هي
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //
+          Text(
+            "توزيع الدرجات",
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryColor,
+            ),
+          ),
+          //
+          verticalSpace(12),
+          //
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            child: Row(
+              children: [
+                //
+                _buildMarkChip(
+                  "الفاينل",
+                  currentSubject.finalExamTotal,
+                  currentSubject.obtainedFinal,
+                ),
+                //
+                if (currentSubject.midterm1Total != null &&
+                    currentSubject.midterm1Total! > 0) ...[
+                  //
+                  horizontalSpace(8),
+                  //
+                  _buildMarkChip(
+                    "ميد 1",
+                    currentSubject.midterm1Total!,
+                    currentSubject.obtainedMidterm1,
+                  ),
+                  //
+                ],
+                if (currentSubject.midterm2Total != null &&
+                    currentSubject.midterm2Total! > 0) ...[
+                  //
+                  horizontalSpace(8),
+                  //
+                  _buildMarkChip(
+                    "ميد 2",
+                    currentSubject.midterm2Total!,
+                    currentSubject.obtainedMidterm2,
+                  ),
+                  //
+                ],
+                if (currentSubject.courseworkTotal != null &&
+                    currentSubject.courseworkTotal! > 0) ...[
+                  //
+                  horizontalSpace(8),
+                  //
+                  _buildMarkChip(
+                    "أعمال سنة",
+                    currentSubject.courseworkTotal!,
+                    currentSubject.obtainedCoursework,
+                  ),
+                  //
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMarkChip(String title, int total, int? obtained) {
+    final bool hasGrade = obtained != null;
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      decoration: BoxDecoration(
+        color: AppColors.secondaryColor.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: AppColors.secondaryColor.withValues(alpha: 0.1),
+        ),
+      ),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontSize: 12.sp, color: Colors.grey[700]),
+          ),
+          verticalSpace(4),
+          Text(
+            hasGrade ? "$obtained / $total" : "$total",
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.bold,
+              color: hasGrade ? subjectColor : Colors.black87,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //  Smart UX Section
 
   Widget _buildSmartAssistantSection() {
-    // 1. حالة الغموض (الدكتور مش محدد تقسيمة الدرجات)
-    if (!currentSubject.isBreakdownKnown) {
-      final mysteriousMarks =
-          currentSubject.totalMarks - currentSubject.finalExamTotal;
-      final drName = currentSubject.instructorName ?? "المادة";
-
-      return _buildInteractiveCard(
-        lottiePath: 'assets/lottie/detective.json',
-        message:
-            "الفاينل من ${currentSubject.finalExamTotal}.. الأبلكيشن حسبها وبيقولك إن في $mysteriousMarks درجة دكتور $drName بيلعب بيهم في الخباثة، ركز في الشيتات والغياب!",
-        buttonText: "تحديث التقسيمة",
-        onTap: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            backgroundColor: AppColors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
-            ),
-            builder: (_) {
-              return BlocProvider.value(
-                value: context.read<SubjectDetailsCubit>(),
-                child: UpdateBreakdownBottomSheet(
-                  subject: currentSubject,
-                  subjectColor: subjectColor,
-                ),
-              );
-            },
-          );
-        },
-      );
-    }
-
-    // 2. حالة التنبيه الذكي للميدتيرم (لو لسه متحددش شهره)
+    // حالة المواعيد
     if (currentSubject.midtermMonth == null) {
-      return _buildInteractiveCard(
-        lottiePath: 'assets/lottie/calendar.json',
-        message:
-            "عشان أقدر أفكرك وتسيطر على المادة.. الميدتيرم غالباً بيبقى في شهر كام؟",
-        buttonText: "تحديد ميعاد الميدتيرم",
-        onTap: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            backgroundColor: AppColors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
-            ),
-            builder: (_) {
-              return BlocProvider.value(
-                value: context.read<SubjectDetailsCubit>(),
-                child: MidtermMonthBottomSheet(
-                  subject: currentSubject,
-                  subjectColor: subjectColor,
-                ),
-              );
-            },
-          );
-        },
+      return _buildCompactInteractiveCard(
+        icon: Icons.calendar_month_rounded,
+        iconColor: AppColors.secondaryColor,
+        title: "مواعيد الإمتحانات",
+        message: "إمتحانات الميدتيرم غالباً بتبقى في شهر كام؟",
+        buttonText: "تحديد الميعاد",
+        onTap: () =>
+            _openBottomSheet(MidtermMonthBottomSheet(subject: currentSubject)),
       );
     }
 
-    // 3. حالة الـ Gamification (لو دخل درجة الميدتيرم)
+    // حالة التحفيز وتسجيل الدرجات
     if (currentSubject.obtainedMidterm1 != null &&
-        currentSubject.midterm1Total != null) {
+        currentSubject.midterm1Total != null &&
+        currentSubject.midterm1Total! > 0) {
       final percentage =
           (currentSubject.obtainedMidterm1! / currentSubject.midterm1Total!) *
           100;
       final isGoodGrade = percentage >= 75;
 
-      return _buildInteractiveCard(
-        lottiePath: isGoodGrade
-            ? 'assets/lottie/fireworks.json'
-            : 'assets/lottie/cheer_up.json',
+      return _buildCompactInteractiveCard(
+        icon: isGoodGrade
+            ? Icons.celebration_rounded
+            : Icons.trending_up_rounded,
+        iconColor: isGoodGrade ? AppColors.success : Colors.orange,
+        title: isGoodGrade ? "عاش يا بطل! 🎯" : "مجرد البداية 🎯",
         message: isGoodGrade
-            ? "عاش يا بطل! درجتك في الميدتيرم ممتازة، كمل على نفس المستوى وهنجيب الـ ${currentSubject.targetGrade ?? 'A+'} في شوال!"
-            : "ولا يهمك! دي مجرد البداية.. لسه فاضل درجات نقدر نعوض فيهم ونجيب الـ ${currentSubject.targetGrade ?? 'التقدير اللي عايزينه'} 🎯",
-        buttonText: "إضافة درجة جديدة",
-        onTap: () {
-          // TODO: إضافة درجات الكويزات أو العملي
-        },
+            ? "كمل على نفس المستوى وهنجيب التقدير."
+            : "لسه فاضل درجات نعوض فيها.",
+        buttonText: "تحديث الدرجات",
+        onTap: () => _openBottomSheet(
+          AddGradesBottomSheet(
+            subject: currentSubject,
+            subjectColor: subjectColor,
+          ),
+        ),
       );
     }
 
-    // 4. الحالة الافتراضية (لو كله متظبط بس لسه مدخلش درجات)
-    return _buildInteractiveCard(
-      lottiePath: 'assets/lottie/rocket.json',
+    // الحالة الافتراضية
+    return _buildCompactInteractiveCard(
+      icon: Icons.add_task_rounded,
+      iconColor: AppColors.primaryColor,
+      title: "تسجيل الدرجات", // تم التعديل
       message:
-          "التقسيمة جاهزة ومواعيد الامتحانات متسجلة.. شد حيلك وأول ما تمتحن حاجة ضيف نتيجتها هنا عشان نتابع الـ GPA أول بأول.",
-      buttonText: "تسجيل درجة جديدة",
-      onTap: () {},
+          "أول ما تمتحن حاجة ضيف نتيجتها هنا عشان نتابع مستواك.", // تم التعديل
+      buttonText: "تسجيل الدرجات",
+      onTap: () => _openBottomSheet(
+        AddGradesBottomSheet(
+          subject: currentSubject,
+          subjectColor: subjectColor,
+        ),
+      ),
     );
   }
 
-  Widget _buildInteractiveCard({
-    String? lottiePath,
+  // التصميم الجديد للكارت: مدمج جداً ومريح للعين
+  Widget _buildCompactInteractiveCard({
+    required IconData icon,
+    required Color iconColor,
+    required String title,
     required String message,
     required String buttonText,
     required VoidCallback onTap,
   }) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      padding: .symmetric(horizontal: 24.w),
       child: Container(
-        padding: EdgeInsets.all(20.w),
+        padding: .all(12.w),
         decoration: BoxDecoration(
-          color: AppColors.primaryColor.withValues(alpha: 0.03),
-          borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(
-            color: AppColors.primaryColor.withValues(alpha: 0.2),
-          ),
-        ),
-        child: Column(
-          children: [
-            if (lottiePath != null) ...[
-              Icon(
-                Icons.smart_toy_rounded,
-                size: 50.sp,
-                color: AppColors.primaryColor,
-              ),
-              verticalSpace(16),
-            ],
-            Text(
-              message,
-              style: TextStyle(
-                fontSize: 14.sp,
-                height: 1.6,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
-              ),
-              textAlign: TextAlign.center,
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(16.r),
+          border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.03),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
-            verticalSpace(20),
-            SizedBox(
-              width: double.infinity,
-              height: 45.h,
-              child: ElevatedButton(
-                onPressed: onTap,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryColor,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(10.w),
+              decoration: BoxDecoration(
+                color: iconColor.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: iconColor, size: 24.sp),
+            ),
+            horizontalSpace(12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
                   ),
+                  verticalSpace(4),
+                  Text(
+                    message,
+                    style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            ),
+            horizontalSpace(8),
+            ElevatedButton(
+              onPressed: onTap,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.secondaryColor,
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                minimumSize: Size.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
-                child: Text(
-                  buttonText,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.white,
-                  ),
+              ),
+              child: Text(
+                buttonText,
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.white,
                 ),
               ),
             ),
@@ -315,8 +477,8 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
         children: [
           Lottie.asset(
             "assets/lottie/no_tasks.json",
-            width: 300.w,
-            height: 180.h,
+            width: 250.w,
+            height: 150.h,
             fit: BoxFit.contain,
           ),
           verticalSpace(12),

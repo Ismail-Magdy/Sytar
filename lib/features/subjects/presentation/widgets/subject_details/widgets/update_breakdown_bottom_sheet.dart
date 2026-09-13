@@ -25,19 +25,17 @@ class UpdateBreakdownBottomSheet extends StatefulWidget {
 class _UpdateBreakdownBottomSheetState
     extends State<UpdateBreakdownBottomSheet> {
   final _midterm1Controller = TextEditingController();
-  final _midterm2Controller = TextEditingController(); // أو العملي
+  final _midterm2Controller = TextEditingController();
   final _courseworkController = TextEditingController();
 
-  late int missingMarks; // الدرجات اللي لسه متوزعتش
+  late int missingMarks;
   int currentSum = 0;
 
   @override
   void initState() {
     super.initState();
-    // بنحسب الدرجات الغامضة (المجموع - الفاينل)
     missingMarks = widget.subject.totalMarks - widget.subject.finalExamTotal;
 
-    // بنراقب الحقول عشان نحسب المجموع لايف
     _midterm1Controller.addListener(_calculateSum);
     _midterm2Controller.addListener(_calculateSum);
     _courseworkController.addListener(_calculateSum);
@@ -64,38 +62,35 @@ class _UpdateBreakdownBottomSheetState
   void _submit() {
     if (currentSum == missingMarks) {
       final updatedSubject = widget.subject.copyWith(
-        isBreakdownKnown: true, // خلاص مبقاش في غموض
-        midterm1Total: int.tryParse(_midterm1Controller.text),
-        midterm2Total: int.tryParse(_midterm2Controller.text),
-        courseworkTotal: int.tryParse(_courseworkController.text),
+        isBreakdownKnown: true,
+        midterm1Total: int.tryParse(_midterm1Controller.text) ?? 0,
+        midterm2Total: int.tryParse(_midterm2Controller.text) ?? 0,
+        courseworkTotal: int.tryParse(_courseworkController.text) ?? 0,
       );
 
-      // بنبعت المادة للكيوبت عشان يحفظها
       context.read<SubjectDetailsCubit>().updateSubject(updatedSubject);
-      Navigator.pop(context); // نقفل الـ Bottom Sheet
+      Navigator.pop(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final remaining = missingMarks - currentSum;
-    final isSumValid =
-        remaining == 0; // الزرار مش هيشتغل غير لو وزع الدرجات كلها صح
+    final isSumValid = remaining == 0;
 
     return Padding(
-      // Padding عشان الكيبورد لما تفتح متغطيش على المحتوى
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
+      padding: .only(
+        bottom: MediaQuery.of(context).viewInsets.bottom + 24.h,
         left: 24.w,
         right: 24.w,
         top: 24.h,
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: .min,
+        crossAxisAlignment: .start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: .spaceBetween,
             children: [
               Text(
                 "تقسيمة أعمال السنة",
@@ -105,7 +100,6 @@ class _UpdateBreakdownBottomSheetState
                   color: widget.subjectColor,
                 ),
               ),
-              // كارت صغير بيعرض الدرجات المتبقية
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                 decoration: BoxDecoration(
@@ -131,8 +125,6 @@ class _UpdateBreakdownBottomSheetState
             style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
           ),
           verticalSpace(24),
-
-          // الحقول
           CustomTextFormField(
             controller: _midterm1Controller,
             hintText: "ميدتيرم 1 (مثال: 30)",
@@ -151,8 +143,6 @@ class _UpdateBreakdownBottomSheetState
             keyboardType: TextInputType.number,
           ),
           verticalSpace(32),
-
-          // زرار الحفظ
           SizedBox(
             width: double.infinity,
             height: 50.h,
@@ -175,7 +165,6 @@ class _UpdateBreakdownBottomSheetState
               ),
             ),
           ),
-          verticalSpace(24),
         ],
       ),
     );
