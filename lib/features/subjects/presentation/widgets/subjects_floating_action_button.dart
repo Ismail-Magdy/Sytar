@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sytar/core/di/dependency_injection.dart';
 import 'package:sytar/core/helpers/extensions.dart';
 import 'package:sytar/core/routes/routes.dart';
 import 'package:sytar/core/themes/app_colors.dart';
+import 'package:sytar/core/di/dependency_injection.dart';
 import 'package:sytar/features/home/manager/home_cubit.dart';
 import 'package:sytar/features/subjects/manager/subjects_cubit.dart';
 
