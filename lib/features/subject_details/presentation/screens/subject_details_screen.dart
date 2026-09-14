@@ -7,6 +7,7 @@ import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/core/widgets/custom_app_bar.dart';
 import 'package:sytar/core/widgets/custom_feedback_dialog.dart';
+import 'package:sytar/features/subject_details/presentation/widgets/components/expandable_mark_chip.dart';
 import 'package:sytar/features/subject_details/presentation/widgets/components/subject_details_compact_interactive_card.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
 import 'package:sytar/features/subject_details/manager/subject_details_cubit.dart';
@@ -131,7 +132,7 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                     _buildSmartAssistantSection(),
                     //
                     verticalSpace(32),
-
+                    //
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: Text(
@@ -168,7 +169,6 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
 
   /// Exam Date Card (MIDTERM)
   Widget _buildExamDateCard() {
-    //
     final List<String> months = [
       "يناير",
       "فبراير",
@@ -183,20 +183,21 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
       "نوفمبر",
       "ديسمبر",
     ];
-    //
     final monthName = months[currentSubject.midtermMonth! - 1];
 
     return Padding(
-      padding: .symmetric(horizontal: 24.w),
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: Container(
-        padding: .symmetric(horizontal: 16.w, vertical: 12.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: BoxDecoration(
           color: AppColors.secondaryColor.withValues(alpha: 0.05),
-          borderRadius: .circular(12.r),
-          border: .all(color: AppColors.secondaryColor.withValues(alpha: 0.1)),
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(
+            color: AppColors.secondaryColor.withValues(alpha: 0.1),
+          ),
         ),
         child: Row(
-          mainAxisAlignment: .center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               "شهر الميدتيرم التقريبي: ",
@@ -206,7 +207,7 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
               monthName,
               style: TextStyle(
                 fontSize: 15.sp,
-                fontWeight: .bold,
+                fontWeight: FontWeight.bold,
                 color: AppColors.primaryColor,
               ),
             ),
@@ -216,16 +217,14 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
     );
   }
 
-  /// توزيع الدرجات
+  /// توزيع الدرجات باستخدام الكومبوننت التفاعلي الجديد
   Widget _buildMarksBreakdownSection() {
-    // بنحسب المجموع الفعلي للدرجات اللي اليوزر مسجلها
     final currentBreakdownSum =
         currentSubject.finalExamTotal +
         (currentSubject.midterm1Total ?? 0) +
         (currentSubject.midterm2Total ?? 0) +
         (currentSubject.courseworkTotal ?? 0);
 
-    // لو التقسيمة مش معروفة، أو المجموع مش بيكمل الدرجة الكلية بتاعت المادة
     if (!currentSubject.isBreakdownKnown ||
         currentBreakdownSum < currentSubject.totalMarks) {
       return Padding(
@@ -233,7 +232,6 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
         child: Column(
           crossAxisAlignment: .start,
           children: [
-            //
             Text(
               "توزيع الدرجات",
               style: TextStyle(
@@ -242,9 +240,7 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                 color: AppColors.primaryColor,
               ),
             ),
-            //
             verticalSpace(12),
-            //
             InkWell(
               onTap: () => _openBottomSheet(
                 UpdateBreakdownBottomSheet(subject: currentSubject),
@@ -273,7 +269,7 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                       "إضافة توزيعة أعمال السنة",
                       style: TextStyle(
                         fontSize: 14.sp,
-                        fontWeight: .bold,
+                        fontWeight: FontWeight.bold,
                         color: AppColors.primaryColor,
                       ),
                     ),
@@ -281,7 +277,6 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                 ),
               ),
             ),
-            //
           ],
         ),
       );
@@ -304,40 +299,54 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
           SingleChildScrollView(
             scrollDirection: .horizontal,
             physics: const BouncingScrollPhysics(),
+            clipBehavior: .none,
             child: Row(
+              crossAxisAlignment: .start,
               children: [
                 if (currentSubject.finalExamTotal > 0) ...[
-                  _buildMarkChip(
-                    "الفاينل",
-                    currentSubject.finalExamTotal,
-                    currentSubject.obtainedFinal,
+                  ExpandableMarkChip(
+                    title: "الفاينل",
+                    total: currentSubject.finalExamTotal,
+                    obtained: currentSubject.obtainedFinal,
+                    onAddGradeTap: () => _openBottomSheet(
+                      AddGradesBottomSheet(subject: currentSubject),
+                    ),
                   ),
                 ],
                 if (currentSubject.midterm1Total != null &&
                     currentSubject.midterm1Total! > 0) ...[
                   horizontalSpace(8),
-                  _buildMarkChip(
-                    "ميد أول",
-                    currentSubject.midterm1Total!,
-                    currentSubject.obtainedMidterm1,
+                  ExpandableMarkChip(
+                    title: "ميد أول",
+                    total: currentSubject.midterm1Total!,
+                    obtained: currentSubject.obtainedMidterm1,
+                    onAddGradeTap: () => _openBottomSheet(
+                      AddGradesBottomSheet(subject: currentSubject),
+                    ),
                   ),
                 ],
                 if (currentSubject.midterm2Total != null &&
                     currentSubject.midterm2Total! > 0) ...[
                   horizontalSpace(8),
-                  _buildMarkChip(
-                    "ميد تاني",
-                    currentSubject.midterm2Total!,
-                    currentSubject.obtainedMidterm2,
+                  ExpandableMarkChip(
+                    title: "ميد تاني",
+                    total: currentSubject.midterm2Total!,
+                    obtained: currentSubject.obtainedMidterm2,
+                    onAddGradeTap: () => _openBottomSheet(
+                      AddGradesBottomSheet(subject: currentSubject),
+                    ),
                   ),
                 ],
                 if (currentSubject.courseworkTotal != null &&
                     currentSubject.courseworkTotal! > 0) ...[
                   horizontalSpace(8),
-                  _buildMarkChip(
-                    "أعمال سنة",
-                    currentSubject.courseworkTotal!,
-                    currentSubject.obtainedCoursework,
+                  ExpandableMarkChip(
+                    title: "أعمال سنة",
+                    total: currentSubject.courseworkTotal!,
+                    obtained: currentSubject.obtainedCoursework,
+                    onAddGradeTap: () => _openBottomSheet(
+                      AddGradesBottomSheet(subject: currentSubject),
+                    ),
                   ),
                 ],
               ],
@@ -348,41 +357,8 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
     );
   }
 
-  Widget _buildMarkChip(String title, int total, int? obtained) {
-    final bool hasGrade = obtained != null;
-
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      decoration: BoxDecoration(
-        color: AppColors.secondaryColor.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: AppColors.secondaryColor.withValues(alpha: 0.1),
-        ),
-      ),
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: TextStyle(fontSize: 12.sp, color: Colors.grey[700]),
-          ),
-          verticalSpace(4),
-          Text(
-            hasGrade ? "$obtained / $total" : "$total",
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
-              color: hasGrade ? subjectColor : Colors.black87,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   //  Smart UX Section
   Widget _buildSmartAssistantSection() {
-    //  لو المجموع لسه ناقص، هنجبره يكمل توزيع الدرجات من هنا كمان عشان ميعرفش يسجل درجات على الفاضي
     final currentBreakdownSum =
         currentSubject.finalExamTotal +
         (currentSubject.midterm1Total ?? 0) +
@@ -405,7 +381,6 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
       );
     }
 
-    // حالة الميد تيرم
     if (currentSubject.midtermMonth == null) {
       return SubjectDetailsCompactInteractiveCard(
         icon: Icons.calendar_month_rounded,
@@ -418,37 +393,13 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
       );
     }
 
-    // حالة التحفيز وتسجيل الدرجات
-    if (currentSubject.obtainedMidterm1 != null &&
-        currentSubject.midterm1Total != null &&
-        currentSubject.midterm1Total! > 0) {
-      final percentage =
-          (currentSubject.obtainedMidterm1! / currentSubject.midterm1Total!) *
-          100;
-      final isGoodGrade = percentage >= 75;
-
-      return SubjectDetailsCompactInteractiveCard(
-        icon: isGoodGrade
-            ? Icons.celebration_rounded
-            : Icons.trending_up_rounded,
-        iconColor: isGoodGrade ? AppColors.success : Colors.orange,
-        title: isGoodGrade ? "عاش يا بطل! 🎯" : "مجرد البداية 🎯",
-        message: isGoodGrade
-            ? "كمل على نفس المستوى وهنجيب التقدير."
-            : "لسه فاضل درجات نعوض فيها.",
-        buttonText: "تحديث الدرجات",
-        onTap: () =>
-            _openBottomSheet(AddGradesBottomSheet(subject: currentSubject)),
-      );
-    }
-
-    // 4. الحالة الافتراضية
+    // الحالة الافتراضية
     return SubjectDetailsCompactInteractiveCard(
       icon: Icons.add_task_rounded,
       iconColor: AppColors.primaryColor,
       title: "تسجيل الدرجات",
       message:
-          "التقسيمة جاهزة، أول ما تمتحن حاجة ضيف نتيجتها هنا عشان نتابع مستواك.",
+          "التقسيمة جاهزة، أول ما تمتحن حاجة ضيف نتيجتها هنا عشان نتابع مستواك",
       buttonText: "تسجيل الدرجات",
       onTap: () =>
           _openBottomSheet(AddGradesBottomSheet(subject: currentSubject)),
@@ -475,4 +426,3 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
     );
   }
 }
-// 564
