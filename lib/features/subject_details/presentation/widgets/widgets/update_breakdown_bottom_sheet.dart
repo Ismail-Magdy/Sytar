@@ -7,15 +7,11 @@ import 'package:sytar/core/widgets/custom_text_field.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
 import 'package:sytar/features/subject_details/manager/subject_details_cubit.dart';
 
+/// For توزيع الدرجات
 class UpdateBreakdownBottomSheet extends StatefulWidget {
   final SubjectModel subject;
-  final Color subjectColor;
 
-  const UpdateBreakdownBottomSheet({
-    super.key,
-    required this.subject,
-    required this.subjectColor,
-  });
+  const UpdateBreakdownBottomSheet({super.key, required this.subject});
 
   @override
   State<UpdateBreakdownBottomSheet> createState() =>
@@ -117,95 +113,99 @@ class _UpdateBreakdownBottomSheetState
     final isSumValid = remaining == 0;
 
     return Padding(
-      padding: EdgeInsets.only(
+      padding: .only(
         bottom: MediaQuery.of(context).viewInsets.bottom + 24.h,
         left: 24.w,
         right: 24.w,
         top: 24.h,
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: .min,
+        crossAxisAlignment: .start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: .spaceBetween,
             children: [
+              //
               Text(
                 "توزيع الدرجات",
                 style: TextStyle(
                   fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: widget.subjectColor,
+                  fontWeight: .bold,
+                  color: AppColors.primaryColor,
                 ),
               ),
+              //
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                padding: .symmetric(horizontal: 12.w, vertical: 6.h),
                 decoration: BoxDecoration(
                   color: isSumValid
                       ? AppColors.success.withValues(alpha: 0.1)
                       : AppColors.error.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20.r),
+                  borderRadius: .circular(15.r),
                 ),
                 child: Text(
-                  isSumValid ? "مضبوط 🎯" : "متبقي: $remaining",
+                  isSumValid ? "مضبوط" : "متبقي: $remaining",
                   style: TextStyle(
                     fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: .bold,
                     color: isSumValid ? AppColors.success : AppColors.error,
                   ),
                 ),
               ),
+              //
             ],
           ),
+          //
           verticalSpace(8),
+          //
           Text(
-            "عندك $totalRequiredMarks درجة محتاجين نوزعهم، لو في حاجة ملغية سيبها فاضية.",
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+            "عندك $totalRequiredMarks درجة محتاجين نوزعهم، لو في حاجة ملغية سيبها فاضية",
+            style: TextStyle(fontSize: 14.sp, color: AppColors.darkGrey),
           ),
+          //
           verticalSpace(24),
-
+          //
           CustomTextFormField(
             controller: _finalController,
             hintText: "الفاينل (مثال: 40)",
-            keyboardType: TextInputType.number,
+            keyboardType: .number,
           ),
           verticalSpace(16),
           CustomTextFormField(
             controller: _midterm1Controller,
-            hintText: "ميدتيرم 1 (مثال: 30)",
-            keyboardType: TextInputType.number,
+            hintText: "ميدتيرم أول (مثال: 30)",
+            keyboardType: .number,
           ),
           verticalSpace(16),
           CustomTextFormField(
             controller: _midterm2Controller,
-            hintText: "ميدتيرم 2 / عملي (مثال: 20)",
-            keyboardType: TextInputType.number,
+            hintText: "ميدتيرم تاني أو عملي (مثال: 20)",
+            keyboardType: .number,
           ),
           verticalSpace(16),
           CustomTextFormField(
             controller: _courseworkController,
             hintText: "كويزات وحضور (مثال: 10)",
-            keyboardType: TextInputType.number,
+            keyboardType: .number,
           ),
           verticalSpace(32),
-
+          //
           SizedBox(
             width: double.infinity,
             height: 50.h,
             child: ElevatedButton(
               onPressed: isSumValid ? _submit : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: widget.subjectColor,
-                disabledBackgroundColor: Colors.grey[300],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
+                backgroundColor: AppColors.primaryColor,
+                disabledBackgroundColor: AppColors.grey.withValues(alpha: 0.4),
+                shape: RoundedRectangleBorder(borderRadius: .circular(12.r)),
               ),
               child: Text(
                 "حفظ التقسيمة",
                 style: TextStyle(
                   fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: .bold,
                   color: Colors.white,
                 ),
               ),
