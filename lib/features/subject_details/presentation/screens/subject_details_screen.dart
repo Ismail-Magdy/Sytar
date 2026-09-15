@@ -134,12 +134,12 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                     verticalSpace(32),
                     //
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      padding: .symmetric(horizontal: 24.w),
                       child: Text(
                         "مهام المادة",
                         style: TextStyle(
                           fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: .bold,
                           color: AppColors.primaryColor,
                         ),
                       ),
@@ -154,10 +154,7 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                 Container(
                   color: AppColors.white.withValues(alpha: 0.6),
                   child: Center(
-                    child: CupertinoActivityIndicator(
-                      color: subjectColor,
-                      radius: 16.r,
-                    ),
+                    child: CupertinoActivityIndicator(radius: 16.r),
                   ),
                 ),
             ],
@@ -186,18 +183,16 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
     final monthName = months[currentSubject.midtermMonth! - 1];
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      padding: .symmetric(horizontal: 24.w),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        padding: .symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: BoxDecoration(
           color: AppColors.secondaryColor.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(
-            color: AppColors.secondaryColor.withValues(alpha: 0.1),
-          ),
+          borderRadius: .circular(12.r),
+          border: .all(color: AppColors.secondaryColor.withValues(alpha: 0.1)),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: .center,
           children: [
             Text(
               "شهر الميدتيرم التقريبي: ",
@@ -207,7 +202,7 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
               monthName,
               style: TextStyle(
                 fontSize: 15.sp,
-                fontWeight: FontWeight.bold,
+                fontWeight: .bold,
                 color: AppColors.primaryColor,
               ),
             ),
@@ -282,6 +277,10 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
       );
     }
 
+    final bool isLocked =
+        currentSubject.finalCalculatedGrade != null &&
+        currentSubject.finalCalculatedGrade!.isNotEmpty;
+
     return Padding(
       padding: .symmetric(horizontal: 24.w),
       child: Column(
@@ -308,9 +307,11 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                     title: "الفاينل",
                     total: currentSubject.finalExamTotal,
                     obtained: currentSubject.obtainedFinal,
-                    onAddGradeTap: () => _openBottomSheet(
-                      AddGradesBottomSheet(subject: currentSubject),
-                    ),
+                    onAddGradeTap: isLocked
+                        ? () {}
+                        : () => _openBottomSheet(
+                            AddGradesBottomSheet(subject: currentSubject),
+                          ),
                   ),
                 ],
                 if (currentSubject.midterm1Total != null &&
@@ -320,9 +321,11 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                     title: "ميد أول",
                     total: currentSubject.midterm1Total!,
                     obtained: currentSubject.obtainedMidterm1,
-                    onAddGradeTap: () => _openBottomSheet(
-                      AddGradesBottomSheet(subject: currentSubject),
-                    ),
+                    onAddGradeTap: isLocked
+                        ? () {}
+                        : () => _openBottomSheet(
+                            AddGradesBottomSheet(subject: currentSubject),
+                          ),
                   ),
                 ],
                 if (currentSubject.midterm2Total != null &&
@@ -332,9 +335,11 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                     title: "ميد تاني",
                     total: currentSubject.midterm2Total!,
                     obtained: currentSubject.obtainedMidterm2,
-                    onAddGradeTap: () => _openBottomSheet(
-                      AddGradesBottomSheet(subject: currentSubject),
-                    ),
+                    onAddGradeTap: isLocked
+                        ? () {}
+                        : () => _openBottomSheet(
+                            AddGradesBottomSheet(subject: currentSubject),
+                          ),
                   ),
                 ],
                 if (currentSubject.courseworkTotal != null &&
@@ -344,9 +349,11 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                     title: "أعمال سنة",
                     total: currentSubject.courseworkTotal!,
                     obtained: currentSubject.obtainedCoursework,
-                    onAddGradeTap: () => _openBottomSheet(
-                      AddGradesBottomSheet(subject: currentSubject),
-                    ),
+                    onAddGradeTap: isLocked
+                        ? () {}
+                        : () => _openBottomSheet(
+                            AddGradesBottomSheet(subject: currentSubject),
+                          ),
                   ),
                 ],
               ],
@@ -357,8 +364,15 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
     );
   }
 
-  //  Smart UX Section
+  ///  Smart UX Section
   Widget _buildSmartAssistantSection() {
+    final bool isLocked =
+        currentSubject.finalCalculatedGrade != null &&
+        currentSubject.finalCalculatedGrade!.isNotEmpty;
+    if (isLocked) {
+      return SizedBox.shrink();
+    }
+
     final currentBreakdownSum =
         currentSubject.finalExamTotal +
         (currentSubject.midterm1Total ?? 0) +
@@ -379,6 +393,104 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
           UpdateBreakdownBottomSheet(subject: currentSubject),
         ),
       );
+    }
+
+    final now = DateTime.now();
+
+    // Priority 1: State 3 (Exam Passed - Missing Grade)
+    String? overdueExamName;
+    if (currentSubject.midterm1Date != null &&
+        currentSubject.midterm1Date!.isBefore(now) &&
+        currentSubject.obtainedMidterm1 == null) {
+      overdueExamName = "ميدتيرم أول";
+    } else if (currentSubject.midterm2Date != null &&
+        currentSubject.midterm2Date!.isBefore(now) &&
+        currentSubject.obtainedMidterm2 == null) {
+      overdueExamName = "ميدتيرم ثاني";
+    } else if (currentSubject.courseworkDate != null &&
+        currentSubject.courseworkDate!.isBefore(now) &&
+        currentSubject.obtainedCoursework == null) {
+      overdueExamName = "العملي أو أعمال السنة";
+    } else if (currentSubject.finalDate != null &&
+        currentSubject.finalDate!.isBefore(now) &&
+        currentSubject.obtainedFinal == null) {
+      overdueExamName = "الفاينل";
+    }
+
+    if (overdueExamName != null) {
+      return SubjectDetailsCompactInteractiveCard(
+        icon: Icons.warning_amber_rounded,
+        iconColor: AppColors.error,
+        title: "نتيجة الإمتحان",
+        message:
+            "المفروض إنك امتحنت ($overdueExamName).. طمني عملت إيه ولما النتيجة تظهر سجلها هنا!",
+        buttonText: "تسجيل الدرجة",
+        onTap: () =>
+            _openBottomSheet(AddGradesBottomSheet(subject: currentSubject)),
+      );
+    }
+
+    // Priority 2: State 2 (Countdown)
+    String? upcomingExamName;
+    DateTime? upcomingDate;
+
+    Map<String, DateTime?> exams = {
+      "ميدتيرم أول": currentSubject.midterm1Date,
+      "ميدتيرم ثاني": currentSubject.midterm2Date,
+      "العملي أو أعمال السنة": currentSubject.courseworkDate,
+      "الفاينل": currentSubject.finalDate,
+    };
+
+    exams.forEach((name, date) {
+      if (date != null && date.isAfter(now)) {
+        if (upcomingDate == null || date.isBefore(upcomingDate!)) {
+          upcomingDate = date;
+          upcomingExamName = name;
+        }
+      }
+    });
+
+    if (upcomingDate != null) {
+      final daysDiff = upcomingDate!.difference(now).inDays;
+      return SubjectDetailsCompactInteractiveCard(
+        icon: Icons.timer_outlined,
+        iconColor: AppColors.primaryColor,
+        title: "إستعد للإمتحان",
+        message: "باقي $daysDiff أيام على امتحان ($upcomingExamName).. استعد!",
+        buttonText: "تغيير الميعاد",
+        onTap: () => _pickExactDate(upcomingExamName),
+      );
+    }
+
+    // Priority 3: State 1 (Approaching/Current Month)
+    if (currentSubject.midtermMonth != null) {
+      final currentMonth = now.month;
+      final targetMonth = currentSubject.midtermMonth!;
+      bool isApproaching = false;
+
+      if (currentMonth == targetMonth) {
+        isApproaching = true;
+      } else if (targetMonth - currentMonth == 1 ||
+          (targetMonth == 1 && currentMonth == 12)) {
+        if (now.day >= 20) {
+          isApproaching = true;
+        }
+      }
+
+      bool noExactDatesPicked =
+          currentSubject.midterm1Date == null &&
+          currentSubject.midterm2Date == null;
+      if (isApproaching && noExactDatesPicked) {
+        return SubjectDetailsCompactInteractiveCard(
+          icon: Icons.calendar_today_rounded,
+          iconColor: AppColors.secondaryColor,
+          title: "تحديد الميعاد بالظبط",
+          message:
+              "دخلنا في شهر الميدتيرم يا بطل! عرفت الجدول وميعاد الامتحان بالظبط ولا لسه؟",
+          buttonText: "تحديد الميعاد",
+          onTap: () => _pickExactDate(),
+        );
+      }
     }
 
     if (currentSubject.midtermMonth == null) {
@@ -406,6 +518,90 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
     );
   }
 
+  ///
+  Future<void> _pickExactDate([String? targetExam]) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year),
+      lastDate: DateTime(DateTime.now().year + 5),
+    );
+
+    if (pickedDate != null) {
+      if (targetExam != null) {
+        _saveDateForExam(targetExam, pickedDate);
+      } else {
+        showDialog(
+          context: context,
+          builder: (dialogContext) => AlertDialog(
+            title: Text(
+              "الميعاد ده بتاع انهي إمتحان؟",
+              style: TextStyle(fontSize: 16.sp, color: AppColors.primaryColor),
+            ),
+            backgroundColor: AppColors.white,
+            shape: RoundedRectangleBorder(borderRadius: .circular(16.r)),
+            content: Column(
+              mainAxisSize: .min,
+              children: [
+                if (currentSubject.midterm1Total != null &&
+                    currentSubject.midterm1Total! > 0)
+                  ListTile(
+                    title: Text("ميدتيرم أول"),
+                    onTap: () {
+                      _saveDateForExam("ميدتيرم أول", pickedDate);
+                      Navigator.pop(dialogContext);
+                    },
+                  ),
+                if (currentSubject.midterm2Total != null &&
+                    currentSubject.midterm2Total! > 0)
+                  ListTile(
+                    title: Text("ميدتيرم تاني"),
+                    onTap: () {
+                      _saveDateForExam("ميدتيرم تاني", pickedDate);
+                      Navigator.pop(dialogContext);
+                    },
+                  ),
+                if (currentSubject.courseworkTotal != null &&
+                    currentSubject.courseworkTotal! > 0)
+                  ListTile(
+                    title: Text("العملي أو أعمال السنة"),
+                    onTap: () {
+                      _saveDateForExam("العملي أو أعمال السنة", pickedDate);
+                      Navigator.pop(dialogContext);
+                    },
+                  ),
+                if (currentSubject.finalExamTotal > 0)
+                  ListTile(
+                    title: Text("الفاينل"),
+                    onTap: () {
+                      _saveDateForExam("الفاينل", pickedDate);
+                      Navigator.pop(dialogContext);
+                    },
+                  ),
+              ],
+            ),
+          ),
+        );
+      }
+    }
+  }
+
+  ///
+  void _saveDateForExam(String examName, DateTime pickedDate) {
+    SubjectModel updated = currentSubject;
+    if (examName == "ميدتيرم أول") {
+      updated = updated.copyWith(midterm1Date: pickedDate);
+    } else if (examName == "ميدتيرم تاني") {
+      updated = updated.copyWith(midterm2Date: pickedDate);
+    } else if (examName == "العملي أو أعمال السنة") {
+      updated = updated.copyWith(courseworkDate: pickedDate);
+    } else if (examName == "الفاينل") {
+      updated = updated.copyWith(finalDate: pickedDate);
+    }
+    context.read<SubjectDetailsCubit>().updateSubject(updated);
+  }
+
+  ///
   Widget _buildTasksPlaceholder() {
     return Center(
       child: Column(
@@ -414,12 +610,12 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
             "assets/lottie/no_tasks.json",
             width: 250.w,
             height: 150.h,
-            fit: BoxFit.contain,
+            fit: .contain,
           ),
           verticalSpace(12),
           Text(
             "مفيش مهام متسجلة للمادة دي لسه",
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]),
+            style: TextStyle(fontSize: 14.sp, color: AppColors.darkGrey),
           ),
         ],
       ),

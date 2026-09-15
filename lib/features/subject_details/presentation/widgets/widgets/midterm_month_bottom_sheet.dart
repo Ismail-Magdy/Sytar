@@ -81,20 +81,27 @@ class _MidtermMonthBottomSheetState extends State<MidtermMonthBottomSheet> {
             children: List.generate(12, (index) {
               final monthNumber = index + 1;
               final isSelected = selectedMonth == monthNumber;
+              final currentMonth = DateTime.now().month;
+              final isPastMonth = monthNumber < currentMonth;
 
               return ChoiceChip(
                 label: Text(months[index]),
                 selected: isSelected,
-                onSelected: (selected) {
-                  setState(() => selectedMonth = monthNumber);
-                },
+                onSelected: isPastMonth
+                    ? null
+                    : (selected) {
+                        setState(() => selectedMonth = monthNumber);
+                      },
                 selectedColor: AppColors.primaryColor,
                 checkmarkColor: AppColors.white,
                 labelStyle: TextStyle(
-                  color: isSelected ? AppColors.white : AppColors.black,
+                  color: isPastMonth
+                      ? AppColors.grey
+                      : (isSelected ? AppColors.white : AppColors.black),
                   fontWeight: isSelected ? .bold : .normal,
                 ),
                 backgroundColor: AppColors.grey.withValues(alpha: 0.2),
+                disabledColor: AppColors.grey.withValues(alpha: 0.1),
                 shape: RoundedRectangleBorder(
                   borderRadius: .circular(12.r),
                   side: BorderSide(
@@ -116,16 +123,14 @@ class _MidtermMonthBottomSheetState extends State<MidtermMonthBottomSheet> {
               onPressed: selectedMonth != null ? _submit : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryColor,
-                disabledBackgroundColor: Colors.grey[300],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
+                disabledBackgroundColor: AppColors.grey,
+                shape: RoundedRectangleBorder(borderRadius: .circular(12.r)),
               ),
               child: Text(
                 "حفظ وتفعيل التنبيه",
                 style: TextStyle(
                   fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: .bold,
                   color: AppColors.white,
                 ),
               ),
