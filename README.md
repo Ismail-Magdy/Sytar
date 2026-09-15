@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="URL_HERE" width="100%" alt="Sytar App Banner">
+<img width="1600" height="904" alt="image" src="https://github.com/user-attachments/assets/e1aef94a-5f2a-4dd6-a4fc-3b5af4be136a" />
 
   <h1> Sytar (سيطر) - Your Smart Academic Assistant</h1>
 
@@ -37,14 +37,18 @@ With Sytar, the goal is simple: **Take Control** of your academic journey.
 
 <table align="center">
   <tr>
-    <td align="center"><img src="LINK_TO_SCREENSHOT_1" width="200px;" alt="Home Screen"/><br /><b>Home Dashboard</b></td>
-    <td align="center"><img src="LINK_TO_SCREENSHOT_2" width="200px;" alt="Subjects Screen"/><br /><b>Subjects & Grades</b></td>
-    <td align="center"><img src="LINK_TO_SCREENSHOT_3" width="200px;" alt="Task Manager"/><br /><b>Smart Task Manager</b></td>
+    <td align="center"><img width="791" height="1078" alt="image" src="https://github.com/user-attachments/assets/603ff743-4ddd-41b7-a118-fbe6ae4493f8" />
+<br /></td>
+    <td align="center"><img width="590" height="1072" alt="image" src="https://github.com/user-attachments/assets/4b25a472-4f64-4d45-8916-ab8305abe574" />
+<br /></td>
+   
   </tr>
   <tr>
-    <td align="center"><img src="LINK_TO_SCREENSHOT_4" width="200px;" alt="Notifications"/><br /><b>Proactive Alerts</b></td>
-    <td align="center"><img src="LINK_TO_SCREENSHOT_5" width="200px;" alt="GPA Calculator"/><br /><b>GPA Insights</b></td>
-    <td align="center"><img src="LINK_TO_SCREENSHOT_6" width="200px;" alt="Profile"/><br /><b>Student Profile</b></td>
+    <td align="center"><img width="806" height="1078" alt="image" src="https://github.com/user-attachments/assets/81d5ff27-def5-4ab3-b349-85ab7e1f8941" />
+<br /></td>
+    <td align="center"><img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/7ac139c0-6cfc-40b8-9d3e-209423838f03" />
+<br />></td>
+    
   </tr>
 </table>
 
