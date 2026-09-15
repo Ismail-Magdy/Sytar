@@ -23,6 +23,12 @@ class SubjectModel {
   final int? obtainedCoursework;
   final int? midtermMonth;
   final DateTime? exactMidtermDate;
+  final DateTime? midterm1Date;
+  final DateTime? midterm2Date;
+  final DateTime? courseworkDate;
+  final DateTime? finalDate;
+  final String? finalCalculatedGrade;
+  final bool isGradeOverridden;
 
   SubjectModel({
     required this.id,
@@ -47,6 +53,12 @@ class SubjectModel {
     this.obtainedCoursework,
     this.midtermMonth,
     this.exactMidtermDate,
+    this.midterm1Date,
+    this.midterm2Date,
+    this.courseworkDate,
+    this.finalDate,
+    this.finalCalculatedGrade,
+    this.isGradeOverridden = false,
   });
 
   factory SubjectModel.fromJson(Map<String, dynamic> json, String documentId) {
@@ -75,6 +87,20 @@ class SubjectModel {
       exactMidtermDate: json["exact_midterm_date"] != null
           ? (json["exact_midterm_date"] as Timestamp).toDate()
           : null,
+      midterm1Date: json["midterm1_date"] != null
+          ? (json["midterm1_date"] as Timestamp).toDate()
+          : null,
+      midterm2Date: json["midterm2_date"] != null
+          ? (json["midterm2_date"] as Timestamp).toDate()
+          : null,
+      courseworkDate: json["coursework_date"] != null
+          ? (json["coursework_date"] as Timestamp).toDate()
+          : null,
+      finalDate: json["final_date"] != null
+          ? (json["final_date"] as Timestamp).toDate()
+          : null,
+      finalCalculatedGrade: json["final_calculated_grade"],
+      isGradeOverridden: json["is_grade_overridden"] ?? false,
     );
   }
 
@@ -101,6 +127,12 @@ class SubjectModel {
       "obtained_coursework": obtainedCoursework,
       "midterm_month": midtermMonth,
       "exact_midterm_date": exactMidtermDate,
+      "midterm1_date": midterm1Date,
+      "midterm2_date": midterm2Date,
+      "coursework_date": courseworkDate,
+      "final_date": finalDate,
+      "final_calculated_grade": finalCalculatedGrade,
+      "is_grade_overridden": isGradeOverridden,
     };
   }
 
@@ -126,6 +158,12 @@ class SubjectModel {
     int? obtainedCoursework,
     int? midtermMonth,
     DateTime? exactMidtermDate,
+    DateTime? midterm1Date,
+    DateTime? midterm2Date,
+    DateTime? courseworkDate,
+    DateTime? finalDate,
+    String? finalCalculatedGrade,
+    bool? isGradeOverridden,
   }) {
     return SubjectModel(
       id: id,
@@ -150,6 +188,12 @@ class SubjectModel {
       obtainedCoursework: obtainedCoursework ?? this.obtainedCoursework,
       midtermMonth: midtermMonth ?? this.midtermMonth,
       exactMidtermDate: exactMidtermDate ?? this.exactMidtermDate,
+      midterm1Date: midterm1Date ?? this.midterm1Date,
+      midterm2Date: midterm2Date ?? this.midterm2Date,
+      courseworkDate: courseworkDate ?? this.courseworkDate,
+      finalDate: finalDate ?? this.finalDate,
+      finalCalculatedGrade: finalCalculatedGrade ?? this.finalCalculatedGrade,
+      isGradeOverridden: isGradeOverridden ?? this.isGradeOverridden,
     );
   }
 }
