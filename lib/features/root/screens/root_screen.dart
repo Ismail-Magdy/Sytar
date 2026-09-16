@@ -7,8 +7,8 @@ import 'package:sytar/features/root/gpa_screen.dart';
 import 'package:sytar/features/root/profile_screen.dart';
 import 'package:sytar/features/root/widgets/glass_bottom_navigation_bar.dart';
 import 'package:sytar/features/subjects/presentation/screens/subjects_screen.dart';
-import 'package:sytar/features/tasks/manager/add_task_cubit.dart';
-import 'package:sytar/features/tasks/presentation/screens/add_task_screen.dart';
+import 'package:sytar/features/add_tasks/manager/add_task_cubit.dart';
+import 'package:sytar/features/add_tasks/presentation/screens/add_task_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -127,7 +127,5 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
     );
   }
 }
-
-
 
 //380

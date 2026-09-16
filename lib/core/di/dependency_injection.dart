@@ -20,7 +20,7 @@ import 'package:sytar/features/add_subject/manager/add_subject_cubit.dart';
 import 'package:sytar/features/subject_details/manager/subject_details_cubit.dart';
 import 'package:sytar/features/subjects/manager/subjects_cubit.dart';
 import 'package:sytar/features/tasks/data/repos/task_repo.dart';
-import 'package:sytar/features/tasks/manager/add_task_cubit.dart';
+import 'package:sytar/features/add_tasks/manager/add_task_cubit.dart';
 
 final getIt = GetIt.instance;
 
