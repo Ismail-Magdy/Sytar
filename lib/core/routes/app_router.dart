@@ -27,8 +27,8 @@ import 'package:sytar/features/subjects/manager/subjects_cubit.dart';
 import 'package:sytar/features/add_subject/presentation/screens/add_subject_screen.dart';
 import 'package:sytar/features/subject_details/presentation/screens/subject_details_screen.dart';
 import 'package:sytar/features/subjects/presentation/screens/subjects_screen.dart';
-import 'package:sytar/features/tasks/manager/add_task_cubit.dart';
-import 'package:sytar/features/tasks/presentation/screens/add_task_screen.dart';
+import 'package:sytar/features/add_tasks/manager/add_task_cubit.dart';
+import 'package:sytar/features/add_tasks/presentation/screens/add_task_screen.dart';
 import 'package:sytar/features/notifications/presentation/screens/notifications_screen.dart';
 
 class AppRouter {

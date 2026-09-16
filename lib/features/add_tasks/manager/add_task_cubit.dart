@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sytar/features/home/data/models/upcoming_task_model.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
 import 'package:sytar/features/tasks/data/repos/task_repo.dart';
-import 'package:sytar/features/tasks/manager/add_task_state.dart';
+import 'package:sytar/features/add_tasks/manager/add_task_state.dart';
 
 class AddTaskCubit extends Cubit<AddTaskState> {
   final TaskRepo _taskRepo;

@@ -6,9 +6,9 @@ import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
 import 'package:sytar/core/widgets/custom_app_bar_without_leading.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
-import 'package:sytar/features/tasks/manager/add_task_cubit.dart';
-import 'package:sytar/features/tasks/manager/add_task_state.dart';
-import 'package:sytar/features/tasks/presentation/widgets/add_task_section_title.dart';
+import 'package:sytar/features/add_tasks/manager/add_task_cubit.dart';
+import 'package:sytar/features/add_tasks/manager/add_task_state.dart';
+import 'package:sytar/features/add_tasks/presentation/widgets/add_task_section_title.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
