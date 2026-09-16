@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:sytar/core/helpers/spacing.dart';
 import 'package:sytar/core/themes/app_colors.dart';
+import 'package:sytar/core/widgets/custom_app_bar_without_leading.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
 import 'package:sytar/features/tasks/manager/add_task_cubit.dart';
 import 'package:sytar/features/tasks/manager/add_task_state.dart';
@@ -100,18 +101,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'إضافة مهمة',
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: AppColors.primaryColor),
-      ),
+      //
+      appBar: CustomAppBarWithNoLeading(text: "إضافة مهمة"),
+      //
       body: BlocConsumer<AddTaskCubit, AddTaskState>(
         listener: (context, state) {
           if (state is AddTaskSuccess) {
