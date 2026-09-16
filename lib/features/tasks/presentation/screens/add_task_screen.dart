@@ -8,6 +8,7 @@ import 'package:sytar/core/widgets/custom_app_bar_without_leading.dart';
 import 'package:sytar/features/subjects/data/models/subject_model.dart';
 import 'package:sytar/features/tasks/manager/add_task_cubit.dart';
 import 'package:sytar/features/tasks/manager/add_task_state.dart';
+import 'package:sytar/features/tasks/presentation/widgets/add_task_section_title.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
@@ -101,6 +102,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       //
       appBar: CustomAppBarWithNoLeading(text: "إضافة مهمة"),
       //
@@ -125,15 +127,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         },
         builder: (context, state) {
           final cubit = context.read<AddTaskCubit>();
-
+          //
           return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+            padding: .symmetric(horizontal: 24.w, vertical: 20.h),
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: .start,
                 children: [
-                  _buildSectionTitle('عنوان المهمة'),
+                  AddTaskSectionTitle(title: "عنوان المهمة"),
                   verticalSpace(8),
                   TextFormField(
                     controller: _titleController,
@@ -149,7 +151,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
 
                   verticalSpace(24),
-                  _buildSectionTitle('المادة'),
+                  AddTaskSectionTitle(title: 'المادة'),
                   verticalSpace(8),
 
                   if (state is AddTaskSubjectsLoading)
@@ -180,7 +182,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     ),
 
                   verticalSpace(24),
-                  _buildSectionTitle('تاريخ التسليم (Deadline)'),
+                  AddTaskSectionTitle(title: 'تاريخ التسليم (Deadline)'),
                   verticalSpace(8),
                   GestureDetector(
                     onTap: () => _selectDate(context),
@@ -221,7 +223,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
 
                   verticalSpace(24),
-                  _buildSectionTitle('الأولوية'),
+                  AddTaskSectionTitle(title: 'الأولوية'),
                   verticalSpace(8),
                   Wrap(
                     spacing: 12.w,
@@ -285,17 +287,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: TextStyle(
-        fontSize: 16.sp,
-        fontWeight: FontWeight.bold,
-        color: AppColors.primaryColor,
       ),
     );
   }
